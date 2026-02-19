@@ -10,7 +10,7 @@
 float: left;
 padding: 10px;
 min-height: 500px;
-
+max-heigth: auto
 }
 
 .izquierda {
