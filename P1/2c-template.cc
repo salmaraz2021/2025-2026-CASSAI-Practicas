@@ -29,7 +29,7 @@ clear: both;
 }
 
 #c1 {
-    background-color:#aaa;
+    background-color: ;
 }
 
 #c2 {
