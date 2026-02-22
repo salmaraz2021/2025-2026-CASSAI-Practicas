@@ -1,16 +1,16 @@
 /* https://www.w3schools.com/howto/howto_css_two_columns.asp */
 /* https://developer.mozilla.org/es/docs/Web/CSS/box-sizing */
-/* Así definimos el comportamiento de caja para todos los elementos */
+/* Hacemos cajas */
 * {
     box-sizing: border-box;
   }
   
-/* Crear columnas de ancho diferente que se colocan una a continuación de la otra */
+/* Columnas de ancho diferente */
 .columna {
 float: left;
 padding: 10px;
 min-height: 500px;
-max-heigth: auto
+max-heigth: auto;
 }
 
 .izquierda {
@@ -21,19 +21,29 @@ width: 25%;
 width: 75%;
 }
 
-/* Clear floats despues de las columnas para eliminar la superposición */
-.filla:after {
+/* Para eliminar la superposición */
+.fila:after {
 content: "";
 display: table;
 clear: both;
 }
 
 #c1 {
-    background-color: ;
+    background-color: lightpink;
+    heigth: 100%;
+    margin: 10px;
+    border: solid;
+    border-color: black;
+    border-radius: 10px;
+    box-shadow: black;
+    font-weigth:300;
 }
 
 #c2 {
-    background-color:#bbb;
+    background-color: lightpink;
+    height: 100%;
+    margin: 10px;
+    padding: 25px;
 }
 
 /* estilos para imágenes https://www.w3schools.com/css/css3_images.asp */
@@ -50,16 +60,17 @@ img {
     width: 50%;
   }
 
-/* Responsive layout - cuando el ancho de pantalla es menor a 600px, muestra las columnas apiladas. */
-/* Así conseguimos que el contenido se vea bien en dispositvos móviles */
 
+/* Para dispositivs móviles */
 @media screen and (max-width: 600px) {
     .columna {
       width: 100%;
+      float: none;
     }
 
     .iresponsive {
         width: 100%;
+        float: none;
     }
 }
 
