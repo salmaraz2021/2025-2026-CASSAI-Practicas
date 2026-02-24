@@ -9,12 +9,17 @@ body{
     color: black;
     line-height: 1.6;
 }
+html, body{
+    height: 100%;
+    margin: 0;
+}
 
 /* PARA EL MENU */
 /*para la barra del navegador*/
 nav{
     background-color: black;
     padding: 15px 0; /*espacio arriba y abajo 15, izquierda y derecha 0*/
+    height: 60px;
 }
 
 .menu{
@@ -48,20 +53,20 @@ nav{
 /* PARA COLUMNAS*/
 /* Crear columnas de ancho diferente que se colocan una a continuación de la otra */
 .columna{
-    float: left; /*se apilan por la iquierda*/
     padding: 15px;
-    min-height: 500px;
+    height: 100%;
+    overflow: auto;
 }
 
 .izquierda{
-    width: 35%;
+    width: 40%;
     background: white;
     border-radius: 10px;
     box-shadow: 0 4px 10px lightgrey;
 }
 
 .derecha{
-    width: 65%;
+    width: 60%;
     background: white;
     border-radius: 10px;
     box-shadow: 0 4px 10px lightgray;
@@ -69,15 +74,12 @@ nav{
 .fila{
     display: flex;
     max-width: 1100px;
-    margin: 30px auto;
+    margin: 0 auto;
     gap: 30px;
+    height: auto;
+    align-items: stretch;
 }
 
-.fila::after{
-    content: "";
-    display: table;
-    clear: both;
-}
 
 /*PARA FOTO DE PERFIL*/
 .iresponsive{
@@ -120,28 +122,7 @@ nav{
 }
 
 /*PARA EL ABOUT*/
-.about-container{
-    max-width: 1100px;
-    margin: 30px auto;
-    background: white;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px lightgray;
-}
-
-.about-container h1{
-    margin-bottom: 10px;
-}
-
-.etapa .h2{
-    margin-bottom: 10px;
-    color: #ff4da6;
-}
-
 .etapa{
-    display: flex;
-    align-items: center;
-    gap: 40px;
     margin: 30px 0;
     padding: 30px;
     background: white;
@@ -149,23 +130,40 @@ nav{
     box-shadow: 0 4px 10px lightgray;
 }
 
-.etapa.reverse{
+.etapa h2{
+    font-size: 2.2rem;      
+    font-weight: bold;
+    color: #ff4da6;
+    margin-bottom: 15px;
+}
+
+.contenido-etapa{
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.contenido-etapa.reverse{
     flex-direction: row-reverse;
 }
 
-.etapa p{
+.contenido-etapa p{
     flex: 1;
     text-align: justify;
 }
 
-.etapa .imagen{
+.contenido-etapa .imagen{
     flex: 1;
 }
 
-.etapa img{
+.contenido-etapa img{
     width: 100%;
     border-radius: 10px;
     box-shadow: 0 4px 10px lightgrey;
+}
+
+.img-small{
+    width: 70%;
 }
 
 /*PARA PROYECTOS*/
@@ -176,6 +174,8 @@ nav{
     gap: 20px;
     justify-content: center;
     flex-wrap: wrap;
+    height: calc(100vh - 150px);
+    align-items: center;
 }
 
 .card{
@@ -226,10 +226,6 @@ a{
         flex-direction: column;
     }
 
-    .etapa.reverse{
-        flex-direction: column;
-    }
-
     .projects-container{
         flex-direction: column;
         align-items: center;
@@ -238,5 +234,19 @@ a{
     .columna{
         width: 100%;
         float: none;
+    }
+
+    .contenido-etapa{
+        flex-direction: column;
+    }
+
+    .contenido-etapa.reverse{
+        flex-direction: column;
+    }
+    .fila,
+    .about-container,
+    .projects-container{
+        height: auto;
+        overflow: visible;
     }
 }
