@@ -14,7 +14,7 @@ body{
 /*para la barra del navegador*/
 nav{
     background-color: black;
-    padding: 15px 0; /*espacio arriba y abajo 15, ixquierda y derecha 0*/
+    padding: 15px 0; /*espacio arriba y abajo 15, izquierda y derecha 0*/
 }
 
 .menu{
@@ -48,7 +48,7 @@ nav{
 /* PARA COLUMNAS*/
 /* Crear columnas de ancho diferente que se colocan una a continuación de la otra */
 .columna{
-    float: left; /*el elemento se queda a la izquierda*/
+    float: left; /*se apilan por la iquierda*/
     padding: 15px;
     min-height: 500px;
 }
