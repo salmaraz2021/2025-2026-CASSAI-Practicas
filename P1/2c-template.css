@@ -197,12 +197,12 @@ nav{
     height: auto;
     display: block;
     border-radius: 10px;
+}
 
 .card h3{
     margin-bottom: 10px;
     color: #ff4da6;
     font-weight: bold;
-    text-align: center;
 }
 
 .card p {
@@ -211,7 +211,6 @@ nav{
 }
 
 .card a{
-    .card a {
     display: inline-block;       
     margin: 15px auto 0 auto;     
     text-decoration: none;        
@@ -225,7 +224,7 @@ nav{
 }
 
 .card a:hover{
-    background-color: ff4da6;
+    background-color: #ff4da6;
 }
 
 /*PARA ENLACES*/
@@ -235,12 +234,17 @@ a{
 
 /* PARA QUE SEA RESPONSIVE*/
 @media (max-width: 768px) {
-    .fila {
+    .fila,
+    .about-container,
+    .projects-container{
         flex-direction: column;
+        height: auto;
+        overflow: visible;
     }
 
     .columna {
         max-width: 100%;
+        float: none;
     }
 
     .contenido-etapa{
