@@ -41,7 +41,7 @@ nav{
     text-decoration: none;
     color: white;
     font-weight: bold;
-    transition: 0.3s;
+    transition: 0.2s;
 }
 
 /*para cuando pasas el cursor por encima*/
@@ -140,8 +140,12 @@ nav{
     border-radius: 20px;       
     text-align: center;        
     font-weight: bold;         
-    transition: 0.3s;          
+    transition: 0.2s;          
     display: inline-block;
+}
+.social-btn a:hover{
+    color: #ff4da6;
+    background-color: black;
 }
 
 /*PARA EL ABOUT*/
@@ -185,7 +189,6 @@ nav{
     border-radius: 10px;
     height: auto;
     display: block;
-    box-shadow: 0 4px 10px lightgrey;
 }
 
 .img-small{
@@ -209,7 +212,6 @@ nav{
     width: 100%;
     max-width: 300px;
     border-radius: 10px;
-    box-shadow: 0 4px 12px lightgrey;
     transition: transform 0.3s;
     display: flex;
     flex-direction: column;
@@ -237,17 +239,18 @@ nav{
     display: inline-block;       
     margin: 15px auto 0 auto;     
     text-decoration: none;        
-    background-color: #ff4da6;    
+    background-color: black;    
     color: white;                 
     padding: 8px 15px;           
     border-radius: 20px;         
     text-align: center;           
-    transition: 0.3s;
+    transition: 0.2s;
     font-weight: bold;
 }
 
 .card a:hover{
-    background-color: #ff4da6;
+    color: #ff4da6;
+    background-color: black;
 }
 
 /*PARA ENLACES*/
