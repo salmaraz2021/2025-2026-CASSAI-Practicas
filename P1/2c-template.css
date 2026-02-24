@@ -114,7 +114,7 @@ nav{
 
 .Nombre{
     color: black;
-    font-family: 
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
     font-size: 3rem;
 }
 
@@ -122,10 +122,11 @@ nav{
 .etapa .h2{
     margin-bottom: 10px;
     color: #ff4da6;
+}
 
 .etapa{
     display: flex;
-    align-items: last baseline;
+    align-items: justify;
     margin: 40px 0;
     gap: 30px;
 }
@@ -134,7 +135,7 @@ nav{
     flex-direction: row-reverse;
 }
 
-.etapa .texto{
+.etapa p{
     flex: 1;
 }
 
@@ -163,7 +164,6 @@ nav{
     padding: 20px;
     width: 300px;
     border-radius: 10px;
-    box-shadow: 0 4px 12px lightgrey;*/
     text-align: justify;
     transition: transform 0.3s;
 }
