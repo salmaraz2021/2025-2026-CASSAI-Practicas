@@ -206,10 +206,15 @@ nav{
     text-align: center;
 }
 
+.card p {
+    text-align: justify;
+    margin-bottom: 10px;
+}
+
 .card a{
     .card a {
     display: inline-block;       
-    margin: 15px auto 0 auto;     
+    margin: 0 auto;     
     text-decoration: none;        
     background-color: #ff4da6;    
     color: white;                 
@@ -239,7 +244,10 @@ a{
         max-width: 100%;
     }
 
-    .contenido-etapa,
+    .contenido-etapa{
+        flex-direction: column;
+    }
+    
     .contenido-etapa.reverse {
         flex-direction: column;
     }
@@ -251,5 +259,8 @@ a{
 
     .card {
         max-width: 90%;
+    }
+    .card h3 {
+        text-align: center;  /* en móvil centramos título para mejor legibilidad */
     }
 }
