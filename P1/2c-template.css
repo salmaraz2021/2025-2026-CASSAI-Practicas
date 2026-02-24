@@ -104,11 +104,28 @@ nav{
 .Información li{
     margin-bottom: 5px;
 }
+.Negrita{
+    color: black;
+    font-weight: bold;
+}
+.RedesSociales{
+    color: #ff4da6;
+}
+
+.Nombre{
+    color: black;
+    font-family: 
+    font-size: 3rem;
+}
 
 /*PARA EL ABOUT*/
+.etapa .h2{
+    margin-bottom: 10px;
+    color: #ff4da6;
+
 .etapa{
     display: flex;
-    align-items: center;
+    align-items: last baseline;
     margin: 40px 0;
     gap: 30px;
 }
@@ -128,7 +145,7 @@ nav{
 .etapa img{
     width: 100%;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 10px lightgrey;
 }
 
 /*PARA PROYECTOS*/
@@ -146,8 +163,8 @@ nav{
     padding: 20px;
     width: 300px;
     border-radius: 10px;
-    box-shadow: 0 4px 12px lightgrey;
-    text-align: center;
+    box-shadow: 0 4px 12px lightgrey;*/
+    text-align: justify;
     transition: transform 0.3s;
 }
 
