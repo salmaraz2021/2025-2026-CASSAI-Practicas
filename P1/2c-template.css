@@ -163,13 +163,13 @@ nav{
     color: #ff4da6;
     margin-bottom: 15px;
 }
-
-.contenido-etapa{
+.contenido-etapa {
     display: flex;
-    gap: 30px;
-    flex-wrap: wrap; 
+    gap: 20px;
+    flex-wrap: wrap;
     align-items: flex-start;
-}
+    max-width: 900px; 
+    margin: 0 auto;
 
 .contenido-etapa.reverse{
     flex-direction: row-reverse;
@@ -182,13 +182,15 @@ nav{
 
 .contenido-etapa .imagen{
     flex: 1;
+    max-width: 300px;
 }
 
 .contenido-etapa img{
     width: 100%;
-    aspect-ratio: 1 / 1;   
-    object-fit: cover;    
+    height: 100%;
+    object-fit: cover;
     border-radius: 10px;
+    aspect-ratio: 1 / 1;  
     display: block;
 
 .img-small{
