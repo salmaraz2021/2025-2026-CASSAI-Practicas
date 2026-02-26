@@ -143,7 +143,7 @@ nav{
     transition: 0.2s;          
     display: inline-block;
 }
-.social-btn a:hover{
+.social-btn:hover{
     color: #ff4da6;
     background-color: black;
 }
