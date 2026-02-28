@@ -170,7 +170,7 @@ nav{
     align-items: flex-start;
     max-width: 900px; 
     margin: 0 auto;
-
+}
 .contenido-etapa.reverse{
     flex-direction: row-reverse;
 }
@@ -192,7 +192,7 @@ nav{
     border-radius: 10px;
     aspect-ratio: 1 / 1;  
     display: block;
-
+}
 .img-small{
     width: 70%;
 }
