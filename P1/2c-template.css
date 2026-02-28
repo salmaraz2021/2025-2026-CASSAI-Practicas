@@ -277,10 +277,12 @@ a{
 
     .contenido-etapa{
         flex-direction: column;
+        text-align: center;
     }
 
     .contenido-etapa.reverse {
         flex-direction: column;
+        text-align: center
     }
 
     .projects-container {
