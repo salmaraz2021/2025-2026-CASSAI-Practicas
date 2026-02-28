@@ -171,6 +171,20 @@ nav{
     max-width: 900px; 
     margin: 0 auto;
 }
+.texto{
+    flex: 1;
+}
+
+.texto h2{
+    margin: 0 0 10px 0;
+    color: #ff4da6;
+    font-size: 2.2rem;
+}
+
+.texto p{
+    margin: 0;
+    text-align: justify;
+}
 .contenido-etapa.reverse{
     flex-direction: row-reverse;
 }
