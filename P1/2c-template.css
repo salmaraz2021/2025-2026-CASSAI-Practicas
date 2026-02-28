@@ -155,6 +155,8 @@ nav{
     background: white;
     border-radius: 10px;
     box-shadow: 0 4px 10px lightgray;
+    width: fit-content;        /* 👈 clave */
+    max-width: 1000px;
 }
 
 .etapa h2{
@@ -168,8 +170,6 @@ nav{
     gap: 20px;
     flex-wrap: wrap;
     align-items: flex-start;
-    max-width: 900px; 
-    margin: 0 auto;
 }
 .texto{
     flex: 1;
