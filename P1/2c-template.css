@@ -2,13 +2,13 @@
 *{
     box-sizing: border-box;
 }
- /*para el fondo*/
+ /*FONDO*/
 body{
-    font-family: Arial;
-    background-color: lightgray;
-    color: black;
-    line-height: 1.6;
-    font-size: 1rem;
+    font-family: Arial; /*tipo de letra*/
+    background-color: lightgray; /*color del fondo*/
+    color: black; /*color del texto*/
+    line-height: 1.6; /*espacio entre lineas*/
+    font-size: 1rem; /*tamaño de la letra*/
 }
 html, body{
     height: 100%;
@@ -18,21 +18,20 @@ html, body{
 /*para la barra del navegador*/
 nav{
     background-color: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 0;
+    display: flex; /*modo flexible*/
+    justify-content: center; /*centra horizontalmente*/
+    align-items: center; /*centra verticalmente*/
+    padding: 10px 0; /*espacio arriba y abajo*/
 }
 
 .menu{
-    display: flex; /*elementos en horizontal*/
-    justify-content: center; /*para que este en el medio*/
-    gap: 20px
+    display: flex; /*elementos en fila*/
+    justify-content: center; 
+    gap: 20px /*espacio entre ellos*/
 }
 
-/*para separar el menu*/
 .menu li{
-    list-style: none;
+    list-style: none; /*quita los puntos de la lista*/
     margin: 0 20px;
 }
 
@@ -65,17 +64,13 @@ nav{
 }
 
 .izquierda {
-    max-width: 30%;
-    flex: 1;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px lightgrey;
+    max-width: 30%; /*la columna ocupa un 30% de la pantalla*/
 }
 .derecha{
-    max-width: 70%;
+    max-width: 70%; /*la columna ocupa un 30% de la pantalla*/
 }
 .fila{
-    display: flex;
+    display: flex;  /*divide las columnas*/
     max-width: 1100px;
     margin: 30px auto;
     gap: 30px;
@@ -91,10 +86,10 @@ nav{
 }
 
 #imghtml {
-    border-radius: 30%;
+    border-radius: 30%; /*bordes redondeados*/
     max-width: 170px; 
-    width: 120%;
-    height: auto;
+    width: 120%; /*zoom*/
+    height: auto; /*mantiene proporciones*/
     display: block;
     margin: 0 auto 20px auto; 
 }
@@ -150,12 +145,11 @@ nav{
 
 /*PARA EL ABOUT*/
 .etapa{
-    margin: 20px auto;
+    margin: 20px auto; /*centrada*/
     padding: 20px;
     background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px lightgray;
-    width: fit-content;        /* 👈 clave */
+    border-radius: 10px; /*redondeaar bordes*/
+    width: fit-content; /*se adapta al contenido*/
     max-width: 1000px;
 }
 
@@ -186,7 +180,7 @@ nav{
     text-align: justify;
 }
 .contenido-etapa.reverse{
-    flex-direction: row-reverse;
+    flex-direction: row-reverse; /*invertir*/
 }
 
 .contenido-etapa p{
@@ -202,13 +196,10 @@ nav{
 .contenido-etapa img{
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /*recortar sin deformar*/
     border-radius: 10px;
-    aspect-ratio: 1 / 1;  
+    aspect-ratio: 1 / 1; /*cuadrada*/  
     display: block;
-}
-.img-small{
-    width: 70%;
 }
 
 /*PARA PROYECTOS*/
@@ -228,9 +219,9 @@ nav{
     width: 100%;
     max-width: 300px;
     border-radius: 10px;
-    transition: transform 0.3s;
+    transition: transform 0.2s;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /*elementos en columna*/
 }
 
 .card img {
@@ -274,12 +265,12 @@ a{
     color: #ff4da6;
 }
 
-/* PARA QUE SEA RESPONSIVE*/
+/* PARA QUE SEA RESPONSIVE*/ /*para el movil*/
 @media (max-width: 768px) {
     .fila,
     .about-container,
     .projects-container{
-        flex-direction: column;
+        flex-direction: column; /* todo el columna*/
         height: auto;
         overflow: visible;
     }
