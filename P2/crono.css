@@ -1,0 +1,73 @@
+body{
+font-family: Arial;
+background:#f0f0f0;
+display:flex;
+justify-content:center;
+margin-top:50px;
+}
+
+/* Recuadro grande */
+.contenedor{
+background:white;
+border:3px solid black;
+padding:30px;
+width:320px;
+text-align:center;
+border-radius:10px;
+}
+
+/* Recuadro pequeño del titulo */
+.titulo{
+background:#dfe6e9;
+border:2px solid black;
+padding:10px;
+margin-bottom:20px;
+border-radius:5px;
+}
+
+/* clave secreta */
+#clave{
+font-size:35px;
+margin-bottom:20px;
+}
+
+.digito{
+border:2px solid black;
+padding:10px;
+margin:5px;
+width:40px;
+display:inline-block;
+}
+
+.acierto{
+background:lightgreen;
+}
+
+/* teclado calculadora */
+.teclado{
+display:grid;
+grid-template-columns:repeat(3, 70px);
+gap:10px;
+justify-content:center;
+margin-top:20px;
+}
+
+.teclado button{
+height:60px;
+font-size:20px;
+border-radius:5px;
+}
+
+.usado{
+background:gray;
+}
+
+/* botones control */
+.controles{
+margin-top:20px;
+}
+
+.controles button{
+margin:5px;
+padding:8px 15px;
+}

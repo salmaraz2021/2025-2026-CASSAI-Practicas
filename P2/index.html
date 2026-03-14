@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Adivina la clave</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <div class="titulo">
+        <h2>Adivina la clave</h2>
+    </div>
+
+    <div id="clave">
+        <span class="digito">*</span>
+        <span class="digito">*</span>
+        <span class="digito">*</span>
+        <span class="digito">*</span>
+    </div>
+
+    <p>Intentos restantes: <span id="intentos">7</span></p>
+    <p>Tiempo: <span id="tiempo">0</span> s</p>
+
+    <div id="numeros" class="teclado"></div>
+
+    <div class="controles">
+        <button onclick="start()">Start</button>
+        <button onclick="stop()">Stop</button>
+        <button onclick="reset()">Reset</button>
+    </div>
+
+    <div id="mensaje"></div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
