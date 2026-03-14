@@ -1,62 +1,57 @@
-<!DOCTYPE html>
-<html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BOOM</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="crono.css">
 </head>
 
 <body>
-
-<h1>BOOM</h1>
+<h1>BOOOOM!!</h1>
 
 <div class="game">
+    <div class="panel">
 
-<div class="panel">
+        <div class="clave">
+            <span class="digit" id="d1">*</span>
+            <span class="digit" id="d2">*</span>
+            <span class="digit" id="d3">*</span>
+            <span class="digit" id="d4">*</span>
+        </div>
 
-<div class="clave">
-<span class="digit">*</span>
-<span class="digit">*</span>
-<span class="digit">*</span>
-<span class="digit">*</span>
-</div>
+        <div class="crono" id="crono">00:00:00</div>
+        <p>
+            Intentos restantes: <span id="intentos">7</span> <!--va a ir restanto-->
+        </p>
+        <p class="mensaje">
+            Pulsa Start o un número para comenzar.
+        </p>
 
-<div class="crono">0:00:00</div>
+    </div>
 
-<p>Intentos restantes: <span id="intentos">7</span></p>
+    <div class="teclado">
 
-<p class="mensaje">
-Nueva partida preparada. Pulsa Start o un número para comenzar.
-</p>
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <div></div> <!--para dejar espacios-->
+        <button>0</button>
+        <div></div>
 
-</div>
+        <button class="control">Start</button>
+        <button class="control">Stop</button>
+        <button class="control">Reset</button>
 
-
-<div class="teclado">
-
-<button>7</button>
-<button>8</button>
-<button>9</button>
-
-<button>4</button>
-<button>5</button>
-<button>6</button>
-
-<button>1</button>
-<button>2</button>
-<button>3</button>
-
-<div></div>
-<button>0</button>
-<div></div>
-
-<button class="control">Start</button>
-<button class="control">Stop</button>
-<button class="control">Reset</button>
-
-</div>
+    </div>
 
 </div>
 
 </body>
 </html>
+<script src="crono.js"></script>
+<script src="script.js"></script>

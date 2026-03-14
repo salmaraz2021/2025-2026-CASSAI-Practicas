@@ -1,102 +1,110 @@
 body{
-
 background:black;
-color:#00ff00;
+color:lightpink;
 font-family: "Courier New", monospace;
 text-align:center;
-
+margin:0;
+padding: 10px;
 }
 
 h1{
-
 letter-spacing:10px;
-border-top:2px solid #00ff00;
-border-bottom:2px solid #00ff00;
 padding:10px;
-
+margin-bottom: 20px;
 }
 
 .game{
-
-width:420px;
+width:90%;
+max-width: 420px;
 margin:auto;
-border:3px solid #00ff00;
+border:3px solid #ff4da6;
 padding:15px;
-
+box-sizing: border-box;
 }
 
 .panel{
-
-border:2px solid #00ff00;
+border:2px solid #ff4da6;
 padding:20px;
 margin-bottom:20px;
-
 }
 
 .clave{
-
 display:flex;
 justify-content:center;
 gap:10px;
 margin-bottom:15px;
-
+flex-wrap: wrap;
 }
 
 .digit{
-
-border:2px solid #00ff00;
+border:2px solid #ff4da6;
 width:60px;
 height:50px;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:25px;
-color:red;
-
+font-size:30px;
+color: yellow;
 }
 
 .crono{
-
 font-size:30px;
 margin-bottom:10px;
-
 }
 
 .mensaje{
-
-color:#7CFF7C;
-
+color:lightpink;
+font-size: 14px;
 }
 
 .teclado{
-
 display:grid;
 grid-template-columns:repeat(3,1fr);
 gap:10px;
-border:2px solid #00ff00;
+border:2px solid #ff4da6;
 padding:10px;
-
 }
 
 button{
-
 background:black;
-border:2px solid #00ff00;
-color:#00ff00;
+border:2px solid #ff4da6;
+color:lightpink;
 font-size:20px;
 height:55px;
 cursor:pointer;
-
+width: 100%;
 }
 
 button:hover{
-
-background:#002200;
-
+background:black;
+color: white
 }
 
 .control{
+color: yellow;
+}
 
-color:red;
+/*RESPONSIVE*/
+@media (max-width: 768px)
+
+h1{
+font-size:28px;
+letter-spacing:6px;
+}
+
+.digit{
+width:50px;
+height:45px;
+font-size:22px;
+}
+
+button{
+height:50px;
+font-size:18px;
+}
+
+.crono{
+font-size:24px;
+}
 
 }
