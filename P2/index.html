@@ -2,40 +2,46 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Adivina la clave</title>
+<title>Juego Clave Secreta</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="contenedor">
+<h1>Adivina la clave secreta</h1>
 
-    <div class="titulo">
-        <h2>Adivina la clave</h2>
-    </div>
-
-    <div id="clave">
-        <span class="digito">*</span>
-        <span class="digito">*</span>
-        <span class="digito">*</span>
-        <span class="digito">*</span>
-    </div>
-
-    <p>Intentos restantes: <span id="intentos">7</span></p>
-    <p>Tiempo: <span id="tiempo">0</span> s</p>
-
-    <div id="numeros" class="teclado"></div>
-
-    <div class="controles">
-        <button onclick="start()">Start</button>
-        <button onclick="stop()">Stop</button>
-        <button onclick="reset()">Reset</button>
-    </div>
-
-    <div id="mensaje"></div>
-
+<!-- CLAVE SECRETA -->
+<div id="clave">
+  <span class="digit" id="d0">*</span>
+  <span class="digit" id="d1">*</span>
+  <span class="digit" id="d2">*</span>
+  <span class="digit" id="d3">*</span>
 </div>
 
+<!-- CRONOMETRO -->
+<div>
+  Tiempo: <span id="crono">00:00</span>
+</div>
+
+<!-- INTENTOS -->
+<div>
+  Intentos restantes: <span id="intentos">7</span>
+</div>
+
+<!-- BOTONES NUMERICOS -->
+<div id="numeros"></div>
+
+<!-- CONTROLES -->
+<div class="controles">
+  <button id="start">Start</button>
+  <button id="stop">Stop</button>
+  <button id="reset">Reset</button>
+</div>
+
+<!-- MENSAJES -->
+<div id="mensaje"></div>
+
+<script src="crono.js"></script>
 <script src="script.js"></script>
 
 </body>
