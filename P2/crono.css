@@ -1,40 +1,102 @@
 body{
-font-family: Arial;
-text-align: center;
+
+background:black;
+color:#00ff00;
+font-family: "Courier New", monospace;
+text-align:center;
+
 }
 
-#clave{
-font-size:40px;
-margin:20px;
+h1{
+
+letter-spacing:10px;
+border-top:2px solid #00ff00;
+border-bottom:2px solid #00ff00;
+padding:10px;
+
+}
+
+.game{
+
+width:420px;
+margin:auto;
+border:3px solid #00ff00;
+padding:15px;
+
+}
+
+.panel{
+
+border:2px solid #00ff00;
+padding:20px;
+margin-bottom:20px;
+
+}
+
+.clave{
+
+display:flex;
+justify-content:center;
+gap:10px;
+margin-bottom:15px;
+
 }
 
 .digit{
-padding:10px;
-margin:5px;
-border:2px solid black;
-background-color:lightgray;
-width:40px;
-display:inline-block;
-}
 
-.acierto{
-background-color:lightgreen;
-}
-
-#numeros button{
-width:50px;
+border:2px solid #00ff00;
+width:60px;
 height:50px;
-margin:5px;
-font-size:20px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:25px;
+color:red;
+
 }
 
-.usado{
-background-color:gray;
-color:white;
+.crono{
+
+font-size:30px;
+margin-bottom:10px;
+
 }
 
-#mensaje{
-margin-top:20px;
+.mensaje{
+
+color:#7CFF7C;
+
+}
+
+.teclado{
+
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+border:2px solid #00ff00;
+padding:10px;
+
+}
+
+button{
+
+background:black;
+border:2px solid #00ff00;
+color:#00ff00;
 font-size:20px;
-font-weight:bold;
+height:55px;
+cursor:pointer;
+
+}
+
+button:hover{
+
+background:#002200;
+
+}
+
+.control{
+
+color:red;
+
 }
