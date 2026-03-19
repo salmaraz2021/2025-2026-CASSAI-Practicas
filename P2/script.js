@@ -37,7 +37,22 @@ function desactivarTodo() {
     botones.forEach(b => b.disabled = true);
 }
 
+// 🎯 Mostrar mensaje animado
+function mostrarMensaje(texto) {
+    mensaje.textContent = texto;
+    mensaje.classList.add("activo");
+}
+
+// 🔁 RESET COMPLETO
 function resetJuego() {
+
+    // ❌ quitar animación instantáneamente
+    mensaje.classList.add("sin-animacion");
+    mensaje.classList.remove("activo");
+    mensaje.offsetHeight; // forzar reflow
+    mensaje.classList.remove("sin-animacion");
+
+    mensaje.textContent = "Pulsa Start o un número para comenzar.";
 
     d1.textContent = "*";
     d2.textContent = "*";
@@ -52,8 +67,8 @@ function resetJuego() {
     juegoActivo = true;
 
     actualizarIntentos();
-    mensaje.textContent = "Pulsa Start o un número para comenzar.";
 
+    // 🔓 reactivar botones
     botones.forEach(boton => {
         boton.disabled = false;
     });
@@ -98,17 +113,17 @@ botones.forEach(boton => {
             actualizarIntentos();
         }
 
-        // GANAR
+        // 🏆 GANAR
         if (aciertos.every(a => a)) {
-            mensaje.textContent = "YOU WIN!";
+            mostrarMensaje("💥 YOU WIN!");
             crono.stop();
             juegoActivo = false;
             desactivarTodo();
         }
 
-        // PERDER
+        // 💣 PERDER
         if (intentos <= 0) {
-            mensaje.textContent = "YOU LOSE!";
+            mostrarMensaje("💣 YOU LOSE!");
             crono.stop();
             juegoActivo = false;
             desactivarTodo();
@@ -136,4 +151,3 @@ controles.forEach(btn => {
         }
     });
 });
-
