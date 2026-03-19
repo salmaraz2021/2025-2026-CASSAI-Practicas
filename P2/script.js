@@ -1,170 +1,139 @@
-let clave = []
-let intentos = 7
-let usados = []
-let cronometroIniciado = false
+// -------------------- ELEMENTOS --------------------
+const d1 = document.getElementById("d1");
+const d2 = document.getElementById("d2");
+const d3 = document.getElementById("d3");
+const d4 = document.getElementById("d4");
 
-const intentosSpan = document.getElementById("intentos")
-const mensaje = document.getElementById("mensaje")
+const intentosSpan = document.getElementById("intentos");
+const mensaje = document.querySelector(".mensaje");
 
-crearBotones()
-generarClave()
+const botones = document.querySelectorAll(".teclado button:not(.control)");
+const controles = document.querySelectorAll(".control");
 
-function crearBotones(){
+const display = document.getElementById("crono");
 
-const contenedor = document.getElementById("numeros")
+// -------------------- CRONO --------------------
+const crono = new Crono(display);
 
-for(let i=0;i<=9;i++){
-
-let btn = document.createElement("button")
-btn.textContent = i
-btn.id = "num"+i
-
-btn.addEventListener("click", ()=>pulsarNumero(i,btn))
-
-contenedor.appendChild(btn)
-
+// -------------------- CLAVE --------------------
+function generarClave() {
+    return Array.from({ length: 4 }, () => Math.floor(Math.random() * 10));
 }
 
+let clave = generarClave();
+console.log("Clave:", clave);
+
+// -------------------- ESTADO --------------------
+let aciertos = [false, false, false, false];
+let intentos = 7;
+let juegoActivo = true;
+
+// -------------------- FUNCIONES --------------------
+function actualizarIntentos() {
+    intentosSpan.textContent = intentos;
 }
 
-function generarClave(){
-
-clave = []
-
-while(clave.length < 4){
-
-let n = Math.floor(Math.random()*10)
-
-if(!clave.includes(n)){
-clave.push(n)
+function desactivarTodo() {
+    botones.forEach(b => b.disabled = true);
 }
 
+function resetJuego() {
+
+    d1.textContent = "*";
+    d2.textContent = "*";
+    d3.textContent = "*";
+    d4.textContent = "*";
+
+    clave = generarClave();
+    console.log("Nueva clave:", clave);
+
+    aciertos = [false, false, false, false];
+    intentos = 7;
+    juegoActivo = true;
+
+    actualizarIntentos();
+    mensaje.textContent = "Pulsa Start o un número para comenzar.";
+
+    botones.forEach(boton => {
+        boton.disabled = false;
+    });
 }
 
-}
+// -------------------- BOTONES --------------------
+botones.forEach(boton => {
+    boton.addEventListener("click", () => {
 
-function pulsarNumero(num, boton){
+        if (!juegoActivo) return;
 
-if(!cronometroIniciado){
-iniciarCrono()
-cronometroIniciado = true
-}
+        boton.disabled = true;
 
-if(usados.includes(num)) return
+        const valor = boton.textContent;
+        crono.start();
 
-usados.push(num)
+        let acertado = false;
 
-boton.disabled = true
-boton.classList.add("usado")
+        if (valor == clave[0] && !aciertos[0]) {
+            d1.textContent = valor;
+            aciertos[0] = true;
+            acertado = true;
+        }
+        else if (valor == clave[1] && !aciertos[1]) {
+            d2.textContent = valor;
+            aciertos[1] = true;
+            acertado = true;
+        }
+        else if (valor == clave[2] && !aciertos[2]) {
+            d3.textContent = valor;
+            aciertos[2] = true;
+            acertado = true;
+        }
+        else if (valor == clave[3] && !aciertos[3]) {
+            d4.textContent = valor;
+            aciertos[3] = true;
+            acertado = true;
+        }
 
-intentos--
-intentosSpan.textContent = intentos
+        if (!acertado) {
+            intentos--;
+            actualizarIntentos();
+        }
 
-comprobarNumero(num)
+        // GANAR
+        if (aciertos.every(a => a)) {
+            mensaje.textContent = "YOU WIN!";
+            crono.stop();
+            juegoActivo = false;
+            desactivarTodo();
+        }
 
-if(intentos === 0){
-perder()
-}
+        // PERDER
+        if (intentos <= 0) {
+            mensaje.textContent = "YOU LOSE!";
+            crono.stop();
+            juegoActivo = false;
+            desactivarTodo();
+        }
+    });
+});
 
-}
+// -------------------- CONTROLES --------------------
+controles.forEach(btn => {
+    btn.addEventListener("click", () => {
 
-function comprobarNumero(num){
+        const accion = btn.textContent;
 
-for(let i=0;i<clave.length;i++){
+        if (accion === "Start") {
+            crono.start();
+        }
 
-if(clave[i] === num){
+        if (accion === "Stop") {
+            crono.stop();
+        }
 
-let d = document.getElementById("d"+i)
-d.textContent = num
-d.classList.add("acierto")
+        if (accion === "Reset") {
+            crono.reset();
+            resetJuego();
+        }
+    });
+});
 
-}
-
-}
-
-if(comprobarVictoria()){
-ganar()
-}
-
-}
-
-function comprobarVictoria(){
-
-for(let i=0;i<4;i++){
-
-let d = document.getElementById("d"+i)
-
-if(d.textContent === "*"){
-return false
-}
-
-}
-
-return true
-
-}
-
-function ganar(){
-
-pararCrono()
-
-mensaje.innerHTML =
-"¡Has ganado!<br>" +
-"Intentos usados: "+(7-intentos)+"<br>"+
-"Intentos restantes: "+intentos
-
-desactivarBotones()
-
-}
-
-function perder(){
-
-pararCrono()
-
-mensaje.innerHTML =
-"Has perdido.<br>" +
-"Clave secreta: "+clave.join("")
-
-desactivarBotones()
-
-}
-
-function desactivarBotones(){
-
-for(let i=0;i<=9;i++){
-document.getElementById("num"+i).disabled = true
-}
-
-}
-
-document.getElementById("reset").addEventListener("click", resetJuego)
-
-function resetJuego(){
-
-pararCrono()
-reiniciarCrono()
-
-clave = []
-usados = []
-intentos = 7
-cronometroIniciado = false
-
-mensaje.textContent = ""
-
-intentosSpan.textContent = intentos
-
-generarClave()
-
-for(let i=0;i<4;i++){
-let d = document.getElementById("d"+i)
-d.textContent = "*"
-d.classList.remove("acierto")
-}
-
-for(let i=0;i<=9;i++){
-let btn = document.getElementById("num"+i)
-btn.disabled = false
-btn.classList.remove("usado")
-}
-
-}
