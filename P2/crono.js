@@ -1,9 +1,6 @@
-//-- Clase cronómetro
 class Crono {
-
     constructor(display) {
         this.display = display;
-
         this.cent = 0;
         this.seg = 0;
         this.min = 0;
@@ -12,18 +9,15 @@ class Crono {
 
     tic() {
         this.cent++;
-
         if (this.cent === 100) {
             this.cent = 0;
             this.seg++;
         }
-
         if (this.seg === 60) {
             this.seg = 0;
             this.min++;
         }
 
-        // Formato 00:00:00
         const c = this.cent.toString().padStart(2, '0');
         const s = this.seg.toString().padStart(2, '0');
         const m = this.min.toString().padStart(2, '0');

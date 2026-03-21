@@ -1,57 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BOOM</title>
-<link rel="stylesheet" href="crono.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOOM</title>
+    <link rel="stylesheet" href="crono.css">
 </head>
-
 <body>
-<h1>BOOOOM!!</h1>
+    <h1>BOOOOM!!</h1>
 
-<div class="game">
-    <div class="panel">
-
-        <div class="clave">
-            <span class="digit" id="d1">*</span>
-            <span class="digit" id="d2">*</span>
-            <span class="digit" id="d3">*</span>
-            <span class="digit" id="d4">*</span>
+    <div class="game">
+        <div id="pancarta" class="pancarta-hidden">
+            <div class="pancarta-contenido">
+                <h2 id="pancarta-texto"></h2>
+                <button id="btnPancartaReset">VOLVER A JUGAR</button>
+            </div>
         </div>
 
-        <div class="crono" id="crono">00:00:00</div>
-        <p>
-            Intentos restantes: <span id="intentos">7</span> <!--va a ir restanto-->
-        </p>
-        <p class="mensaje">
-            Pulsa Start o un número para comenzar.
-        </p>
+        <div class="panel">
+            <div class="clave">
+                <span class="digit" id="d1">*</span>
+                <span class="digit" id="d2">*</span>
+                <span class="digit" id="d3">*</span>
+                <span class="digit" id="d4">*</span>
+            </div>
 
+            <div class="crono" id="crono">00:00:00</div>
+            <p>Intentos restantes: <span id="intentos">7</span></p>
+            <p>Pulsa Start o un número para comenzar.</p>
+        </div>
+
+        <div class="teclado">
+            <button class="num">7</button>
+            <button class="num">8</button>
+            <button class="num">9</button>
+            <button class="num">4</button>
+            <button class="num">5</button>
+            <button class="num">6</button>
+            <button class="num">1</button>
+            <button class="num">2</button>
+            <button class="num">3</button>
+            <div></div>
+            <button class="num">0</button>
+            <div></div>
+
+            <button class="control" id="btnStart">Start</button>
+            <button class="control" id="btnStop">Stop</button>
+            <button class="control" id="btnReset">Reset</button>
+        </div>
     </div>
 
-    <div class="teclado">
-
-        <button>7</button>
-        <button>8</button>
-        <button>9</button>
-        <button>4</button>
-        <button>5</button>
-        <button>6</button>
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <div></div> <!--para dejar espacios-->
-        <button>0</button>
-        <div></div>
-
-        <button class="control">Start</button>
-        <button class="control">Stop</button>
-        <button class="control">Reset</button>
-
-    </div>
-
-</div>
-
+    <script src="crono.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
-<script src="crono.js"></script>
-<script src="script.js"></script>
