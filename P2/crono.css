@@ -1,115 +1,127 @@
 body {
-     background: black; 
-     color: lightpink; 
-     font-family: "Courier New", monospace; 
-     text-align: center; 
-     padding: 10px; 
-    }
-
-h1 { 
-    letter-spacing: 10px; 
-    margin-bottom: 20px; 
-}
-
-.game { 
-    width: 90%; 
-    max-width: 420px; 
-    margin: auto; 
-    border: 3px solid #ff4da6; 
-    padding: 15px; 
-    position: relative; 
-}
-
-.panel { 
-    border: 2px solid #ff4da6; 
-    padding: 20px; 
-    margin-bottom: 20px; 
-}
-
-.clave { 
-    display: flex; 
-    justify-content: center; 
-    gap: 10px; 
-    margin-bottom: 15px; 
-}
-
-.digit { 
-    border: 2px solid #ff4da6; 
-    width: 60px; height: 50px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    font-size: 30px; 
-    color: yellow; 
-}
-
-.crono { 
-    font-size: 30px; 
-    margin-bottom: 10px; 
-}
-
-.mensaje { 
-    color: yellow; 
-    font-size: 14px; 
-}
-
-.teclado { 
-    display: grid; 
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 10px; 
-    border: 2px solid #ff4da6; 
-    padding: 10px; 
-}
-button { 
-    background: black; 
-    border: 2px solid #ff4da6; 
-    color: lightpink; 
-    font-size: 20px; 
-    height: 55px; 
-    cursor: pointer; 
-}
-
-button:hover { 
-    background: lightpink;
-    color: white 
-}
-button:disabled { 
-    opacity: 0.3; 
-    cursor: not-allowed; 
-}
-
-.control { 
-    color: yellow; 
-}
-
-.acertado { 
-    color: #ff4da6; 
-    font-weight: bold; 
-}
-
-/* ESTILOS DE LA PANCARTA */
-#pancarta {
-    position: absolute;
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%;
-    background: rgba(0,0,0,0.85);
-    display: flex; 
-    justify-content: center; 
+    background: black;
+    color: lightpink;
+    font-family: "Courier New", monospace;
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+    /* Aseguramos que el contenido ocupe el centro visual */
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    z-index: 100;
-    transition: all 0.4s ease;
+    min-height: 100vh;
 }
 
-.pancarta-hidden { 
-    visibility: hidden; 
-    opacity: 0; 
-    pointer-events: none; 
+h1 {
+    letter-spacing: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-.pancarta-hidden .pancarta-contenido { 
-    transform: scale(0); 
+.game {
+    width: 90%;
+    max-width: 420px;
+    /* Margin auto ayuda a centrar si no hay flex en el body */
+    margin: 0 auto; 
+    border: 3px solid #ff4da6;
+    padding: 15px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.panel {
+    border: 2px solid #ff4da6;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.clave {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.digit {
+    border: 2px solid #ff4da6;
+    width: 60px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: yellow;
+}
+
+.crono {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.mensaje {
+    color: yellow;
+    font-size: 14px;
+}
+
+.teclado {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    border: 2px solid #ff4da6;
+    padding: 10px;
+}
+
+button {
+    background: black;
+    border: 2px solid #ff4da6;
+    color: lightpink;
+    font-size: 20px;
+    height: 55px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #ff4da6;
+    color: white;
+}
+
+button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.control {
+    color: yellow;
+}
+
+.acertado {
+    color: #ff4da6;
+    font-weight: bold;
+}
+
+/* --- ESTILOS DE LA PANCARTA (OVERLAY TOTAL) --- */
+#pancarta {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85); /* Oscurece pero deja ver el fondo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.pancarta-hidden {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.pancarta-hidden .pancarta-contenido {
+    transform: scale(0);
 }
 
 .pancarta-contenido {
@@ -118,16 +130,29 @@ button:disabled {
     padding: 30px;
     transform: scale(1);
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 90%;
+    box-sizing: border-box;
+    text-align: center;
 }
 
-.pancarta-contenido h2 { 
-    color: yellow; 
-    margin-bottom: 20px; 
-    font-size: 28px; 
+.pancarta-contenido h2 {
+    color: yellow;
+    margin-bottom: 20px;
+    font-size: 32px;
+    line-height: 1.4;
 }
 
-.pancarta-contenido button { 
-    height: auto; 
-    padding: 10px 20px; 
-    font-size: 16px; 
+.sub-texto {
+    display: block;
+    font-size: 20px;
+    color: lightpink;
+    margin-top: 10px;
+    font-weight: normal;
+}
+
+.pancarta-contenido button {
+    height: auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-top: 10px;
 }

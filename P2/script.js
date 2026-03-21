@@ -5,7 +5,7 @@ const d3 = document.getElementById("d3")
 const d4 = document.getElementById("d4");
 
 const intentosSpan = document.getElementById("intentos");
-const msgTexto = document.querySelector(".mensaje"); // Ahora sí lo encontrará
+const msgTexto = document.querySelector(".mensaje"); 
 const botonesNum = document.querySelectorAll(".num");
 const display = document.getElementById("crono");
 const pancarta = document.getElementById("pancarta");
@@ -20,34 +20,58 @@ const btnPancartaReset = document.getElementById("btnPancartaReset");
 const crono = new Crono(display);
 let clave, aciertos, intentos, juegoActivo;
 
+// NUEVA FUNCIÓN: Genera 4 números ÚNICOS
+function generarClave() {
+    let numeros = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    for (let i = numeros.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [numeros[i], numeros[j]] = [numeros[j], numeros[i]];
+    }
+    return numeros.slice(0, 4);
+}
+
+// ... (mantenemos los elementos de arriba igual) ...
+
 function resetJuegoTotal() {
-    // 1. Ocultar pancarta
     pancarta.classList.add("pancarta-hidden");
-    
-    // 2. Reset Crono
     crono.reset();
     
-    // 3. Reset Lógica y NUEVA CLAVE
-    clave = Array.from({ length: 4 }, () => Math.floor(Math.random() * 10));
+    clave = generarClave(); 
     aciertos = [false, false, false, false];
     intentos = 7;
     juegoActivo = true;
     
-    // 4. Reset Visual
-    if(msgTexto) msgTexto.textContent = "Pulsa Start o un número para comenzar.";
+    // Reset Visual
     intentosSpan.textContent = intentos;
+    if(msgTexto) msgTexto.textContent = "Pulsa Start o un número para comenzar.";
     [d1, d2, d3, d4].forEach(d => { 
         d.textContent = "*"; 
         d.classList.remove("acertado"); 
     });
     
-    // 5. Habilitar botones
+    // RE-ACTIVAR TODOS LOS BOTONES (Incluido el Reset amarillo)
     botonesNum.forEach(b => b.disabled = false);
     btnStart.disabled = false;
     btnStop.disabled = false;
+    btnReset.disabled = false; // <--- VOLVEMOS A ACTIVAR EL RESET
     
-    console.log("Juego reseteado. Nueva clave:", clave.join(""));
+    console.log("Nueva clave única:", clave.join(""));
 }
+
+function finalizarJuego(linea1, linea2) {
+    juegoActivo = false;
+    crono.stop();
+    pancartaTexto.innerHTML = `${linea1}<br><span class="sub-texto">${linea2}</span>`;
+    pancarta.classList.remove("pancarta-hidden");
+    
+    // BLOQUEO TOTAL
+    btnStart.disabled = true;
+    btnStop.disabled = true;
+    btnReset.disabled = true; // <--- BLOQUEAMOS EL RESET AMARILLO
+    botonesNum.forEach(b => b.disabled = true);
+}
+
+// ... (El resto de la lógica de botones y eventos se mantiene igual) ...
 
 // --- LÓGICA DE JUEGO ---
 botonesNum.forEach(boton => {
@@ -68,32 +92,20 @@ botonesNum.forEach(boton => {
         intentos--;
         intentosSpan.textContent = intentos;
 
+        // Comprobar finales
         if (aciertos.every(a => a)) {
-            finalizarJuego(`¡YOU WIN! \n Lo has conseguido en: ${display.textContent}`);
+            finalizarJuego("¡YOU WIN!", `Tiempo: ${display.textContent}`);
         } else if (intentos <= 0) {
-            finalizarJuego(`YOU LOSE! \n La clave secreta era: ${clave.join("")}`);
+            finalizarJuego("YOU LOSE!", `La clave era: ${clave.join("")}`);
         }
     });
 });
 
-function finalizarJuego(texto) {
-    juegoActivo = false;
-    crono.stop();
-    pancartaTexto.textContent = texto;
-    pancarta.classList.remove("pancarta-hidden");
-    // Bloqueo de botones
-    btnStart.disabled = true;
-    btnStop.disabled = true;
-    botonesNum.forEach(b => b.disabled = true);
-}
-
 // --- CONEXIÓN DE BOTONES ---
 btnStart.addEventListener("click", () => { if(juegoActivo) crono.start(); });
 btnStop.addEventListener("click", () => crono.stop());
-
-// Ambos botones ejecutan el reset total
 btnReset.addEventListener("click", resetJuegoTotal); 
 btnPancartaReset.addEventListener("click", resetJuegoTotal);
 
-// Inicializar por primera vez
+// Arrancar por primera vez
 resetJuegoTotal();
