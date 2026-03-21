@@ -1,4 +1,5 @@
 /* jshint esversion: 6 */
+/* exported Crono */
 
 class Crono {
     constructor(display) {
