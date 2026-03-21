@@ -156,3 +156,53 @@ button:disabled {
     font-size: 16px;
     margin-top: 10px;
 }
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 24px;
+        letter-spacing: 5px;
+    }
+
+    .game {
+        width: 95%; /* Ocupa casi todo el ancho */
+        padding: 10px;
+    }
+
+    .panel {
+        padding: 10px;
+    }
+
+    .digit {
+        width: 45px;  /* Dígitos más pequeños */
+        height: 40px;
+        font-size: 22px;
+    }
+
+    .crono {
+        font-size: 22px;
+    }
+
+    .teclado {
+        gap: 5px; /* Menos espacio entre botones */
+        padding: 5px;
+    }
+
+    button {
+        height: 45px; /* Botones más bajos */
+        font-size: 16px;
+    }
+
+    /* Ajuste de la pancarta para móviles */
+    .pancarta-contenido {
+        padding: 20px;
+        width: 85%;
+    }
+
+    .pancarta-contenido h2 {
+        font-size: 24px;
+    }
+
+    .sub-texto {
+        font-size: 16px;
+    }
+}
