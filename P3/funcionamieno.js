@@ -47,7 +47,7 @@ bgImg.src = "fondo.gif";
 const shootSound = new Audio("P3_sonido.mp3");
 const explosionSound = new Audio("P3_explosion.mp3");
 
-// 🔥 desbloqueo audio navegador
+// 🔥 sonido seguro
 function safePlay(audio) {
   if (!audio) return;
   audio.currentTime = 0;
@@ -100,7 +100,7 @@ function createAliens() {
   alienDirection = 1;
 }
 
-// ================= COLISION =================
+// ================= COLLISION =================
 function collision(a, b) {
   return (
     a.x < b.x + b.width &&
@@ -255,7 +255,6 @@ function endGame(win) {
 
   div.appendChild(title);
   div.appendChild(btn);
-
   document.body.appendChild(div);
 }
 
@@ -304,7 +303,7 @@ function update() {
     }
   }
 
-  // aliens bullets
+  // alien bullets
   alienShoot();
 
   for (let i = alienBullets.length - 1; i >= 0; i--) {
@@ -349,7 +348,6 @@ function draw() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // fondo
   if (bgImg.complete) {
     ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
   }
@@ -374,17 +372,24 @@ function draw() {
     ctx.drawImage(explosionImg, e.x, e.y, 30, 30);
   });
 
-  // HUD
+  // ================= HUD ORIGINAL RESTAURADO =================
   ctx.fillStyle = "white";
   ctx.font = "16px Arial";
 
   ctx.fillText("Puntuación: " + score, 10, 20);
 
-  ctx.fillText("Vidas: " + player.lives, 10, 45);
+  ctx.fillText("Vidas:", 10, 45);
+
+  for (let i = 0; i < player.lives; i++) {
+    ctx.drawImage(heartImg, 70 + i * 22, 30, 18, 18);
+  }
 
   ctx.fillText("Energía:", 10, 70);
+
+  ctx.strokeStyle = "white";
   ctx.strokeRect(90, 60, 120, 10);
-  ctx.fillStyle = "cyan";
+
+  ctx.fillStyle = "lime";
   ctx.fillRect(90, 60, (energy / maxEnergy) * 120, 10);
 }
 
