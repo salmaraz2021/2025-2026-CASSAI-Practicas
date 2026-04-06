@@ -1,6 +1,25 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+// ==================== CRONÓMETRO ====================
+const display = document.getElementById("cronometro");
+const crono = new Crono(display);
+crono.start();
+
+// ==================== IMÁGENES ====================
+const playerImg = new Image();
+playerImg.src = "nave.png";
+
+const alienImg = new Image();
+alienImg.src = "ialienigena.jpg";
+
+const explosionImg = new Image();
+explosionImg.src = "explosion.jpeg";
+
+// ==================== SONIDOS ====================
+const shootSound = new Audio("sounds/laser.wav");
+const explosionSound = new Audio("sounds/explosion.wav");
+
 // ==================== PLAYER ====================
 let player = {
   x: canvas.width / 2 - 20,
@@ -30,14 +49,17 @@ let alienBullets = [];
 let energy = 5;
 let maxEnergy = 5;
 
-// Disparo jugador
 function shoot() {
   if (energy > 0) {
     bullets.push({
       x: player.x + player.width / 2 - 2,
       y: player.y
     });
+
     energy--;
+
+    shootSound.currentTime = 0;
+    shootSound.play();
   }
 }
 
@@ -69,7 +91,6 @@ for (let r = 0; r < rows; r++) {
   }
 }
 
-// Movimiento tipo invaders
 let alienDirection = 1;
 let alienSpeed = 1;
 
@@ -86,7 +107,6 @@ function moveAliens() {
 
   if (hitEdge) {
     alienDirection *= -1;
-
     aliens.forEach(a => {
       a.y += 20;
     });
@@ -105,7 +125,10 @@ setInterval(() => {
   }
 }, 1000);
 
-// ==================== COLISION ====================
+// ==================== EXPLOSIONES ====================
+let explosions = [];
+
+// ==================== COLISIÓN ====================
 function collision(a, b) {
   return (
     a.x < b.x + b.width &&
@@ -125,22 +148,31 @@ function update() {
   if (keys["ArrowLeft"]) player.x -= player.speed;
   if (keys["ArrowRight"]) player.x += player.speed;
 
-  // Limites
   player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
 
-  // Movimiento aliens
+  // Velocidad dinámica
   alienSpeed = 1 + (24 - aliens.length) * 0.1;
   moveAliens();
 
-  // Balas jugador
+  // BALAS jugador
   bullets.forEach((b, i) => {
     b.y -= 7;
 
-    // Eliminar si sale pantalla
     if (b.y < 0) bullets.splice(i, 1);
 
     aliens.forEach((a, j) => {
       if (collision(b, a)) {
+
+        // EXPLOSIÓN
+        explosions.push({
+          x: a.x,
+          y: a.y,
+          frame: 0
+        });
+
+        explosionSound.currentTime = 0;
+        explosionSound.play();
+
         aliens.splice(j, 1);
         bullets.splice(i, 1);
         score += 10;
@@ -148,7 +180,7 @@ function update() {
     });
   });
 
-  // Balas enemigas
+  // BALAS enemigas
   alienBullets.forEach((b, i) => {
     b.y += 4;
 
@@ -160,15 +192,25 @@ function update() {
     }
   });
 
+  // ACTUALIZAR EXPLOSIONES
+  explosions.forEach((e, i) => {
+    e.frame++;
+    if (e.frame > 15) {
+      explosions.splice(i, 1);
+    }
+  });
+
   // GAME OVER
   if (player.lives <= 0) {
+    crono.stop();
     alert("💀 GAME OVER");
     location.reload();
   }
 
   // VICTORIA
   if (aliens.length === 0) {
-    alert("🎉 VICTORIA");
+    crono.stop();
+    alert("WIN!!");
     location.reload();
   }
 }
@@ -177,18 +219,15 @@ function update() {
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // efecto glow retro
   ctx.shadowColor = "white";
   ctx.shadowBlur = 5;
 
   // PLAYER
-  ctx.fillStyle = "cyan";
-  ctx.fillRect(player.x, player.y, player.width, player.height);
+  ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
 
   // ALIENS
-  ctx.fillStyle = "#7fffd4";
   aliens.forEach(a => {
-    ctx.fillRect(a.x, a.y, a.width, a.height);
+    ctx.drawImage(alienImg, a.x, a.y, a.width, a.height);
   });
 
   // BALAS jugador
@@ -201,6 +240,11 @@ function draw() {
   ctx.fillStyle = "yellow";
   alienBullets.forEach(b => {
     ctx.fillRect(b.x, b.y, 4, 10);
+  });
+
+  // EXPLOSIONES
+  explosions.forEach(e => {
+    ctx.drawImage(explosionImg, e.x, e.y, 40, 40);
   });
 
   // HUD

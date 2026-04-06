@@ -1,12 +1,7 @@
-body {
-  background: black;
-  color: white;
-  text-align: center;
-}
-
 canvas {
   border: 2px solid white;
-  background: #000;
+  background: radial-gradient(circle, #000 60%, #020024 100%);
+}
 }
 
 body {
@@ -18,4 +13,10 @@ body {
 
 h1 {
   margin-bottom: 10px;
+}
+
+#cronometro {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: cyan;
 }
