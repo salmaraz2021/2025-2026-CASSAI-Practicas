@@ -1,10 +1,5 @@
-canvas {
-  border: 2px solid white;
-  background: radial-gradient(circle, #000 60%, #020024 100%);
-}
-}
-
 body {
+  margin: 0;
   background: black;
   color: white;
   text-align: center;
@@ -12,11 +7,20 @@ body {
 }
 
 h1 {
+  margin: 10px 0;
+}
+
+/* CRONO */
+#cronometro {
+  font-size: 22px;
+  color: white;
   margin-bottom: 10px;
 }
 
-#cronometro {
-  font-size: 22px;
-  margin-bottom: 10px;
-  color: cyan;
+/* CENTRAR CANVAS */
+canvas {
+  display: block;
+  margin: 0 auto;
+  border: 2px solid white;
+  background: black;
 }
