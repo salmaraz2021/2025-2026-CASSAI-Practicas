@@ -40,14 +40,12 @@ heartImg.src = "corazon.webp";
 const explosionImg = new Image();
 explosionImg.src = "explosion.webp";
 
-const bgImg = new Image();
-bgImg.src = "fondo.gif";
+// ❌ IMPORTANTE: ya NO usamos fondo.gif en JS
 
 // ================= SONIDOS =================
 const shootSound = new Audio("P3_sonido.mp3");
 const explosionSound = new Audio("P3_explosion.mp3");
 
-// 🔥 sonido seguro
 function safePlay(audio) {
   if (!audio) return;
   audio.currentTime = 0;
@@ -223,10 +221,6 @@ function endGame(win) {
   const btn = document.createElement("button");
   btn.textContent = "VOLVER A JUGAR";
 
-  btn.style.padding = "10px 20px";
-  btn.style.fontSize = "16px";
-  btn.style.cursor = "pointer";
-
   btn.onclick = () => {
 
     div.remove();
@@ -273,7 +267,6 @@ function update() {
     moveAliens();
   }
 
-  // bullets
   for (let i = bullets.length - 1; i >= 0; i--) {
 
     bullets[i].y -= 7;
@@ -303,7 +296,6 @@ function update() {
     }
   }
 
-  // alien bullets
   alienShoot();
 
   for (let i = alienBullets.length - 1; i >= 0; i--) {
@@ -330,7 +322,6 @@ function update() {
     }
   }
 
-  // explosions
   for (let i = explosions.length - 1; i >= 0; i--) {
     explosions[i].life--;
     if (explosions[i].life <= 0) explosions.splice(i, 1);
@@ -347,10 +338,6 @@ function update() {
 function draw() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  if (bgImg.complete) {
-    ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
-  }
 
   ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
 
@@ -372,7 +359,7 @@ function draw() {
     ctx.drawImage(explosionImg, e.x, e.y, 30, 30);
   });
 
-  // ================= HUD ORIGINAL RESTAURADO =================
+  // ================= HUD ORIGINAL =================
   ctx.fillStyle = "white";
   ctx.font = "16px Arial";
 

@@ -24,3 +24,16 @@ canvas {
   border: 2px solid white;
   background: black;
 }
+
+#gameCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+
+  background-image: url("fondo.gif"); /* 👈 TU GIF LOCAL */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  border: 2px solid white;
+}
