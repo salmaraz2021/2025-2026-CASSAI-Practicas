@@ -67,12 +67,15 @@ function createAliens() {
   const rows = 3;
   const cols = 8;
 
-  // 👾 MÁS SEPARACIÓN
   const spacingX = canvas.width / (cols + 1);
-  const spacingY = 90;
+
+  // 👇 MÁS JUNTOS
+  const spacingY = 60;
 
   const offsetX = spacingX;
-  const offsetY = canvas.height * 0.1;
+
+  // 👇 MÁS ARRIBA (NO TAPAR HUD)
+  const offsetY = 120;
 
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
@@ -141,13 +144,11 @@ function moveAliens() {
   if (hitEdge) {
     alienDirection *= -1;
 
-    // 🐢 BAJAN MÁS LENTO
     for (let i = 0; i < aliens.length; i++) {
       aliens[i].y += 3;
     }
   }
 
-  // GAME OVER
   for (let i = 0; i < aliens.length; i++) {
     if (aliens[i].y + aliens[i].height >= player.y) {
       endGame(false);
@@ -178,17 +179,67 @@ function collision(a, b) {
   );
 }
 
+// ==================== REINICIAR ====================
+function restartGame() {
+  bullets = [];
+  alienBullets = [];
+  explosions = [];
+  aliens = [];
+
+  energy = 5;
+  score = 0;
+
+  player.lives = 3;
+
+  window.gameEnded = false;
+
+  crono.reset();
+
+  createAliens();
+
+  document.querySelector("div[style*='position: fixed']").remove();
+}
+
 // ==================== GAME OVER ====================
 function endGame(win) {
   if (window.gameEnded) return;
   window.gameEnded = true;
 
+  // 👇 asegurar parada
   crono.stop();
 
-  setTimeout(() => {
-    alert(win ? "YOU WIN 🎉" : "YOU LOSE 💀");
-    location.reload();
-  }, 100);
+  const banner = document.createElement("div");
+  banner.style.position = "fixed";
+  banner.style.top = "0";
+  banner.style.left = "0";
+  banner.style.width = "100%";
+  banner.style.height = "100%";
+  banner.style.background = "rgba(0,0,0,0.9)";
+  banner.style.color = "white";
+  banner.style.display = "flex";
+  banner.style.flexDirection = "column";
+  banner.style.justifyContent = "center";
+  banner.style.alignItems = "center";
+
+  const resultado = document.createElement("h1");
+  resultado.textContent = win ? "🏆 HAS GANADO" : "💀 HAS PERDIDO";
+
+  const vidas = document.createElement("p");
+  vidas.textContent = "Vidas restantes: " + player.lives;
+
+  const tiempo = document.createElement("p");
+  tiempo.textContent = "Tiempo: " + display.textContent;
+
+  const boton = document.createElement("button");
+  boton.textContent = "🔁 VOLVER A JUGAR";
+  boton.onclick = restartGame;
+
+  banner.appendChild(resultado);
+  banner.appendChild(vidas);
+  banner.appendChild(tiempo);
+  banner.appendChild(boton);
+
+  document.body.appendChild(banner);
 }
 
 // ==================== UPDATE ====================
