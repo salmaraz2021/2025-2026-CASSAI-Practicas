@@ -33,6 +33,8 @@ canvas {
 }
 
 #gameCanvas {
+  width: clamp(320px, 80vw, 1100px);
+  height: auto;
   display: block;
   margin: 0 auto;
   border: 0.125rem solid white;
@@ -44,6 +46,17 @@ canvas {
 }
 
 #gameWrapper {
-  transform: scale(1.2);
-  transform-origin: top center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#cronometro,
+h1 {
+  font-family: 'Press Start 2P', monospace;
+}
+
+canvas {
+  font-family: 'Press Start 2P', monospace;
 }

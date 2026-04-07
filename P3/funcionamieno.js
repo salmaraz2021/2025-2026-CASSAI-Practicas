@@ -373,7 +373,7 @@ function draw() {
 
   // ================= HUD ORIGINAL =================
   ctx.fillStyle = "white";
-  ctx.font = "16px Arial";
+  ctx.font = "14px 'Press Start 2P'";
 
   ctx.fillText("Puntuación: " + score, 10, 20);
 
