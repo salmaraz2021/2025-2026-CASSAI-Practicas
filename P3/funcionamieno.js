@@ -245,8 +245,24 @@ for (let i = 0; i < player.lives; i++) {
 
   stats.innerHTML = `
   Tiempo: ${tiempoFinal} <br>
-  Vidas: <span id="heartsContainer"></span>
+  ${win ? "Vidas: " + "" : ""}
 `;
+if (win) {
+  const container = document.createElement("div");
+
+  for (let i = 0; i < player.lives; i++) {
+    const img = document.createElement("img");
+    img.src = "corazon.webp";
+    img.style.width = "20px";
+    img.style.height = "20px";
+    img.style.marginRight = "4px";
+    img.style.imageRendering = "pixelated";
+    container.appendChild(img);
+  }
+
+  stats.appendChild(container);
+}
+
   const btn = document.createElement("button");
   btn.textContent = "TRY AGAIN";
 
