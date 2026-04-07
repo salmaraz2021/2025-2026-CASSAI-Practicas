@@ -13,6 +13,7 @@ let alienShootTimer = 0;
 
 let energy = 5;
 let maxEnergy = 5;
+let energyTimer = 0;
 
 let score = 0;
 let keys = {};
@@ -47,7 +48,6 @@ const hitSound = new Audio("P3_impacto.mp3");
 const winSound = new Audio("P3_win.mp3");
 const loseSound = new Audio("P3_lose.mp3");
 
-// 🔊 función unificada de sonido
 function playSound(audio) {
   if (!audio) return;
   audio.currentTime = 0;
@@ -67,7 +67,6 @@ let player = {
 // ================= RESIZE =================
 function resizeCanvas() {
   const rect = canvas.getBoundingClientRect();
-
   const espacioDisponible = window.innerHeight - rect.top;
 
   canvas.width = 800;
@@ -80,7 +79,6 @@ window.addEventListener("resize", resizeCanvas);
 
 // ================= ALIENS =================
 function createAliens() {
-
   aliens = [];
 
   const rows = 3;
@@ -127,7 +125,6 @@ document.addEventListener("keyup", (e) => {
 
 // ================= SHOOT =================
 function shoot() {
-
   if (window.gameEnded) return;
 
   if (!gameStarted) {
@@ -151,7 +148,6 @@ function shoot() {
 
 // ================= ALIEN SHOOT =================
 function alienShoot() {
-
   if (!gameStarted || window.gameEnded) return;
   if (aliens.length === 0) return;
 
@@ -173,7 +169,6 @@ function alienShoot() {
 
 // ================= MOVIMIENTO ALIENS =================
 function moveAliens() {
-
   let minX = Infinity;
   let maxX = -Infinity;
 
@@ -201,17 +196,13 @@ function moveAliens() {
 
 // ================= GAME OVER =================
 function endGame(win) {
-
   if (window.gameEnded) return;
   window.gameEnded = true;
 
   crono.stop();
 
-  if (win) {
-    playSound(winSound);
-  } else {
-    playSound(loseSound);
-  }
+  if (win) playSound(winSound);
+  else playSound(loseSound);
 
   const div = document.createElement("div");
   div.style.position = "fixed";
@@ -232,36 +223,26 @@ function endGame(win) {
 
   const stats = document.createElement("p");
   const tiempoFinal = crono.getTime();
-const container = document.getElementById("heartsContainer");
-
-for (let i = 0; i < player.lives; i++) {
-  const img = document.createElement("img");
-  img.src = "corazon.webp";
-  img.style.width = "20px";
-  img.style.height = "20px";
-  img.style.marginRight = "4px";
-  container.appendChild(img);
-}
 
   stats.innerHTML = `
-  Tiempo: ${tiempoFinal} <br>
-  ${win ? "Vidas: " + "" : ""}
-`;
-if (win) {
-  const container = document.createElement("div");
+    Tiempo: ${tiempoFinal} <br>
+    ${win ? "Vidas: " : ""}
+  `;
 
-  for (let i = 0; i < player.lives; i++) {
-    const img = document.createElement("img");
-    img.src = "corazon.webp";
-    img.style.width = "20px";
-    img.style.height = "20px";
-    img.style.marginRight = "4px";
-    img.style.imageRendering = "pixelated";
-    container.appendChild(img);
+  if (win) {
+    const container = document.createElement("div");
+
+    for (let i = 0; i < player.lives; i++) {
+      const img = document.createElement("img");
+      img.src = "corazon.webp";
+      img.style.width = "20px";
+      img.style.height = "20px";
+      img.style.marginRight = "4px";
+      container.appendChild(img);
+    }
+
+    stats.appendChild(container);
   }
-
-  stats.appendChild(container);
-}
 
   const btn = document.createElement("button");
   btn.textContent = "TRY AGAIN";
@@ -299,8 +280,18 @@ if (win) {
 
 // ================= UPDATE =================
 function update() {
-
   if (window.gameEnded) return;
+
+  // 🔥 ENERGÍA (CORRECTO)
+  energyTimer++;
+
+  if (energyTimer >= 60) {
+    energyTimer = 0;
+
+    if (energy < maxEnergy) {
+      energy++;
+    }
+  }
 
   if (keys["ArrowLeft"]) player.x -= player.speed;
   if (keys["ArrowRight"]) player.x += player.speed;
@@ -313,7 +304,6 @@ function update() {
   }
 
   for (let i = bullets.length - 1; i >= 0; i--) {
-
     bullets[i].y -= 7;
 
     if (bullets[i].y < 0) {
@@ -322,9 +312,7 @@ function update() {
     }
 
     for (let j = aliens.length - 1; j >= 0; j--) {
-
       if (collision(bullets[i], aliens[j])) {
-
         explosions.push({
           x: aliens[j].x,
           y: aliens[j].y,
@@ -344,25 +332,7 @@ function update() {
   alienShoot();
 
   for (let i = alienBullets.length - 1; i >= 0; i--) {
-
     alienBullets[i].y += alienBullets[i].speed;
-
-    if (
-      alienBullets[i].x < player.x + player.width &&
-      alienBullets[i].x + alienBullets[i].width > player.x &&
-      alienBullets[i].y < player.y + player.height &&
-      alienBullets[i].y + alienBullets[i].height > player.y
-    ) {
-      alienBullets.splice(i, 1);
-
-      player.lives--;
-
-      playSound(hitSound);
-
-      if (player.lives <= 0) endGame(false);
-
-      continue;
-    }
 
     if (alienBullets[i].y > canvas.height) {
       alienBullets.splice(i, 1);
@@ -374,23 +344,16 @@ function update() {
     if (explosions[i].life <= 0) explosions.splice(i, 1);
   }
 
-  if (energy < maxEnergy && Math.random() < 0.01) {
-    energy++;
-  }
-
   if (aliens.length === 0) endGame(true);
 }
 
 // ================= DRAW =================
 function draw() {
-
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
 
-  aliens.forEach(a => {
-    ctx.drawImage(alienImg, a.x, a.y, a.width, a.height);
-  });
+  aliens.forEach(a => ctx.drawImage(alienImg, a.x, a.y, a.width, a.height));
 
   bullets.forEach(b => {
     ctx.fillStyle = "red";
@@ -406,7 +369,6 @@ function draw() {
     ctx.drawImage(explosionImg, e.x, e.y, 30, 30);
   });
 
-  // ================= HUD =================
   ctx.fillStyle = "white";
   ctx.font = "14px 'Press Start 2P'";
 
