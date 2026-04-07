@@ -73,6 +73,7 @@ function resizeCanvas() {
   player.x = canvas.width / 2 - player.width / 2;
   player.y = canvas.height - 80;
 }
+window.addEventListener("resize", resizeCanvas);
 
 // ================= ALIENS =================
 function createAliens() {
