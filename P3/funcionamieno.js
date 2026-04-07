@@ -64,13 +64,12 @@ let player = {
 
 // ================= RESIZE =================
 function resizeCanvas() {
-  const h1 = document.querySelector("h1");
-  const crono = document.getElementById("cronometro");
+  const rect = canvas.getBoundingClientRect(); // posición real en pantalla
 
-  const header = h1.offsetHeight + crono.offsetHeight;
+  const espacioDisponible = window.innerHeight - rect.top;
 
   canvas.width = 800;
-  canvas.height = window.innerHeight - header - 10; // 👈 pequeño margen de seguridad
+  canvas.height = espacioDisponible - 10; // pequeño margen de seguridad
 
   player.x = canvas.width / 2 - player.width / 2;
   player.y = canvas.height - 80;
