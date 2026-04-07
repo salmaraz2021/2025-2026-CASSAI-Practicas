@@ -375,21 +375,21 @@ function draw() {
   ctx.fillStyle = "white";
   ctx.font = "14px 'Press Start 2P'";
 
-  ctx.fillText("Puntuación: " + score, 10, 20);
+  ctx.fillText("Puntuación: " + score, 10, 25);
 
-  ctx.fillText("Vidas:", 10, 45);
+  ctx.fillText("Vidas:", 10, 60);
 
   for (let i = 0; i < player.lives; i++) {
-    ctx.drawImage(heartImg, 70 + i * 22, 30, 18, 18);
+    ctx.drawImage(heartImg, 90 + i * 25, 45, 18, 18);
   }
 
-  ctx.fillText("Energía:", 10, 70);
+  ctx.fillText("Energía:", 10, 100);
 
   ctx.strokeStyle = "white";
-  ctx.strokeRect(90, 60, 120, 10);
+  ctx.strokeRect(120, 85, 120, 10);
 
   ctx.fillStyle = "lime";
-  ctx.fillRect(90, 60, (energy / maxEnergy) * 120, 10);
+  ctx.fillRect(120, 85, (energy / maxEnergy) * 120, 10);
 }
 
 // ================= LOOP =================
