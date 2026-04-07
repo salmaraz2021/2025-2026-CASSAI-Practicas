@@ -232,12 +232,21 @@ function endGame(win) {
 
   const stats = document.createElement("p");
   const tiempoFinal = crono.getTime();
+const container = document.getElementById("heartsContainer");
+
+for (let i = 0; i < player.lives; i++) {
+  const img = document.createElement("img");
+  img.src = "corazon.webp";
+  img.style.width = "20px";
+  img.style.height = "20px";
+  img.style.marginRight = "4px";
+  container.appendChild(img);
+}
 
   stats.innerHTML = `
   Tiempo: ${tiempoFinal} <br>
-  Vidas restantes: ${player.lives}
-  `;
-
+  Vidas: <span id="heartsContainer"></span>
+`;
   const btn = document.createElement("button");
   btn.textContent = "TRY AGAIN";
 
