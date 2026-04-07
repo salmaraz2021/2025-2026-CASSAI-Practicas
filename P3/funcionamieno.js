@@ -27,6 +27,9 @@ let alienSpeed = 1;
 let gameStarted = false;
 window.gameEnded = false;
 
+// 🔥 NUEVO: parpadeo daño
+let playerHitFlash = 0;
+
 // ================= CRONO =================
 const display = document.getElementById("cronometro");
 const crono = new Crono(display);
@@ -285,7 +288,6 @@ function endGame(win) {
 function update() {
   if (window.gameEnded) return;
 
-  // energía
   energyTimer++;
 
   if (energyTimer >= 90) {
@@ -331,7 +333,7 @@ function update() {
 
   alienShoot();
 
-  // ✅ FIX IMPORTANTE (VIDAS + SONIDO)
+  // =================🔥 COLISIÓN + PARPADEO=================
   for (let i = alienBullets.length - 1; i >= 0; i--) {
 
     alienBullets[i].y += alienBullets[i].speed;
@@ -349,6 +351,9 @@ function update() {
 
       playSound(hitSound);
 
+      // 🔥 activar flash
+      playerHitFlash = 15;
+
       if (player.lives <= 0) {
         endGame(false);
       }
@@ -360,6 +365,9 @@ function update() {
       alienBullets.splice(i, 1);
     }
   }
+
+  // 🔥 reducir parpadeo
+  if (playerHitFlash > 0) playerHitFlash--;
 
   for (let i = explosions.length - 1; i >= 0; i--) {
     explosions[i].life--;
@@ -373,7 +381,10 @@ function update() {
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+  // 🔥 PARPADEO (solo visual)
+  if (playerHitFlash % 2 === 0) {
+    ctx.drawImage(playerImg, player.x, player.y, player.width, player.height);
+  }
 
   aliens.forEach(a => ctx.drawImage(alienImg, a.x, a.y, a.width, a.height));
 
@@ -395,7 +406,6 @@ function draw() {
   ctx.font = "14px 'Press Start 2P'";
 
   ctx.fillText("Puntuación: " + score, 10, 25);
-
   ctx.fillText("Vidas:", 10, 60);
 
   for (let i = 0; i < player.lives; i++) {
