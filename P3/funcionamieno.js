@@ -64,13 +64,18 @@ let player = {
 
 // ================= RESIZE =================
 function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight - 100;
+  const headerHeight = 80; // espacio para título + cronómetro
 
+  canvas.height = window.innerHeight - headerHeight;
+
+  // Mantener proporción 4:3 (800x600)
+  const aspectRatio = 4 / 3;
+  canvas.width = canvas.height * aspectRatio;
+
+  // Centrar jugador
   player.x = canvas.width / 2 - player.width / 2;
   player.y = canvas.height - 80;
 }
-window.addEventListener("resize", resizeCanvas);
 
 // ================= ALIENS =================
 function createAliens() {
