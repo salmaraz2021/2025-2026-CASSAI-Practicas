@@ -42,3 +42,8 @@ canvas {
   background-position: center;
   background-repeat: no-repeat;
 }
+
+#gameWrapper {
+  transform: scale(1.2);
+  transform-origin: top center;
+}
