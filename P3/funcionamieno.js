@@ -70,7 +70,7 @@ function resizeCanvas() {
   const header = h1.offsetHeight + crono.offsetHeight;
 
   canvas.width = 800;
-  canvas.height = window.innerHeight - header - 20; // 👈 pequeño margen de seguridad
+  canvas.height = window.innerHeight - header - 10; // 👈 pequeño margen de seguridad
 
   player.x = canvas.width / 2 - player.width / 2;
   player.y = canvas.height - 80;
