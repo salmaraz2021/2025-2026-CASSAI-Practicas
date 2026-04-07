@@ -64,15 +64,11 @@ let player = {
 
 // ================= RESIZE =================
 function resizeCanvas() {
-  const headerHeight = 80; // espacio para título + cronómetro
+  const headerHeight = 80; // título + cronómetro
 
+  canvas.width = 800; // 👈 NO se toca el ancho
   canvas.height = window.innerHeight - headerHeight;
 
-  // Mantener proporción 4:3 (800x600)
-  const aspectRatio = 4 / 3;
-  canvas.width = canvas.height * aspectRatio;
-
-  // Centrar jugador
   player.x = canvas.width / 2 - player.width / 2;
   player.y = canvas.height - 80;
 }
