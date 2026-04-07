@@ -27,7 +27,7 @@ let alienSpeed = 1;
 let gameStarted = false;
 window.gameEnded = false;
 
-// 🔥 NUEVO: parpadeo daño
+//parpadeo daño
 let playerHitFlash = 0;
 
 // ================= CRONO =================
@@ -301,7 +301,7 @@ function update() {
   player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
 
   if (gameStarted) {
-    alienSpeed = 1 + (30 - aliens.length) * 0.05;
+    alienSpeed = 1 + (1 - aliens.length/24) * 3;
     moveAliens();
   }
 
