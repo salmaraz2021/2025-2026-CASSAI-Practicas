@@ -285,7 +285,7 @@ function update() {
   // 🔥 ENERGÍA (CORRECTO)
   energyTimer++;
 
-  if (energyTimer >= 60) {
+  if (energyTimer >= 90) {
     energyTimer = 0;
 
     if (energy < maxEnergy) {
