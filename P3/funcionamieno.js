@@ -1,5 +1,5 @@
 /* jshint esversion: 6 */
-/* exported Crono */
+/* global Crono */
 
 window.addEventListener("DOMContentLoaded", () => {
 
