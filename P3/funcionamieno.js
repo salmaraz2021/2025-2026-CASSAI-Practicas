@@ -186,12 +186,14 @@ function moveAliens() {
   }
 
   if (minX <= 0 || maxX >= canvas.width) {
-    alienDirection *= -1;
+  alienDirection *= -1;
 
-    for (let i = 0; i < aliens.length; i++) {
-      aliens[i].y += 3;
-    }
+  const dropSpeed = 2 + (1 - aliens.length / 24) * 4;
+
+  for (let i = 0; i < aliens.length; i++) {
+    aliens[i].y += dropSpeed;
   }
+}
 
   for (let i = 0; i < aliens.length; i++) {
     if (aliens[i].y + aliens[i].height >= player.y) {
@@ -246,6 +248,10 @@ function endGame(win) {
       img.style.marginRight = "4px";
       container.appendChild(img);
     }
+container.style.display = "flex";
+container.style.flexDirection = "row";
+container.style.justifyContent = "center";
+container.style.alignItems = "center";
 
     stats.appendChild(container);
   }
