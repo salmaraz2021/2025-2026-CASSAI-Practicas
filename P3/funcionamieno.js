@@ -64,8 +64,8 @@ let player = {
 
 // ================= RESIZE =================
 function resizeCanvas() {
-  canvas.width = window.innerWidth * 0.8;
-  canvas.height = window.innerHeight * 0.8;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight - 100;
 
   player.x = canvas.width / 2 - player.width / 2;
   player.y = canvas.height - 80;
@@ -214,12 +214,23 @@ function endGame(win) {
   div.style.justifyContent = "center";
   div.style.alignItems = "center";
   div.style.zIndex = "9999";
+  div.appendChild(title);
+div.appendChild(stats);
+div.appendChild(btn);
 
   const title = document.createElement("h1");
-  title.textContent = win ? "HAS GANADO 🏆" : "HAS PERDIDO 💀";
+  title.textContent = win ? "YOU WIN!!!" : "YOU LOSE!";
+const stats = document.createElement("p");
+
+const tiempoFinal = crono.getTime();
+
+stats.innerHTML = `
+Tiempo: ${tiempoFinal} <br>
+Vidas restantes: ${player.lives}
+`;
 
   const btn = document.createElement("button");
-  btn.textContent = "VOLVER A JUGAR";
+  btn.textContent = "TRY AGAIN";
 
   btn.onclick = () => {
 

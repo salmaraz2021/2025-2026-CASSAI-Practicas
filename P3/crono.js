@@ -46,4 +46,10 @@ class Crono {
         this.min = 0;
         this.display.textContent = "00:00:00";
     }
+    getTime() {
+    const c = this.cent.toString().padStart(2, '0');
+    const s = this.seg.toString().padStart(2, '0');
+    const m = this.min.toString().padStart(2, '0');
+    return `${m}:${s}:${c}`;
+}
 }

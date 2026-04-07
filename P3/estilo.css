@@ -1,9 +1,12 @@
-body {
+html, body {
   margin: 0;
   background: black;
   color: white;
   text-align: center;
   font-family: monospace;
+  overflow: hidden;
+  padding: 0;
+  height: 100%;
 }
 
 h1 {
