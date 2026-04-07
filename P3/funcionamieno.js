@@ -43,9 +43,9 @@ explosionImg.src = "explosion.webp";
 // ================= SONIDOS =================
 const shootSound = new Audio("P3_sonido.mp3");
 const explosionSound = new Audio("P3_explosion.mp3");
-const hitSound = new Audio("hit.mp3");
-const winSound = new Audio("win.mp3");
-const loseSound = new Audio("lose.mp3");
+const hitSound = new Audio("P3_impacto.mp3");
+const winSound = new Audio("P3_win.mp3");
+const loseSound = new Audio("P3_lose.mp3");
 
 // 🔊 función unificada de sonido
 function playSound(audio) {
