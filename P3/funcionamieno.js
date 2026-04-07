@@ -64,10 +64,11 @@ let player = {
 
 // ================= RESIZE =================
 function resizeCanvas() {
-  const headerHeight = 80; // título + cronómetro
+  const header = document.querySelector("h1").offsetHeight +
+                 document.getElementById("cronometro").offsetHeight + 20;
 
-  canvas.width = 800; // 👈 NO se toca el ancho
-  canvas.height = window.innerHeight - headerHeight;
+  canvas.width = 800;
+  canvas.height = window.innerHeight - header;
 
   player.x = canvas.width / 2 - player.width / 2;
   player.y = canvas.height - 80;
@@ -215,26 +216,22 @@ function endGame(win) {
   div.style.justifyContent = "center";
   div.style.alignItems = "center";
   div.style.zIndex = "9999";
-  div.appendChild(title);
-div.appendChild(stats);
-div.appendChild(btn);
 
   const title = document.createElement("h1");
   title.textContent = win ? "YOU WIN!!!" : "YOU LOSE!";
-const stats = document.createElement("p");
 
-const tiempoFinal = crono.getTime();
+  const stats = document.createElement("p");
+  const tiempoFinal = crono.getTime();
 
-stats.innerHTML = `
-Tiempo: ${tiempoFinal} <br>
-Vidas restantes: ${player.lives}
-`;
+  stats.innerHTML = `
+  Tiempo: ${tiempoFinal} <br>
+  Vidas restantes: ${player.lives}
+  `;
 
   const btn = document.createElement("button");
   btn.textContent = "TRY AGAIN";
 
   btn.onclick = () => {
-
     div.remove();
 
     window.gameEnded = false;
@@ -253,14 +250,15 @@ Vidas restantes: ${player.lives}
     alienSpeed = 1;
     alienShootTimer = 0;
 
-    crono.stop();
-    display.textContent = "00:00";
+    crono.reset();
 
     createAliens();
   };
 
   div.appendChild(title);
+  div.appendChild(stats);
   div.appendChild(btn);
+
   document.body.appendChild(div);
 }
 
