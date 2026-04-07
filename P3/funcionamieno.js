@@ -1,3 +1,6 @@
+/* jshint esversion: 6 */
+/* exported Crono */
+
 window.addEventListener("DOMContentLoaded", () => {
 
 const canvas = document.getElementById("gameCanvas");
@@ -282,19 +285,16 @@ function endGame(win) {
 function update() {
   if (window.gameEnded) return;
 
-  // 🔥 ENERGÍA (CORRECTO)
+  // energía
   energyTimer++;
 
   if (energyTimer >= 90) {
     energyTimer = 0;
-
-    if (energy < maxEnergy) {
-      energy++;
-    }
+    if (energy < maxEnergy) energy++;
   }
 
-  if (keys["ArrowLeft"]) player.x -= player.speed;
-  if (keys["ArrowRight"]) player.x += player.speed;
+  if (keys.ArrowLeft) player.x -= player.speed;
+  if (keys.ArrowRight) player.x += player.speed;
 
   player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
 
@@ -331,8 +331,30 @@ function update() {
 
   alienShoot();
 
+  // ✅ FIX IMPORTANTE (VIDAS + SONIDO)
   for (let i = alienBullets.length - 1; i >= 0; i--) {
+
     alienBullets[i].y += alienBullets[i].speed;
+
+    if (
+      alienBullets[i].x < player.x + player.width &&
+      alienBullets[i].x + alienBullets[i].width > player.x &&
+      alienBullets[i].y < player.y + player.height &&
+      alienBullets[i].y + alienBullets[i].height > player.y
+    ) {
+
+      alienBullets.splice(i, 1);
+
+      player.lives--;
+
+      playSound(hitSound);
+
+      if (player.lives <= 0) {
+        endGame(false);
+      }
+
+      continue;
+    }
 
     if (alienBullets[i].y > canvas.height) {
       alienBullets.splice(i, 1);
