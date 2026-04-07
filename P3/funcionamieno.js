@@ -40,13 +40,15 @@ heartImg.src = "corazon.webp";
 const explosionImg = new Image();
 explosionImg.src = "explosion.webp";
 
-// ❌ IMPORTANTE: ya NO usamos fondo.gif en JS
-
 // ================= SONIDOS =================
 const shootSound = new Audio("P3_sonido.mp3");
 const explosionSound = new Audio("P3_explosion.mp3");
+const hitSound = new Audio("hit.mp3");
+const winSound = new Audio("win.mp3");
+const loseSound = new Audio("lose.mp3");
 
-function safePlay(audio) {
+// 🔊 función unificada de sonido
+function playSound(audio) {
   if (!audio) return;
   audio.currentTime = 0;
   audio.play().catch(() => {});
@@ -64,12 +66,12 @@ let player = {
 
 // ================= RESIZE =================
 function resizeCanvas() {
-  const rect = canvas.getBoundingClientRect(); // posición real en pantalla
+  const rect = canvas.getBoundingClientRect();
 
   const espacioDisponible = window.innerHeight - rect.top;
 
   canvas.width = 800;
-  canvas.height = espacioDisponible - 10; // pequeño margen de seguridad
+  canvas.height = espacioDisponible - 10;
 
   player.x = canvas.width / 2 - player.width / 2;
   player.y = canvas.height - 80;
@@ -144,7 +146,7 @@ function shoot() {
 
   energy--;
 
-  safePlay(shootSound);
+  playSound(shootSound);
 }
 
 // ================= ALIEN SHOOT =================
@@ -204,6 +206,12 @@ function endGame(win) {
   window.gameEnded = true;
 
   crono.stop();
+
+  if (win) {
+    playSound(winSound);
+  } else {
+    playSound(loseSound);
+  }
 
   const div = document.createElement("div");
   div.style.position = "fixed";
@@ -298,7 +306,7 @@ function update() {
           life: 15
         });
 
-        safePlay(explosionSound);
+        playSound(explosionSound);
 
         aliens.splice(j, 1);
         bullets.splice(i, 1);
@@ -323,6 +331,8 @@ function update() {
       alienBullets.splice(i, 1);
 
       player.lives--;
+
+      playSound(hitSound);
 
       if (player.lives <= 0) endGame(false);
 
@@ -371,7 +381,7 @@ function draw() {
     ctx.drawImage(explosionImg, e.x, e.y, 30, 30);
   });
 
-  // ================= HUD ORIGINAL =================
+  // ================= HUD =================
   ctx.fillStyle = "white";
   ctx.font = "14px 'Press Start 2P'";
 
