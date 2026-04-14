@@ -1,0 +1,34 @@
+body {
+  font-family: Arial;
+  text-align: center;
+  background: #b7e08a;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+}
+
+.controls, .info {
+  margin: 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.card {
+  background: #8b5a3c;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  transition: 0.2s;
+}
+
+.active {
+  border: 4px solid red;
+  transform: scale(1.1);
+}

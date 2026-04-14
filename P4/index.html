@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Beat The Word</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>Beat The Word</h1>
+
+  <div class="controls">
+    <select id="pairSelect">
+      <option value="cama-casa">Cama / Casa</option>
+      <option value="pato-gato">Pato / Gato</option>
+      <option value="queso-beso">Queso / Beso</option>
+      <option value="luna-cuna">Luna / Cuna</option>
+
+    </select>
+
+    <select id="levelSelect">
+      <option value="1">Nivel 1</option>
+      <option value="2">Nivel 2</option>
+      <option value="3">Nivel 3</option>
+      <option value="4">Nivel 4</option>
+      <option value="5">Nivel 5</option>
+    </select>
+
+    <button id="startBtn">Empezar</button>
+    <button id="stopBtn">Detener</button>
+    <button id="musicBtn">Música ON</button>
+  </div>
+
+  <div class="info">
+    <span>Nivel: <span id="level">1</span></span>
+    <span>Tiempo: <span id="time">00:00:00</span></span>
+    <span>Estado: <span id="status">En espera</span></span>
+  </div>
+
+  <div id="message">Pulsa "Empezar"</div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script src="cronos.js"></script>
+<script src="funcionamieto.js"></script>
+</body>
+</html>
