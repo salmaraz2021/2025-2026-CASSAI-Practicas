@@ -1,34 +1,136 @@
 body {
+  margin: 0;
   font-family: Arial;
+  background: linear-gradient(135deg, #b7e08a);
   text-align: center;
-  background: #b7e08a;
 }
 
 .container {
-  max-width: 800px;
-  margin: auto;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
 }
 
-.controls, .info {
-  margin: 10px;
+/* HEADER */
+h1 {
+  color: white;
+  font-size: 40px;
+  margin-bottom: 5px;
 }
 
+.subtitle {
+  color: white;
+  opacity: 0.8;
+}
+
+/* PANEL SUPERIOR */
+.info {
+  display: flex;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.info span {
+  background: #dfe5dc;
+  padding: 15px 20px;
+  border-radius: 15px;
+  font-weight: bold;
+}
+
+/* LAYOUT PRINCIPAL */
+.main {
+  display: flex;
+  gap: 20px;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.box {
+  background: #c8d6b8;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+/* CONTROLES */
+.controls select,
+.controls button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+#startBtn {
+  background: black;
+  color: white;
+}
+
+#stopBtn {
+  background: #ccc;
+}
+
+/* GRID */
 .grid {
+  flex: 1;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-top: 20px;
+  gap: 20px;
 }
 
+/* TARJETAS */
 .card {
-  background: #8b5a3c;
-  color: white;
-  padding: 20px;
-  border-radius: 10px;
+  background: linear-gradient(#7a4d2f, #b07a5b);
+  border-radius: 20px;
+  padding: 15px;
+  text-align: center;
+  position: relative;
   transition: 0.2s;
 }
 
+.card img {
+  width: 80px;
+  height: 80px;
+}
+
+.card p {
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border-radius: 10px;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+/* ACTIVA */
 .active {
   border: 4px solid red;
-  transform: scale(1.1);
+  transform: scale(1.05);
+  box-shadow: 0 0 15px red;
+}
+
+/* MENSAJE CENTRAL */
+#message {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+/* BOTÓN MÚSICA */
+#musicBtn {
+  position: absolute;
+  right: 30px;
+  top: 120px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  padding: 10px 15px;
 }
