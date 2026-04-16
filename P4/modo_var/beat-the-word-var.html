@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beat The Word con modo VAR</title>
+  <link rel="stylesheet" href="beat-the-word-var.css">
+  <script src="beat-the-word-var.js" defer></script>
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1>Beat The Word con modo VAR</h1>
+      <p>
+        Reproduce una secuencia de palabras y, si activas el modo VAR,
+        graba tu intento para revisarlo al final.
+      </p>
+    </header>
+
+    <section class="layout">
+      <section class="stage">
+        <div id="word" class="word">Pulsa “Empezar”</div>
+        <div id="state" class="state">En espera</div>
+      </section>
+
+      <aside class="panel">
+        <label class="checkbox-row">
+          <input type="checkbox" id="recordAudio">
+          Activar modo VAR
+        </label>
+
+        <div class="buttons">
+          <button id="startBtn">Empezar partida</button>
+          <button id="stopBtn" disabled>Detener</button>
+          <button id="replayBtn" disabled>Reproducir grabación</button>
+        </div>
+
+        <div class="block">
+          <h2>Registro</h2>
+          <div id="log" class="log">Aquí aparecerán los eventos de la ronda.</div>
+        </div>
+
+        <div class="block">
+          <h2>Última grabación</h2>
+          <audio id="player" controls></audio>
+        </div>
+      </aside>
+    </section>
+  </main>
+</body>
+</html>
