@@ -14,7 +14,6 @@ const levelSelect = document.getElementById("levelSelect");
 
 // 🎤 NUEVOS ELEMENTOS (añádelos en HTML luego)
 const recordAudioEl = document.getElementById("recordAudio");
-const replayBtn = document.getElementById("replayBtn");
 const playerEl = document.getElementById("player");
 const logEl = document.getElementById("log");
 
@@ -64,17 +63,16 @@ async function startRecording() {
       currentAudioUrl = URL.createObjectURL(blob);
 
       playerEl.src = currentAudioUrl;
-      replayBtn.disabled = false;
 
       mediaStream.getTracks().forEach(track => track.stop());
 
-      addLog("🎧 Grabación lista");
+      addLog("Grabación lista");
     };
 
     mediaRecorder.start();
-    addLog("🎤 Grabando...");
+    addLog("Grabando...");
   } catch (err) {
-    addLog("❌ Error micrófono: " + err.message);
+    addLog("Error micrófono: " + err.message);
   }
 }
 
@@ -188,7 +186,6 @@ startBtn.onclick = () => {
 
   cleanupAudioUrl();
   playerEl.removeAttribute("src");
-  replayBtn.disabled = true;
 
   playing = true;
 
@@ -244,13 +241,5 @@ musicToggle.onchange = () => {
     music.pause();
   } else if (playing) {
     music.play();
-  }
-};
-
-// ================= REPLAY =================
-replayBtn.onclick = () => {
-  if (playerEl.src) {
-    playerEl.currentTime = 0;
-    playerEl.play();
   }
 };
