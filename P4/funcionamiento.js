@@ -12,8 +12,11 @@ const message = document.getElementById("message");
 const pairSelect = document.getElementById("pairSelect");
 const levelSelect = document.getElementById("levelSelect");
 
-const proMode = document.getElementById("proMode");
+// 🔥 MODO PRO (BOTÓN)
+const proBtn = document.getElementById("proBtn");
+let proMode = false;
 
+// 🎤 NUEVOS ELEMENTOS
 const recordAudioEl = document.getElementById("recordAudio");
 const playerEl = document.getElementById("player");
 const logEl = document.getElementById("log");
@@ -25,7 +28,7 @@ const speedLevels = [1200, 1000, 800, 600, 450];
 
 const crono = new Crono(timeDisplay);
 
-// ================= AUDIO (NUEVO) =================
+// ================= AUDIO =================
 let mediaRecorder = null;
 let mediaStream = null;
 let audioChunks = [];
@@ -107,7 +110,7 @@ const categories = {
 function createGrid(items) {
   grid.innerHTML = "";
 
-  const isPro = proMode && proMode.checked;
+  const isPro = proMode;
 
   items.forEach(item => {
     const div = document.createElement("div");
@@ -118,7 +121,7 @@ function createGrid(items) {
 
     div.appendChild(img);
 
-    // SOLO mostrar texto si NO es modo pro
+    // SOLO TEXTO SI NO ES MODO PRO
     if (!isPro) {
       const text = document.createElement("p");
       text.textContent = item.word.toUpperCase();
@@ -208,6 +211,7 @@ startBtn.onclick = () => {
 
   let startLevel = parseInt(levelSelect.value);
   levelDisplay.textContent = startLevel;
+
   playGame(startLevel);
 
   startBtn.classList.add("running");
@@ -226,7 +230,7 @@ stopBtn.onclick = () => {
   pairSelect.disabled = false;
   levelSelect.disabled = false;
 
-  stopBtn.classList.remove("running");
+  startBtn.classList.remove("running");
 };
 
 // ================= FIN =================
@@ -244,7 +248,6 @@ function endGame() {
   levelSelect.disabled = false;
 
   startBtn.classList.remove("running");
-  stopBtn.classList.remove("running");
 }
 
 // ================= MÚSICA =================
@@ -256,8 +259,10 @@ musicToggle.onchange = () => {
   } else if (playing) {
     music.play();
   }
+};
 
-  pairSelect.onchange = () => {
+// ================= SELECT =================
+pairSelect.onchange = () => {
   if (playing) return;
 
   const pair = pairSelect.value;
@@ -268,8 +273,21 @@ musicToggle.onchange = () => {
 
   message.textContent = "EMPEZAR";
 };
-};
+
 levelSelect.onchange = () => {
   if (playing) return;
   levelDisplay.textContent = levelSelect.value;
+};
+
+// ================= MODO PRO =================
+proBtn.onclick = () => {
+  proMode = !proMode;
+
+  proBtn.classList.toggle("active", proMode);
+
+  const pair = pairSelect.value;
+  const level = parseInt(levelSelect.value);
+
+  const words = generateLevel(pair, level);
+  createGrid(words);
 };

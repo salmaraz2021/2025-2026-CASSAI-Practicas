@@ -193,7 +193,8 @@ button {
   justify-content: center;
   align-items: center;
 
-  height: 100%; /* ocupa espacio central */
+  min-height: 40px;
+  height: auto; /* ocupa espacio central */
   color: rgba(0,0,0,0.4);
 }
 
@@ -222,4 +223,26 @@ audio {
   flex: 1;
   display: flex;
   gap: 15px;
+}
+
+#proBtn {
+  background: white;
+  color: black;
+  border-radius: 12px;
+  padding: 8px;
+  width: 100%;
+  margin-top: 8px;
+  transition: 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+#proBtn:hover {
+  background: gray;
+  color: white;
+}
+
+#proBtn.active {
+  background: black;
+  color: white;
 }
