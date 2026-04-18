@@ -21,7 +21,7 @@ const logEl = document.getElementById("log");
 let playing = false;
 let musicOn = true;
 
-const speedLevels = [800, 600, 450, 300, 200];
+const speedLevels = [1200, 1000, 800, 600, 450];
 
 const crono = new Crono(timeDisplay);
 
