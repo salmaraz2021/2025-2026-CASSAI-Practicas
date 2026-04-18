@@ -201,6 +201,7 @@ startBtn.onclick = () => {
   if (musicOn) music.play();
 
   let startLevel = parseInt(levelSelect.value);
+  levelDisplay.textContent = startLevel;
   playGame(startLevel);
 };
 
@@ -254,4 +255,8 @@ musicToggle.onchange = () => {
 
   message.textContent = "EMPEZAR";
 };
+};
+levelSelect.onchange = () => {
+  if (playing) return;
+  levelDisplay.textContent = levelSelect.value;
 };

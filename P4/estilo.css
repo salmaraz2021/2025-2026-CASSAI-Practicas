@@ -147,7 +147,10 @@ button {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
+  gap: 10px;
+
+  align-content: start; 
+  margin-top: -10px; 
 }
 
 /* ================= TARJETAS ================= */
