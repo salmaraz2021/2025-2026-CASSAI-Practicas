@@ -12,6 +12,8 @@ const message = document.getElementById("message");
 const pairSelect = document.getElementById("pairSelect");
 const levelSelect = document.getElementById("levelSelect");
 
+const proMode = document.getElementById("proMode");
+
 // 🎤 NUEVOS ELEMENTOS (añádelos en HTML luego)
 const recordAudioEl = document.getElementById("recordAudio");
 const playerEl = document.getElementById("player");
@@ -106,6 +108,8 @@ const categories = {
 function createGrid(items) {
   grid.innerHTML = "";
 
+  const isPro = proMode && proMode.checked;
+
   items.forEach(item => {
     const div = document.createElement("div");
     div.classList.add("card");
@@ -113,11 +117,14 @@ function createGrid(items) {
     const img = document.createElement("img");
     img.src = item.img;
 
-    const text = document.createElement("p");
-    text.textContent = item.word.toUpperCase();
-
     div.appendChild(img);
-    div.appendChild(text);
+
+    // SOLO mostrar texto si NO es modo pro
+    if (!isPro) {
+      const text = document.createElement("p");
+      text.textContent = item.word.toUpperCase();
+      div.appendChild(text);
+    }
 
     grid.appendChild(div);
   });
@@ -203,6 +210,9 @@ startBtn.onclick = () => {
   let startLevel = parseInt(levelSelect.value);
   levelDisplay.textContent = startLevel;
   playGame(startLevel);
+
+  startBtn.classList.add("running");
+  stopBtn.classList.add("running");
 };
 
 // ================= STOP =================
@@ -217,6 +227,9 @@ stopBtn.onclick = () => {
 
   pairSelect.disabled = false;
   levelSelect.disabled = false;
+
+  startBtn.classList.remove("running");
+  stopBtn.classList.remove("running");
 };
 
 // ================= FIN =================
@@ -232,6 +245,9 @@ function endGame() {
 
   pairSelect.disabled = false;
   levelSelect.disabled = false;
+
+  startBtn.classList.remove("running");
+  stopBtn.classList.remove("running");
 }
 
 // ================= MÚSICA =================

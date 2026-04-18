@@ -134,6 +134,12 @@ button {
   color: white;
 }
 
+#startBtn.running,
+#stopBtn.running {
+  background: black;
+  color: white;
+}
+
 /* ================= CONTENIDO ================= */
 .content {
   flex: 1;
@@ -168,15 +174,6 @@ button {
   width: 70px;
   height: 70px;
   object-fit: contain;
-}
-
-.card p {
-  background: rgba(0,0,0,0.6);
-  color: white;
-  border-radius: 10px;
-  padding: 5px;
-  margin-top: 8px;
-  font-size: 14px;
 }
 
 /* ================= ACTIVA ================= */
