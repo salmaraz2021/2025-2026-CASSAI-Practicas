@@ -51,7 +51,6 @@
 
         <button id="startBtn">Empezar</button>
         <button id="stopBtn">Detener</button>
-        <button id="musicBtn">Música ON</button>
       </div>
 
       <!-- 🎤 AUDIO -->
@@ -63,18 +62,19 @@
           Grabar partida
         </label>
 
-        <button id="replayBtn" disabled>Reproducir</button>
-
         <audio id="player" controls></audio>
       </div>
 
-      <!-- LOG -->
       <div class="box">
-        <h3>Eventos</h3>
-        <div id="log" style="height:120px; overflow:auto;"></div>
+        <h3>Música</h3>
+
+        <label>
+          <input type="checkbox" id="musicToggle" checked>
+          Activar música
+        </label>
       </div>
 
-    </div>
+   </div>
 
     <!-- CONTENIDO PRINCIPAL -->
     <div class="content">

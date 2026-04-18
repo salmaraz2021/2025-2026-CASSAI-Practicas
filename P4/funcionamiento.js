@@ -1,7 +1,7 @@
 const grid = document.getElementById("grid");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
-const musicBtn = document.getElementById("musicBtn");
+const musicToggle = document.getElementById("musicToggle");
 const music = document.getElementById("music");
 
 const levelDisplay = document.getElementById("level");
@@ -237,13 +237,14 @@ function endGame() {
 }
 
 // ================= MÚSICA =================
-musicBtn.onclick = () => {
-  musicOn = !musicOn;
+musicToggle.onchange = () => {
+  musicOn = musicToggle.checked;
 
-  musicBtn.textContent = musicOn ? "Música ON" : "Música OFF";
-
-  if (!musicOn) music.pause();
-  else if (playing) music.play();
+  if (!musicOn) {
+    music.pause();
+  } else if (playing) {
+    music.play();
+  }
 };
 
 // ================= REPLAY =================
