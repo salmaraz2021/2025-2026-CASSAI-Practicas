@@ -87,20 +87,20 @@ function stopRecording() {
 // ================= CATEGORÍAS =================
 const categories = {
   "cama-casa": [
-    { word: "cama", img: "img/cama.png" },
-    { word: "casa", img: "img/casa.png" }
+    { word: "cama", img: "cama.webp" },
+    { word: "casa", img: "casa.png" }
   ],
   "pato-gato": [
-    { word: "pato", img: "img/pato.png" },
-    { word: "gato", img: "img/gato.png" }
+    { word: "pato", img: "pato.webp" },
+    { word: "gato", img: "gato.png" }
   ],
   "queso-beso": [
-    { word: "queso", img: "img/queso.png" },
-    { word: "beso", img: "img/beso.png" }
+    { word: "queso", img: "queso.webp" },
+    { word: "beso", img: "beso.png" }
   ],
   "luna-cuna": [
-    { word: "luna", img: "img/luna.png" },
-    { word: "cuna", img: "img/cuna.png" }
+    { word: "luna", img: "luna.png" },
+    { word: "cuna", img: "cuna.png" }
   ]
 };
 
