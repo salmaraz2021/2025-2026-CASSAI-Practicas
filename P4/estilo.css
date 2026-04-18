@@ -64,7 +64,8 @@ body {
 .main {
   flex: 1;
   display: flex;
-  gap: 15px;
+  flex-direction: column;
+  gap: 10px;
 
   background: rgba(255,255,255,0.5);
   border-radius: 20px;
@@ -207,4 +208,9 @@ button {
 audio {
   width: 100%;
   margin-top: 5px;
+}
+.game-body {
+  flex: 1;
+  display: flex;
+  gap: 15px;
 }
