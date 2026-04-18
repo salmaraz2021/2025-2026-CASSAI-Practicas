@@ -242,4 +242,16 @@ musicToggle.onchange = () => {
   } else if (playing) {
     music.play();
   }
+
+  pairSelect.onchange = () => {
+  if (playing) return;
+
+  const pair = pairSelect.value;
+  const level = parseInt(levelSelect.value);
+
+  const words = generateLevel(pair, level);
+  createGrid(words);
+
+  message.textContent = "EMPEZAR";
+};
 };
