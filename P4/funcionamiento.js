@@ -14,7 +14,6 @@ const levelSelect = document.getElementById("levelSelect");
 
 const proMode = document.getElementById("proMode");
 
-// 🎤 NUEVOS ELEMENTOS (añádelos en HTML luego)
 const recordAudioEl = document.getElementById("recordAudio");
 const playerEl = document.getElementById("player");
 const logEl = document.getElementById("log");
@@ -178,7 +177,7 @@ async function playGame(startLevel) {
       cards.forEach(c => c.classList.remove("active"));
       cards[i].classList.add("active");
 
-      message.textContent = cards[i].textContent;
+      message.textContent = "";
 
       await sleep(speedLevels[lvl - 1]);
     }
@@ -212,7 +211,6 @@ startBtn.onclick = () => {
   playGame(startLevel);
 
   startBtn.classList.add("running");
-  stopBtn.classList.add("running");
 };
 
 // ================= STOP =================
@@ -228,7 +226,6 @@ stopBtn.onclick = () => {
   pairSelect.disabled = false;
   levelSelect.disabled = false;
 
-  startBtn.classList.remove("running");
   stopBtn.classList.remove("running");
 };
 
