@@ -111,18 +111,27 @@ button {
   cursor: pointer;
 }
 
-#startBtn {
-  background: black;
+#startBtn,
+#stopBtn {
+  background: white;
+  color: black;
+  border-radius: 12px;
+  padding: 8px;
+  transition: 0.2s;
+}
+
+/* HOVER */
+#startBtn:hover,
+#stopBtn:hover {
+  background: gray;
   color: white;
 }
 
-#stopBtn {
-  background: #ccc;
-}
-.sidebar {
-  background: rgba(255,255,255,0.7);
-  padding: 10px;
-  border-radius: 20px;
+/* ACTIVE (cuando se pulsa) */
+#startBtn:active,
+#stopBtn:active {
+  background: black;
+  color: white;
 }
 
 /* ================= CONTENIDO ================= */
