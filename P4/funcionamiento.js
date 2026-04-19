@@ -2,9 +2,6 @@ const grid = document.getElementById("grid");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
 
-const musicToggle = document.getElementById("musicToggle");
-const music = document.getElementById("music");
-
 const levelDisplay = document.getElementById("level");
 const statusDisplay = document.getElementById("status");
 const message = document.getElementById("message");
@@ -14,34 +11,47 @@ const levelSelect = document.getElementById("levelSelect");
 
 const proToggle = document.getElementById("proToggle");
 
+const musicToggle = document.getElementById("musicToggle");
+const music = document.getElementById("music");
+
 const recordAudioEl = document.getElementById("recordAudio");
 const playerEl = document.getElementById("player");
 
 let playing = false;
 let proMode = false;
 
-// ================= MÚSICA =================
+// ================= 🎵 MÚSICA =================
 let musicOn = false;
 music.volume = 0.5;
 musicToggle.checked = false;
 
+// activar/desactivar música manual
 musicToggle.onchange = () => {
   musicOn = musicToggle.checked;
-  if (musicOn) music.play().catch(() => {});
+  if (musicOn && playing) music.play().catch(() => {});
   else music.pause();
 };
 
+// grabar → pausa música
 recordAudioEl.onchange = () => {
-  if (recordAudioEl.checked) music.pause();
+  if (recordAudioEl.checked) {
+    music.pause();
+  }
 };
 
-playerEl.onplay = () => music.pause();
+// reproducir audio → pausa música
+playerEl.onplay = () => {
+  music.pause();
+};
 
+// fin audio → reanuda música
 playerEl.onended = () => {
-  if (musicOn && playing) music.play().catch(() => {});
+  if (musicOn && playing) {
+    music.play().catch(() => {});
+  }
 };
 
-// ================= DATOS =================
+// ================= CATEGORÍAS =================
 const categories = {
   "cama-casa": [
     { word: "cama", img: "cama.webp" },
@@ -64,8 +74,8 @@ const categories = {
 // ================= UTIL =================
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
-function shuffle(a) {
-  return a.sort(() => Math.random() - 0.5);
+function shuffle(arr) {
+  return arr.sort(() => Math.random() - 0.5);
 }
 
 // ================= GRID =================
@@ -105,7 +115,7 @@ async function countdown() {
   message.style.display = "none";
 }
 
-// ================= GAME =================
+// ================= GENERADOR =================
 function generate(pair, level) {
   const [a, b] = categories[pair];
 
@@ -115,6 +125,7 @@ function generate(pair, level) {
   return shuffle([a,a,a,a,b,b,b,b]);
 }
 
+// ================= JUEGO =================
 async function playGame(startLevel) {
   playing = true;
   statusDisplay.textContent = "Jugando";
@@ -220,7 +231,7 @@ function endGame() {
   statusDisplay.textContent = "Finalizado";
 }
 
-// ================= PRO =================
+// ================= PRO MODE =================
 proToggle.onchange = () => {
   if (playing) return;
 
@@ -232,7 +243,15 @@ proToggle.onchange = () => {
 };
 
 // ================= INSTRUCCIONES =================
-window.closeInstructions = function () {
+function closeInstructions() {
   const ins = document.getElementById("instructions");
   if (ins) ins.style.display = "none";
-};
+}
+
+window.addEventListener("load", () => {
+  const ins = document.getElementById("instructions");
+  if (ins) ins.style.display = "flex";
+
+  const startLevel = parseInt(levelSelect.value);
+  levelDisplay.textContent = startLevel + "/5";
+});
