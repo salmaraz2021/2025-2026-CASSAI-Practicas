@@ -1,3 +1,5 @@
+
+
 const grid = document.getElementById("grid");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
@@ -21,7 +23,7 @@ const playerEl = document.getElementById("player");
 let playing = false;
 let musicOn = true;
 
-const speedLevels = [1200, 1000, 800, 600, 450];
+const speedLevels = [900, 750, 600, 450, 300];
 
 const crono = new Crono(timeDisplay);
 
@@ -37,7 +39,7 @@ const categories = {
   ],
   "queso-beso": [
     { word: "queso", img: "queso.webp" },
-    { word: "beso", img: "beso.png" }
+    { word: "beso", img: "beso.webp" }
   ],
   "luna-cuna": [
     { word: "luna", img: "luna.png" },
@@ -45,21 +47,37 @@ const categories = {
   ]
 };
 
+// ================= 🔥 FIX IMPORTANTE =================
+function generateLevel(pair, level) {
+  let [a, b] = categories[pair];
+
+  let arr = [];
+
+  if (level === 1) arr = [a,a,a,a,b,b,b,b];
+  else if (level === 2) arr = [a,b,a,b,a,b,a,b];
+  else arr = shuffle([a,a,a,a,b,b,b,b]);
+
+  return arr;
+}
+
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
 // ================= GRID =================
 function createGrid(items) {
   grid.innerHTML = "";
+
+  if (!items || items.length === 0) return; // 🔥 seguridad
 
   items.forEach(item => {
     const div = document.createElement("div");
     div.classList.add("card");
 
     const img = document.createElement("img");
-
-    // 🔥 modo pro = SOLO imagenes
     img.src = item.img;
     div.appendChild(img);
 
-    // 🔥 modo normal = imagen + palabra
     if (!proMode) {
       const text = document.createElement("p");
       text.textContent = item.word.toUpperCase();
@@ -105,6 +123,7 @@ async function playGame(startLevel) {
     let pair = pairSelect.value;
     let words = generateLevel(pair, lvl);
 
+    // 🔥 FIX CLAVE: asegurar render inmediato
     createGrid(words);
 
     let cards = document.querySelectorAll(".card");
@@ -128,7 +147,6 @@ startBtn.onclick = () => {
 
   playing = true;
 
-  // 🔥 botón presionado
   startBtn.classList.add("pressed");
 
   startBtn.disabled = true;
@@ -212,6 +230,7 @@ proToggle.onchange = () => {
   const pair = pairSelect.value;
   const level = parseInt(levelSelect.value);
 
-  const words = generateLevel(pair, level);
-  createGrid(words);
+  grid.innerHTML = "";
+  message.style.display = "block";
+  message.textContent = "Pulsa Empezar";
 };
