@@ -117,11 +117,9 @@ function createGrid(items) {
     div.classList.add("card");
 
     const img = document.createElement("img");
-    img.src = item.img;
-
+    img.src = "img/" + item.img; 
     div.appendChild(img);
 
-    // SOLO TEXTO SI NO ES MODO PRO
     if (!isPro) {
       const text = document.createElement("p");
       text.textContent = item.word.toUpperCase();
@@ -215,6 +213,7 @@ startBtn.onclick = () => {
   playGame(startLevel);
 
   startBtn.classList.add("running");
+  message.style.display = "none";
 };
 
 // ================= STOP =================
@@ -231,6 +230,8 @@ stopBtn.onclick = () => {
   levelSelect.disabled = false;
 
   startBtn.classList.remove("running");
+  message.style.display = "block";
+message.textContent = "Pulsa Empezar";
 };
 
 // ================= FIN =================
@@ -248,6 +249,8 @@ function endGame() {
   levelSelect.disabled = false;
 
   startBtn.classList.remove("running");
+  message.style.display = "block";
+message.textContent = "¡Juego terminado!";
 }
 
 // ================= MÚSICA =================
@@ -288,4 +291,12 @@ proToggle.onchange = () => {
 
   const words = generateLevel(pair, level);
   createGrid(words);
+};
+
+// ================= INIT =================
+window.onload = () => {
+  const level = parseInt(levelSelect.value);
+  levelDisplay.textContent = level + "/5";
+
+  grid.innerHTML = ""; 
 };
