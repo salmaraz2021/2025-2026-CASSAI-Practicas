@@ -5,8 +5,8 @@ body {
   background: linear-gradient(135deg, #b7e08a);
   text-align: center;
 
-  height: 100vh;           /* ✅ evita scroll */
-  overflow: hidden;        /* ✅ todo en una pantalla */
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* ================= CONTENEDOR ================= */
@@ -43,13 +43,13 @@ body {
   color: #555;
 }
 
-/* ================= INFO (UNA SOLA CAJA) ================= */
+/* ================= INFO ================= */
 .info {
   display: flex;
   justify-content: space-around;
   align-items: center;
 
-  background: rgba(255,255,255,0.5);;
+  background: rgba(255,255,255,0.5);
   padding: 10px;
   border-radius: 15px;
   margin-bottom: 10px;
@@ -60,7 +60,7 @@ body {
   font-size: 14px;
 }
 
-/* ================= LAYOUT PRINCIPAL ================= */
+/* ================= MAIN ================= */
 .main {
   flex: 1;
   display: flex;
@@ -78,7 +78,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background: rgba(255,255,255,0.5); /* 👈 MISMO COLOR */
+  background: rgba(255,255,255,0.5);
   padding: 10px;
   border-radius: 15px;
   align-self: flex-start;
@@ -90,6 +90,7 @@ body {
   padding: 8px;
   border-radius: 12px;
 }
+
 .box h3 {
   font-size: 14px;
   margin: 5px 0;
@@ -114,8 +115,6 @@ body {
 }
 
 /* ================= CONTROLES ================= */
-.controls select,
-.controls button,
 .sidebar select,
 .sidebar button {
   width: 100%;
@@ -138,36 +137,33 @@ button {
   transition: 0.2s;
 }
 
-/* HOVER */
 #startBtn:hover,
 #stopBtn:hover {
   background: gray;
   color: white;
 }
 
-/* ACTIVE (cuando se pulsa) */
 #startBtn:active,
 #stopBtn:active {
   background: black;
   color: white;
 }
 
-#startBtn.running,
-#stopBtn.running {
+#startBtn.pressed {
   background: black;
   color: white;
 }
 
-/* ================= CONTENIDO ================= */
+/* ================= CONTENT ================= */
 .content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start !important;
   align-items: center;
   position: relative;
   padding-top: 20px;
 }
+
 /* ================= GRID ================= */
 .grid {
   display: grid;
@@ -180,7 +176,7 @@ button {
   margin-top: 40px;
 }
 
-/* ================= TARJETAS ================= */
+/* ================= CARDS ================= */
 .card {
   background: linear-gradient(#7a4d2f, #b07a5b);
   border-radius: 20px;
@@ -196,24 +192,23 @@ button {
   padding: 20px;
 }
 
-/* IMÁGENES MÁS PEQUEÑAS PARA QUE TODO QUEPA */
 .card img {
   width: 90px;
   height: 90px;
   object-fit: contain;
 }
 
-/* ================= ACTIVA ================= */
+/* ================= ACTIVE ================= */
 .active {
   border: 4px solid red;
   transform: scale(1.05);
   box-shadow: 0 0 15px red;
 }
 
-/* ================= MENSAJE ================= */
+/* ================= MESSAGE ================= */
 #message {
   position: absolute;
-  top: 30% !important;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
 
@@ -224,144 +219,60 @@ button {
   pointer-events: none;
 }
 
-/* ================= BOTÓN MÚSICA ================= */
-#musicBtn {
-  background: #e0e0e0;
-  border-radius: 10px;
-  padding: 8px;
-}
-
-/* ================= AUDIO / LOG ================= */
-#log {
-  background: #eee;
-  border-radius: 10px;
-  padding: 8px;
-  font-size: 11px;
-  height: 60px;
-  overflow-y: auto;
-}
-
+/* ================= AUDIO ================= */
 audio {
   width: 100%;
   margin-top: 5px;
 }
+
+/* ================= LAYOUT ================= */
 .game-body {
   flex: 1;
   display: flex;
-  gap: 15px;
-}
-
-#proBtn {
-  background: white;
-  color: black;
-  border-radius: 12px;
-  padding: 8px;
-  width: 100%;
-  margin-top: 8px;
-  transition: 0.2s;
-  border: none;
-  cursor: pointer;
-}
-
-#proBtn:hover {
-  background: gray;
-  color: white;
-}
-
-#proBtn.active {
-  background: black;
-  color: white;
-}
-
-#startBtn.pressed {
-  background: black;
-  color: white;
-}
-
-.game-body {
-  flex: 1;
-  display: flex;        /* 🔥 horizontal */
-  flex-direction: row;  /* 🔥 sidebar izquierda, contenido derecha */
+  flex-direction: row;
   gap: 20px;
 }
 
-/* ================= INSTRUCCIONES OVERLAY ================= */
+/* ================= INSTRUCCIONES (PANCARTA FINAL) ================= */
+
 .instructions {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+  position: fixed;
+  top: 50%;
+  right: 50%;
 
-  width: 350px;
-  z-index: 999;
-  display: none;
-}
+  width: 380px;
 
-/* caja principal */
-.instructions-box {
-  background: rgba(255,255,255,0.9);
-  border-radius: 15px;
+  background: linear-gradient(135deg, #b7e08a); /* mismo fondo */
+  border: 5px solid white; /* margen blanco */
+
+  border-radius: 20px;
   padding: 15px;
 
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  display: none;
+  z-index: 999;
 }
 
-/* título */
+.instructions-box {
+  background: rgba(255,255,255,0.7); /* blanco translúcido */
+  border-radius: 15px;
+  padding: 15px;
+  position: relative;
+}
+
 .instructions-box h2 {
   margin: 0 0 10px 0;
-  font-size: 18px;
 }
 
-/* texto JUSTIFICADO y que encaje */
 .instructions-box p {
-  font-size: 13px;
   text-align: justify;
+  font-size: 13px;
   margin: 0;
 }
 
-/* botón cerrar */
 .close-instructions {
   position: absolute;
   top: 8px;
   right: 10px;
   cursor: pointer;
   font-weight: bold;
-}
-
-/* cuadrado interior blanco transparente */
-.instructions-box::before {
-  content: "";
-  position: absolute;
-  width: 80%;
-  height: 80%;
-  background: rgba(255,255,255,0.7);
-  border-radius: 15px;
-  z-index: 1;
-}
-
-.instructions-box h2,
-.instructions-box p,
-.instructions-box button {
-  position: relative;
-  z-index: 2;
-}
-
-.instructions-box h2 {
-  margin-top: 0;
-}
-
-.instructions-box button {
-  margin-top: 15px;
-  padding: 8px 15px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
-.close-instructions {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: bold;
-  z-index: 3;
 }
