@@ -185,8 +185,8 @@ button {
   background: linear-gradient(#7a4d2f, #b07a5b);
   border-radius: 20px;
 
-  width: 150px;   
-  height: 150px; 
+  width: 120px;   
+  height: 120px; 
 
   display: flex;
   flex-direction: column;
@@ -198,8 +198,8 @@ button {
 
 /* IMÁGENES MÁS PEQUEÑAS PARA QUE TODO QUEPA */
 .card img {
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   object-fit: contain;
 }
 
@@ -217,7 +217,7 @@ button {
   left: 50%;
   transform: translate(-50%, -50%);
 
-  font-size: 32px;
+  font-size: 160px;
   font-weight: bold;
   color: rgba(0,0,0,0.4);
 
@@ -272,6 +272,12 @@ audio {
   background: black;
   color: white;
 }
+
+#startBtn.pressed {
+  background: black;
+  color: white;
+}
+
 .game-body {
   flex: 1;
   display: flex;        /* 🔥 horizontal */

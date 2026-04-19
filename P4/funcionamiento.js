@@ -17,12 +17,10 @@ let proMode = false;
 
 const recordAudioEl = document.getElementById("recordAudio");
 const playerEl = document.getElementById("player");
-const logEl = document.getElementById("log");
 
 let playing = false;
 let musicOn = true;
 
-// ✅ VELOCIDAD ORIGINAL (NO TOCADA)
 const speedLevels = [1200, 1000, 800, 600, 450];
 
 const crono = new Crono(timeDisplay);
@@ -47,14 +45,6 @@ const categories = {
   ]
 };
 
-// ================= PRELOAD =================
-function preloadImages() {
-  Object.values(categories).flat().forEach(item => {
-    const img = new Image();
-    img.src = item.img; // 🔥 arreglado
-  });
-}
-
 // ================= GRID =================
 function createGrid(items) {
   grid.innerHTML = "";
@@ -64,9 +54,12 @@ function createGrid(items) {
     div.classList.add("card");
 
     const img = document.createElement("img");
-    img.src = item.img; // 🔥 arreglado
+
+    // 🔥 modo pro = SOLO imagenes
+    img.src = item.img;
     div.appendChild(img);
 
+    // 🔥 modo normal = imagen + palabra
     if (!proMode) {
       const text = document.createElement("p");
       text.textContent = item.word.toUpperCase();
@@ -77,22 +70,7 @@ function createGrid(items) {
   });
 }
 
-// ================= NIVELES =================
-function generateLevel(pair, level) {
-  let [a, b] = categories[pair];
-  let arr = [];
-
-  if (level === 1) arr = [a,a,a,a,b,b,b,b];
-  else if (level === 2) arr = [a,b,a,b,a,b,a,b];
-  else arr = shuffle([a,a,a,a,b,b,b,b]);
-
-  return arr;
-}
-
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
-
+// ================= UTIL =================
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -120,7 +98,8 @@ async function playGame(startLevel) {
 
     levelDisplay.textContent = lvl + "/5";
 
-    // 🔥 cuenta atrás en cada nivel
+    grid.innerHTML = "";
+
     await countdown();
 
     let pair = pairSelect.value;
@@ -149,9 +128,12 @@ startBtn.onclick = () => {
 
   playing = true;
 
-  // 🔥 bloquear TODO
+  // 🔥 botón presionado
+  startBtn.classList.add("pressed");
+
   startBtn.disabled = true;
   stopBtn.disabled = false;
+
   pairSelect.disabled = true;
   levelSelect.disabled = true;
   proToggle.disabled = true;
@@ -177,12 +159,13 @@ startBtn.onclick = () => {
 stopBtn.onclick = () => {
   playing = false;
 
+  startBtn.classList.remove("pressed");
+
   crono.stop();
   music.pause();
 
   statusDisplay.textContent = "Detenido";
 
-  // 🔥 desbloquear TODO
   startBtn.disabled = false;
   pairSelect.disabled = false;
   levelSelect.disabled = false;
@@ -200,6 +183,8 @@ stopBtn.onclick = () => {
 function endGame() {
   playing = false;
 
+  startBtn.classList.remove("pressed");
+
   crono.stop();
   music.pause();
 
@@ -214,32 +199,9 @@ function endGame() {
 
   message.style.display = "block";
   message.textContent = "¡Juego terminado!";
+
+  grid.innerHTML = "";
 }
-
-// ================= MÚSICA =================
-musicToggle.onchange = () => {
-  musicOn = musicToggle.checked;
-
-  if (!musicOn) {
-    music.pause();
-  } else if (playing) {
-    music.play();
-  }
-};
-
-// ================= SELECT =================
-pairSelect.onchange = () => {
-  if (playing) return;
-  grid.innerHTML = "";
-  message.style.display = "block";
-  message.textContent = "Pulsa Empezar";
-};
-
-levelSelect.onchange = () => {
-  if (playing) return;
-  levelDisplay.textContent = levelSelect.value + "/5";
-  grid.innerHTML = "";
-};
 
 // ================= MODO PRO =================
 proToggle.onchange = () => {
@@ -252,14 +214,4 @@ proToggle.onchange = () => {
 
   const words = generateLevel(pair, level);
   createGrid(words);
-};
-
-// ================= INIT =================
-window.onload = () => {
-  preloadImages();
-
-  const level = parseInt(levelSelect.value);
-  levelDisplay.textContent = level + "/5";
-
-  grid.innerHTML = "";
 };
