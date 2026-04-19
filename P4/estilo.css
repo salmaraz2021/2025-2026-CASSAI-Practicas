@@ -185,8 +185,8 @@ button {
   background: linear-gradient(#7a4d2f, #b07a5b);
   border-radius: 20px;
 
-  width: 180px;   
-  height: 180px; 
+  width: 150px;   
+  height: 150px; 
 
   display: flex;
   flex-direction: column;
@@ -198,8 +198,8 @@ button {
 
 /* IMÁGENES MÁS PEQUEÑAS PARA QUE TODO QUEPA */
 .card img {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   object-fit: contain;
 }
 
