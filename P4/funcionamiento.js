@@ -27,22 +27,18 @@ music.volume = 0.5;
 
 musicToggle.onchange = () => {
   musicOn = musicToggle.checked;
-
   if (!musicOn) music.pause();
   else music.play().catch(() => {});
 };
 
-// grabar → parar música
 recordAudioEl.onchange = () => {
   if (recordAudioEl.checked) music.pause();
 };
 
-// reproducir audio → parar música
 playerEl.onplay = () => {
   music.pause();
 };
 
-// terminar audio → vuelve música
 playerEl.onended = () => {
   if (musicOn) music.play().catch(() => {});
 };
@@ -203,6 +199,7 @@ stopBtn.onclick = () => {
 
   statusDisplay.textContent = "Detenido";
 
+  // 🔥 IMPORTANTE: desbloquear TODO
   startBtn.disabled = false;
   pairSelect.disabled = false;
   levelSelect.disabled = false;
@@ -251,12 +248,11 @@ proToggle.onchange = () => {
   message.textContent = "Pulsa Empezar";
 };
 
+// ================= 🔥 INICIO =================
 window.addEventListener("load", () => {
-  // nivel inicial
   const startLevel = parseInt(levelSelect.value);
   levelDisplay.textContent = startLevel + "/5";
 
-  // mostrar instrucciones
   const ins = document.getElementById("instructions");
   if (ins) ins.style.display = "flex";
 });
