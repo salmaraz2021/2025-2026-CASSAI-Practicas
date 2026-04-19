@@ -35,12 +35,17 @@ recordAudioEl.onchange = () => {
   if (recordAudioEl.checked) music.pause();
 };
 
-playerEl.onplay = () => {
-  music.pause();
-};
+playerEl.onplay = () => music.pause();
 
 playerEl.onended = () => {
   if (musicOn) music.play().catch(() => {});
+};
+
+// ================= SEGURIDAD CRONO =================
+const cronoSafe = (window.crono) ? window.crono : {
+  reset: () => {},
+  start: () => {},
+  stop: () => {}
 };
 
 // ================= CATEGORÍAS =================
@@ -66,14 +71,9 @@ const categories = {
 // ================= GENERADOR =================
 function generateLevel(pair, level) {
   let [a, b] = categories[pair];
-
-  let arr = [];
-
-  if (level === 1) arr = [a,a,a,a,b,b,b,b];
-  else if (level === 2) arr = [a,b,a,b,a,b,a,b];
-  else arr = shuffle([a,a,a,a,b,b,b,b]);
-
-  return arr;
+  if (level === 1) return [a,a,a,a,b,b,b,b];
+  if (level === 2) return [a,b,a,b,a,b,a,b];
+  return shuffle([a,a,a,a,b,b,b,b]);
 }
 
 function shuffle(array) {
@@ -84,7 +84,7 @@ function shuffle(array) {
 function createGrid(items) {
   grid.innerHTML = "";
 
-  if (!items || items.length === 0) return;
+  if (!items) return;
 
   items.forEach(item => {
     const div = document.createElement("div");
@@ -106,7 +106,7 @@ function createGrid(items) {
 
 // ================= UTIL =================
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise(r => setTimeout(r, ms));
 }
 
 // ================= COUNTDOWN =================
@@ -118,7 +118,6 @@ async function countdown() {
     await sleep(600);
   }
 
-  message.textContent = "";
   message.style.display = "none";
 }
 
@@ -131,8 +130,6 @@ async function playGame(startLevel) {
     if (!playing) return;
 
     levelDisplay.textContent = lvl + "/5";
-
-    grid.innerHTML = "";
 
     await countdown();
 
@@ -162,8 +159,6 @@ startBtn.onclick = () => {
 
   playing = true;
 
-  startBtn.classList.add("pressed");
-
   startBtn.disabled = true;
   stopBtn.disabled = false;
 
@@ -173,12 +168,10 @@ startBtn.onclick = () => {
   musicToggle.disabled = true;
   recordAudioEl.disabled = true;
 
-  message.style.display = "none";
-
   statusDisplay.textContent = "Jugando";
 
-  crono.reset();
-  crono.start();
+  cronoSafe.reset();
+  cronoSafe.start();
 
   let startLevel = parseInt(levelSelect.value);
   levelDisplay.textContent = startLevel + "/5";
@@ -192,20 +185,19 @@ startBtn.onclick = () => {
 stopBtn.onclick = () => {
   playing = false;
 
-  startBtn.classList.remove("pressed");
-
-  crono.stop();
-  music.pause();
-
-  statusDisplay.textContent = "Detenido";
-
-  // 🔥 IMPORTANTE: desbloquear TODO
   startBtn.disabled = false;
+  stopBtn.disabled = true;
+
   pairSelect.disabled = false;
   levelSelect.disabled = false;
   proToggle.disabled = false;
   musicToggle.disabled = false;
   recordAudioEl.disabled = false;
+
+  statusDisplay.textContent = "Detenido";
+
+  cronoSafe.stop();
+  music.pause();
 
   message.style.display = "block";
   message.textContent = "Pulsa Empezar";
@@ -217,19 +209,19 @@ stopBtn.onclick = () => {
 function endGame() {
   playing = false;
 
-  startBtn.classList.remove("pressed");
-
-  crono.stop();
-  music.pause();
-
-  statusDisplay.textContent = "Finalizado";
-
   startBtn.disabled = false;
+  stopBtn.disabled = true;
+
   pairSelect.disabled = false;
   levelSelect.disabled = false;
   proToggle.disabled = false;
   musicToggle.disabled = false;
   recordAudioEl.disabled = false;
+
+  statusDisplay.textContent = "Finalizado";
+
+  cronoSafe.stop();
+  music.pause();
 
   message.style.display = "block";
   message.textContent = "¡Juego terminado!";
@@ -237,7 +229,7 @@ function endGame() {
   grid.innerHTML = "";
 }
 
-// ================= PRO MODE =================
+// ================= PRO =================
 proToggle.onchange = () => {
   if (playing) return;
 
@@ -248,9 +240,9 @@ proToggle.onchange = () => {
   message.textContent = "Pulsa Empezar";
 };
 
-// ================= 🔥 INICIO =================
+// ================= INICIO =================
 window.addEventListener("load", () => {
-  const startLevel = parseInt(levelSelect.value);
+  let startLevel = parseInt(levelSelect.value);
   levelDisplay.textContent = startLevel + "/5";
 
   const ins = document.getElementById("instructions");
@@ -259,5 +251,6 @@ window.addEventListener("load", () => {
 
 // cerrar instrucciones
 function closeInstructions() {
-  document.getElementById("instructions").style.display = "none";
+  const ins = document.getElementById("instructions");
+  if (ins) ins.style.display = "none";
 }
