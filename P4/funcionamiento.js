@@ -20,15 +20,13 @@ const playerEl = document.getElementById("player");
 
 let playing = false;
 
-// ================= 🎵 SOLO CAMBIO REAL (MÚSICA) =================
-
-// 🔥 música OFF inicial como pediste
+// 🔥 FIX 1: música OFF real al inicio (checkbox también)
 let musicOn = false;
+musicToggle.checked = false;
 
-// NO auto-play, respetando navegador
 music.volume = 0.5;
 
-// toggle música (NO toca lógica del juego)
+// toggle música
 musicToggle.onchange = () => {
   musicOn = musicToggle.checked;
 
@@ -39,23 +37,26 @@ musicToggle.onchange = () => {
   }
 };
 
-// ================= 🎤 AUDIO =================
-
-// cuando grabas → corta música
+// 🔥 FIX 2: grabar → parar música
 recordAudioEl.onchange = () => {
   if (recordAudioEl.checked) {
     music.pause();
   }
 };
 
-// cuando termina audio grabado → vuelve música si estaba ON
+// 🔥 FIX 3: reproducir audio → parar música
+playerEl.onplay = () => {
+  music.pause();
+};
+
+// 🔥 FIX 4: cuando termina audio → vuelve música
 playerEl.onended = () => {
-  if (musicOn && playing) {
+  if (musicOn) {
     music.play().catch(() => {});
   }
 };
 
-// ================= CATEGORÍAS (IGUAL) =================
+// ================= CATEGORÍAS =================
 const categories = {
   "cama-casa": [
     { word: "cama", img: "cama.webp" },
@@ -134,7 +135,7 @@ async function countdown() {
   message.style.display = "none";
 }
 
-// ================= JUEGO (NO TOCADO) =================
+// ================= JUEGO =================
 async function playGame(startLevel) {
   playing = true;
   statusDisplay.textContent = "Jugando";
@@ -168,7 +169,7 @@ async function playGame(startLevel) {
   endGame();
 }
 
-// ================= START (ORIGINAL RESTAURADO) =================
+// ================= START =================
 startBtn.onclick = () => {
   if (playing) return;
 
@@ -195,7 +196,6 @@ startBtn.onclick = () => {
   let startLevel = parseInt(levelSelect.value);
   levelDisplay.textContent = startLevel + "/5";
 
-  // 🔥 SOLO AÑADIDO: iniciar música si está ON
   if (musicOn) {
     music.play().catch(() => {});
   }
@@ -261,3 +261,14 @@ proToggle.onchange = () => {
   message.style.display = "block";
   message.textContent = "Pulsa Empezar";
 };
+
+// 🔥 FIX 5: mostrar instrucciones al inicio
+window.onload = () => {
+  const ins = document.getElementById("instructions");
+  if (ins) ins.style.display = "flex";
+};
+
+// 🔥 FIX 6: cerrar instrucciones
+function closeInstructions() {
+  document.getElementById("instructions").style.display = "none";
+}
