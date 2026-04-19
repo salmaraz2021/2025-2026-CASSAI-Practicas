@@ -1,11 +1,11 @@
 const grid = document.getElementById("grid");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
+
 const musicToggle = document.getElementById("musicToggle");
 const music = document.getElementById("music");
 
 const levelDisplay = document.getElementById("level");
-const timeDisplay = document.getElementById("time");
 const statusDisplay = document.getElementById("status");
 const message = document.getElementById("message");
 
@@ -13,11 +13,12 @@ const pairSelect = document.getElementById("pairSelect");
 const levelSelect = document.getElementById("levelSelect");
 
 const proToggle = document.getElementById("proToggle");
+
 const recordAudioEl = document.getElementById("recordAudio");
 const playerEl = document.getElementById("player");
 
-let proMode = false;
 let playing = false;
+let proMode = false;
 
 // ================= MÚSICA =================
 let musicOn = false;
@@ -30,24 +31,17 @@ musicToggle.onchange = () => {
   else music.pause();
 };
 
-// grabación pausa música
 recordAudioEl.onchange = () => {
   if (recordAudioEl.checked) music.pause();
 };
 
-// reproducir audio pausa música
-playerEl.onplay = () => {
-  music.pause();
-};
+playerEl.onplay = () => music.pause();
 
-// fin audio → vuelve música
 playerEl.onended = () => {
-  if (musicOn && playing) {
-    music.play().catch(() => {});
-  }
+  if (musicOn && playing) music.play().catch(() => {});
 };
 
-// ================= CATEGORÍAS =================
+// ================= DATOS =================
 const categories = {
   "cama-casa": [
     { word: "cama", img: "cama.webp" },
@@ -67,18 +61,11 @@ const categories = {
   ]
 };
 
-// ================= GENERADOR =================
-function generateLevel(pair, level) {
-  let [a, b] = categories[pair];
+// ================= UTIL =================
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
-  if (level === 1) return [a,a,a,a,b,b,b,b];
-  if (level === 2) return [a,b,a,b,a,b,a,b];
-
-  return shuffle([a,a,a,a,b,b,b,b]);
-}
-
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
+function shuffle(a) {
+  return a.sort(() => Math.random() - 0.5);
 }
 
 // ================= GRID =================
@@ -97,17 +84,14 @@ function createGrid(items) {
     div.appendChild(img);
 
     if (!proMode) {
-      const text = document.createElement("p");
-      text.textContent = item.word.toUpperCase();
-      div.appendChild(text);
+      const p = document.createElement("p");
+      p.textContent = item.word.toUpperCase();
+      div.appendChild(p);
     }
 
     grid.appendChild(div);
   });
 }
-
-// ================= UTIL =================
-const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 // ================= COUNTDOWN =================
 async function countdown() {
@@ -121,7 +105,16 @@ async function countdown() {
   message.style.display = "none";
 }
 
-// ================= JUEGO =================
+// ================= GAME =================
+function generate(pair, level) {
+  const [a, b] = categories[pair];
+
+  if (level === 1) return [a,a,a,a,b,b,b,b];
+  if (level === 2) return [a,b,a,b,a,b,a,b];
+
+  return shuffle([a,a,a,a,b,b,b,b]);
+}
+
 async function playGame(startLevel) {
   playing = true;
   statusDisplay.textContent = "Jugando";
@@ -135,14 +128,10 @@ async function playGame(startLevel) {
 
     await countdown();
 
-    const pair = pairSelect.value;
-    const words = generateLevel(pair, lvl);
-
+    const words = generate(pairSelect.value, lvl);
     createGrid(words);
 
     const cards = document.querySelectorAll(".card");
-
-    const speeds = [900, 750, 600, 450, 300];
 
     for (let i = 0; i < cards.length; i++) {
       if (!playing) return;
@@ -150,7 +139,7 @@ async function playGame(startLevel) {
       cards.forEach(c => c.classList.remove("active"));
       cards[i].classList.add("active");
 
-      await sleep(speeds[lvl - 1]);
+      await sleep(700);
     }
   }
 
@@ -192,8 +181,6 @@ stopBtn.onclick = () => {
   crono.stop();
   music.pause();
 
-  statusDisplay.textContent = "En espera";
-
   startBtn.disabled = false;
   stopBtn.disabled = true;
 
@@ -206,6 +193,8 @@ stopBtn.onclick = () => {
   grid.innerHTML = "";
   message.style.display = "block";
   message.textContent = "Pulsa para empezar";
+
+  statusDisplay.textContent = "En espera";
 };
 
 // ================= FIN =================
@@ -214,8 +203,6 @@ function endGame() {
 
   crono.stop();
   music.pause();
-
-  statusDisplay.textContent = "Finalizado";
 
   startBtn.disabled = false;
   stopBtn.disabled = true;
@@ -229,6 +216,8 @@ function endGame() {
   grid.innerHTML = "";
   message.style.display = "block";
   message.textContent = "¡Juego terminado!";
+
+  statusDisplay.textContent = "Finalizado";
 }
 
 // ================= PRO =================
@@ -241,18 +230,3 @@ proToggle.onchange = () => {
   message.style.display = "block";
   message.textContent = "Pulsa Empezar";
 };
-
-// ================= INICIO =================
-window.addEventListener("load", () => {
-  const startLevel = parseInt(levelSelect.value);
-  levelDisplay.textContent = startLevel + "/5";
-
-  const ins = document.getElementById("instructions");
-  if (ins) ins.style.display = "flex";
-});
-
-// cerrar instrucciones
-function closeInstructions() {
-  const ins = document.getElementById("instructions");
-  if (ins) ins.style.display = "none";
-}
