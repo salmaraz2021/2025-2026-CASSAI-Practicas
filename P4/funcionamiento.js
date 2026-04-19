@@ -272,3 +272,18 @@ window.onload = () => {
 function closeInstructions() {
   document.getElementById("instructions").style.display = "none";
 }
+
+// 🔥 mostrar nivel inicial correctamente
+window.addEventListener("load", () => {
+  const startLevel = parseInt(levelSelect.value);
+  levelDisplay.textContent = startLevel + "/5";
+
+  // mostrar pancarta (NO pantalla completa)
+  const ins = document.getElementById("instructions");
+  if (ins) ins.style.display = "block";
+});
+
+// cerrar pancarta
+function closeInstructions() {
+  document.getElementById("instructions").style.display = "none";
+}
