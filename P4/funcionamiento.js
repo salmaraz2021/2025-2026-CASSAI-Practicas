@@ -230,3 +230,9 @@ proToggle.onchange = () => {
   message.style.display = "block";
   message.textContent = "Pulsa Empezar";
 };
+
+// ================= INSTRUCCIONES =================
+window.closeInstructions = function () {
+  const ins = document.getElementById("instructions");
+  if (ins) ins.style.display = "none";
+};
