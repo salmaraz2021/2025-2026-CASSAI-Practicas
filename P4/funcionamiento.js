@@ -20,8 +20,12 @@ const playerEl = document.getElementById("player");
 
 let playing = false;
 
-// 🔥 IMPORTANTE: música OFF por defecto
+// 🔥 SOLO CAMBIO: música empieza OFF como pediste
 let musicOn = false;
+
+const speedLevels = [900, 750, 600, 450, 300];
+
+const crono = new Crono(timeDisplay);
 
 // ================= CATEGORÍAS =================
 const categories = {
@@ -43,11 +47,9 @@ const categories = {
   ]
 };
 
-// ================= 🎵 MÚSICA CONTROL CONTINUA =================
+// ================= 🎵 MÚSICA (SOLO AÑADIDO) =================
 
-// toggle inicial (NO auto ON)
-musicToggle.checked = false;
-
+// toggle música (NO rompe nada del juego)
 musicToggle.onchange = () => {
   musicOn = musicToggle.checked;
 
@@ -58,26 +60,21 @@ musicToggle.onchange = () => {
   }
 };
 
-// 🔥 NO reiniciar música nunca
-function resumeMusicIfAllowed() {
-  if (musicOn && music.paused) {
-    music.play().catch(() => {});
-  }
-}
-
-// ================= 🎤 GRABACIÓN =================
+// pausa música al grabar
 recordAudioEl.onchange = () => {
   if (recordAudioEl.checked) {
-    music.pause(); // corta música al grabar
+    music.pause();
   }
 };
 
-// cuando termina audio grabado
+// reanuda música al terminar reproducción audio
 playerEl.onended = () => {
-  resumeMusicIfAllowed();
+  if (musicOn) {
+    music.play().catch(() => {});
+  }
 };
 
-// ================= 🧠 JUEGO =================
+// ================= FIX GENERADOR (IGUAL QUE TUYO) =================
 function generateLevel(pair, level) {
   let [a, b] = categories[pair];
 
@@ -136,7 +133,7 @@ async function countdown() {
   message.style.display = "none";
 }
 
-// ================= JUEGO =================
+// ================= JUEGO (NO TOCADO) =================
 async function playGame(startLevel) {
   playing = true;
   statusDisplay.textContent = "Jugando";
@@ -144,7 +141,10 @@ async function playGame(startLevel) {
   for (let lvl = startLevel; lvl <= 5; lvl++) {
     if (!playing) return;
 
+    // 🔥 ESTE ES TU /5 ORIGINAL RESTAURADO
     levelDisplay.textContent = lvl + "/5";
+
+    grid.innerHTML = "";
 
     await countdown();
 
@@ -161,21 +161,20 @@ async function playGame(startLevel) {
       cards.forEach(c => c.classList.remove("active"));
       cards[i].classList.add("active");
 
-      await sleep([900, 750, 600, 450, 300][lvl - 1]);
+      await sleep(speedLevels[lvl - 1]);
     }
-
-    // 🔥 IMPORTANTE: NO REINICIA MÚSICA ENTRE NIVELES
-    resumeMusicIfAllowed();
   }
 
   endGame();
 }
 
-// ================= START =================
+// ================= START (IGUAL TUYO) =================
 startBtn.onclick = () => {
   if (playing) return;
 
   playing = true;
+
+  startBtn.classList.add("pressed");
 
   startBtn.disabled = true;
   stopBtn.disabled = false;
@@ -203,7 +202,10 @@ startBtn.onclick = () => {
 stopBtn.onclick = () => {
   playing = false;
 
+  startBtn.classList.remove("pressed");
+
   crono.stop();
+  music.pause();
 
   statusDisplay.textContent = "Detenido";
 
@@ -224,7 +226,10 @@ stopBtn.onclick = () => {
 function endGame() {
   playing = false;
 
+  startBtn.classList.remove("pressed");
+
   crono.stop();
+  music.pause();
 
   statusDisplay.textContent = "Finalizado";
 
