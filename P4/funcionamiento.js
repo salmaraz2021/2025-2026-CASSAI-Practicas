@@ -20,14 +20,42 @@ const playerEl = document.getElementById("player");
 
 let playing = false;
 
-// 🔥 SOLO CAMBIO: música empieza OFF como pediste
+// ================= 🎵 SOLO CAMBIO REAL (MÚSICA) =================
+
+// 🔥 música OFF inicial como pediste
 let musicOn = false;
 
-const speedLevels = [900, 750, 600, 450, 300];
+// NO auto-play, respetando navegador
+music.volume = 0.5;
 
-const crono = new Crono(timeDisplay);
+// toggle música (NO toca lógica del juego)
+musicToggle.onchange = () => {
+  musicOn = musicToggle.checked;
 
-// ================= CATEGORÍAS =================
+  if (!musicOn) {
+    music.pause();
+  } else {
+    music.play().catch(() => {});
+  }
+};
+
+// ================= 🎤 AUDIO =================
+
+// cuando grabas → corta música
+recordAudioEl.onchange = () => {
+  if (recordAudioEl.checked) {
+    music.pause();
+  }
+};
+
+// cuando termina audio grabado → vuelve música si estaba ON
+playerEl.onended = () => {
+  if (musicOn && playing) {
+    music.play().catch(() => {});
+  }
+};
+
+// ================= CATEGORÍAS (IGUAL) =================
 const categories = {
   "cama-casa": [
     { word: "cama", img: "cama.webp" },
@@ -47,34 +75,7 @@ const categories = {
   ]
 };
 
-// ================= 🎵 MÚSICA (SOLO AÑADIDO) =================
-
-// toggle música (NO rompe nada del juego)
-musicToggle.onchange = () => {
-  musicOn = musicToggle.checked;
-
-  if (!musicOn) {
-    music.pause();
-  } else {
-    music.play().catch(() => {});
-  }
-};
-
-// pausa música al grabar
-recordAudioEl.onchange = () => {
-  if (recordAudioEl.checked) {
-    music.pause();
-  }
-};
-
-// reanuda música al terminar reproducción audio
-playerEl.onended = () => {
-  if (musicOn) {
-    music.play().catch(() => {});
-  }
-};
-
-// ================= FIX GENERADOR (IGUAL QUE TUYO) =================
+// ================= GENERADOR =================
 function generateLevel(pair, level) {
   let [a, b] = categories[pair];
 
@@ -141,7 +142,6 @@ async function playGame(startLevel) {
   for (let lvl = startLevel; lvl <= 5; lvl++) {
     if (!playing) return;
 
-    // 🔥 ESTE ES TU /5 ORIGINAL RESTAURADO
     levelDisplay.textContent = lvl + "/5";
 
     grid.innerHTML = "";
@@ -161,14 +161,14 @@ async function playGame(startLevel) {
       cards.forEach(c => c.classList.remove("active"));
       cards[i].classList.add("active");
 
-      await sleep(speedLevels[lvl - 1]);
+      await sleep([900, 750, 600, 450, 300][lvl - 1]);
     }
   }
 
   endGame();
 }
 
-// ================= START (IGUAL TUYO) =================
+// ================= START (ORIGINAL RESTAURADO) =================
 startBtn.onclick = () => {
   if (playing) return;
 
@@ -182,8 +182,8 @@ startBtn.onclick = () => {
   pairSelect.disabled = true;
   levelSelect.disabled = true;
   proToggle.disabled = true;
-  musicToggle.disabled = false;
-  recordAudioEl.disabled = false;
+  musicToggle.disabled = true;
+  recordAudioEl.disabled = true;
 
   message.style.display = "none";
 
@@ -194,6 +194,11 @@ startBtn.onclick = () => {
 
   let startLevel = parseInt(levelSelect.value);
   levelDisplay.textContent = startLevel + "/5";
+
+  // 🔥 SOLO AÑADIDO: iniciar música si está ON
+  if (musicOn) {
+    music.play().catch(() => {});
+  }
 
   playGame(startLevel);
 };
@@ -246,7 +251,7 @@ function endGame() {
   grid.innerHTML = "";
 }
 
-// ================= PRO =================
+// ================= PRO MODE =================
 proToggle.onchange = () => {
   if (playing) return;
 
