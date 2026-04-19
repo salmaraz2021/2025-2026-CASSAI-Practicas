@@ -31,15 +31,12 @@ musicToggle.onchange = () => {
   else music.pause();
 };
 
-// grabar → pausa música
 recordAudioEl.onchange = () => {
   if (recordAudioEl.checked) music.pause();
 };
 
-// reproducir audio → pausa música
 playerEl.onplay = () => music.pause();
 
-// fin audio → reanuda música si estaba activa
 playerEl.onended = () => {
   if (musicOn && playing) music.play().catch(() => {});
 };
@@ -151,22 +148,21 @@ startBtn.onclick = () => {
 
   playing = true;
 
+  // 🔥 SOLO bloquear lo necesario
   startBtn.disabled = true;
   stopBtn.disabled = false;
-
-  pairSelect.disabled = true;
-  levelSelect.disabled = true;
 
   statusDisplay.textContent = "Jugando";
 
   crono.reset();
   crono.start();
 
-  levelDisplay.textContent = levelSelect.value + "/5";
+  const startLevel = parseInt(levelSelect.value);
+  levelDisplay.textContent = startLevel + "/5";
 
   if (musicOn) music.play().catch(() => {});
 
-  playGame(parseInt(levelSelect.value));
+  playGame(startLevel);
 };
 
 // ================= STOP =================
@@ -179,8 +175,12 @@ stopBtn.onclick = () => {
   startBtn.disabled = false;
   stopBtn.disabled = false;
 
+  // 🔥 IMPORTANTE: volver a habilitar TODO
   pairSelect.disabled = false;
   levelSelect.disabled = false;
+  proToggle.disabled = false;
+  musicToggle.disabled = false;
+  recordAudioEl.disabled = false;
 
   statusDisplay.textContent = "Detenido";
 
@@ -201,6 +201,9 @@ function endGame() {
 
   pairSelect.disabled = false;
   levelSelect.disabled = false;
+  proToggle.disabled = false;
+  musicToggle.disabled = false;
+  recordAudioEl.disabled = false;
 
   statusDisplay.textContent = "Finalizado";
 
@@ -209,7 +212,18 @@ function endGame() {
   message.textContent = "Juego terminado";
 }
 
-// ================= INSTRUCCIONES =================
+// ================= PRO =================
+proToggle.onchange = () => {
+  if (playing) return;
+
+  proMode = proToggle.checked;
+
+  grid.innerHTML = "";
+  message.style.display = "block";
+  message.textContent = "Pulsa Empezar";
+};
+
+// ================= INICIO =================
 window.addEventListener("load", () => {
   document.getElementById("instructions").style.display = "flex";
 });
