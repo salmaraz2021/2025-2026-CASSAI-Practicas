@@ -260,6 +260,8 @@ audio {
   padding: 15px;
 
   position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 .instructions-box::before {
   content: "";
@@ -276,12 +278,17 @@ audio {
 .close-instructions {
   position: relative;
   z-index: 2;
+  max-width: 100%;
+  word-wrap: break-word;
 }
 
 /* texto */
 .instructions-box p {
+  padding: 20px; /* espacio dentro del cuadro blanco */
+  margin: 0;
+  line-height: 1.4;
   text-align: justify;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 /* botón X */
@@ -291,4 +298,32 @@ audio {
   right: 12px;
   cursor: pointer;
   font-weight: bold;
+}
+
+
+/* 🔥 asegurar que todo queda dentro */
+.instructions-box {
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* contenido bien contenido */
+.instructions-box h2,
+.instructions-box p {
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+/* 🔥 texto ajustado al cuadro interior */
+.instructions-box p {
+  padding: 20px; /* espacio dentro del cuadro blanco */
+  margin: 0;
+  line-height: 1.4;
+  text-align: justify;
+}
+
+/* título separado */
+.instructions-box h2 {
+  padding: 20px 20px 0 20px;
+  margin: 0;
 }
