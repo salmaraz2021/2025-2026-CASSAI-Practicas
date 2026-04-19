@@ -5,7 +5,6 @@ const musicToggle = document.getElementById("musicToggle");
 const music = document.getElementById("music");
 
 const levelDisplay = document.getElementById("level");
-const timeDisplay = document.getElementById("time");
 const statusDisplay = document.getElementById("status");
 const message = document.getElementById("message");
 
@@ -41,74 +40,6 @@ playerEl.onended = () => {
   if (musicOn && playing) music.play().catch(() => {});
 };
 
-// ================= CATEGORÍAS =================
-const categories = {
-  "cama-casa": [
-    { word: "cama", img: "cama.webp" },
-    { word: "casa", img: "casa.png" }
-  ],
-  "pato-gato": [
-    { word: "pato", img: "pato.webp" },
-    { word: "gato", img: "gato.png" }
-  ],
-  "queso-beso": [
-    { word: "queso", img: "queso.webp" },
-    { word: "beso", img: "beso.webp" }
-  ],
-  "luna-cuna": [
-    { word: "luna", img: "luna.png" },
-    { word: "cuna", img: "cuna.png" }
-  ]
-};
-
-// ================= GENERADOR =================
-function generateLevel(pair, level) {
-  let [a, b] = categories[pair];
-  if (level === 1) return [a,a,a,a,b,b,b,b];
-  if (level === 2) return [a,b,a,b,a,b,a,b];
-  return shuffle([a,a,a,a,b,b,b,b]);
-}
-
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
-
-// ================= GRID =================
-function createGrid(items) {
-  grid.innerHTML = "";
-
-  items.forEach(item => {
-    const div = document.createElement("div");
-    div.classList.add("card");
-
-    const img = document.createElement("img");
-    img.src = item.img;
-    div.appendChild(img);
-
-    if (!proMode) {
-      const text = document.createElement("p");
-      text.textContent = item.word.toUpperCase();
-      text.style.color = "white";
-      div.appendChild(text);
-    }
-
-    grid.appendChild(div);
-  });
-}
-
-// ================= UTIL =================
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-// ================= COUNTDOWN =================
-async function countdown() {
-  message.style.display = "block";
-  for (let i = 3; i > 0; i--) {
-    message.textContent = i;
-    await sleep(600);
-  }
-  message.style.display = "none";
-}
-
 // ================= JUEGO =================
 async function playGame(startLevel) {
   playing = true;
@@ -142,40 +73,55 @@ async function playGame(startLevel) {
   endGame();
 }
 
-// ================= START =================
+// ================= START (FIX IMPORTANTE) =================
 startBtn.onclick = () => {
   if (playing) return;
 
   playing = true;
 
-  // 🔥 SOLO bloquear lo necesario
   startBtn.disabled = true;
   stopBtn.disabled = false;
 
   statusDisplay.textContent = "Jugando";
 
-  crono.reset();
-  crono.start();
+  // 🔥 FIX CRONO (NO ROMPE SI NO EXISTE)
+  if (typeof crono !== "undefined") {
+    try {
+      crono.reset();
+      crono.start();
+    } catch (e) {
+      console.warn("Crono no disponible");
+    }
+  }
 
-  const startLevel = parseInt(levelSelect.value);
+  let startLevel = parseInt(levelSelect.value);
+  if (isNaN(startLevel) || startLevel < 1) startLevel = 1;
+
   levelDisplay.textContent = startLevel + "/5";
 
   if (musicOn) music.play().catch(() => {});
 
-  playGame(startLevel);
+  // 🔥 IMPORTANTE: dejar que arranque SIEMPRE
+  setTimeout(() => {
+    playGame(startLevel);
+  }, 50);
 };
 
 // ================= STOP =================
 stopBtn.onclick = () => {
   playing = false;
 
-  crono.stop();
+  if (typeof crono !== "undefined") {
+    try {
+      crono.stop();
+    } catch (e) {}
+  }
+
   music.pause();
 
   startBtn.disabled = false;
   stopBtn.disabled = false;
 
-  // 🔥 IMPORTANTE: volver a habilitar TODO
   pairSelect.disabled = false;
   levelSelect.disabled = false;
   proToggle.disabled = false;
@@ -193,7 +139,12 @@ stopBtn.onclick = () => {
 function endGame() {
   playing = false;
 
-  crono.stop();
+  if (typeof crono !== "undefined") {
+    try {
+      crono.stop();
+    } catch (e) {}
+  }
+
   music.pause();
 
   startBtn.disabled = false;
@@ -210,24 +161,4 @@ function endGame() {
   grid.innerHTML = "";
   message.style.display = "block";
   message.textContent = "Juego terminado";
-}
-
-// ================= PRO =================
-proToggle.onchange = () => {
-  if (playing) return;
-
-  proMode = proToggle.checked;
-
-  grid.innerHTML = "";
-  message.style.display = "block";
-  message.textContent = "Pulsa Empezar";
-};
-
-// ================= INICIO =================
-window.addEventListener("load", () => {
-  document.getElementById("instructions").style.display = "flex";
-});
-
-function closeInstructions() {
-  document.getElementById("instructions").style.display = "none";
 }
