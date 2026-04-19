@@ -162,3 +162,8 @@ function endGame() {
   message.style.display = "block";
   message.textContent = "Juego terminado";
 }
+
+function closeInstructions() {
+  const ins = document.getElementById("instructions");
+  if (ins) ins.style.display = "none";
+}

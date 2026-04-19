@@ -232,12 +232,9 @@ audio {
   left: 0;
   width: 100%;
   height: 100%;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
-  background: rgba(173, 216, 230, 0.9); /* fondo azul claro consistente */
   z-index: 9999;
 }
 
