@@ -12,11 +12,9 @@ const message = document.getElementById("message");
 const pairSelect = document.getElementById("pairSelect");
 const levelSelect = document.getElementById("levelSelect");
 
-// 🔥 MODO PRO (BOTÓN)
 const proToggle = document.getElementById("proToggle");
 let proMode = false;
 
-// 🎤 NUEVOS ELEMENTOS
 const recordAudioEl = document.getElementById("recordAudio");
 const playerEl = document.getElementById("player");
 const logEl = document.getElementById("log");
@@ -24,67 +22,10 @@ const logEl = document.getElementById("log");
 let playing = false;
 let musicOn = true;
 
+// ✅ VELOCIDAD ORIGINAL (NO TOCADA)
 const speedLevels = [1200, 1000, 800, 600, 450];
 
 const crono = new Crono(timeDisplay);
-
-// ================= AUDIO =================
-let mediaRecorder = null;
-let mediaStream = null;
-let audioChunks = [];
-let currentAudioUrl = null;
-
-function addLog(text) {
-  if (!logEl) return;
-  logEl.innerHTML += text + "<br>";
-  logEl.scrollTop = logEl.scrollHeight;
-}
-
-function cleanupAudioUrl() {
-  if (currentAudioUrl) {
-    URL.revokeObjectURL(currentAudioUrl);
-    currentAudioUrl = null;
-  }
-}
-
-async function startRecording() {
-  if (!recordAudioEl || !recordAudioEl.checked) return;
-
-  try {
-    mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-    audioChunks = [];
-    mediaRecorder = new MediaRecorder(mediaStream);
-
-    mediaRecorder.ondataavailable = (e) => {
-      if (e.data.size > 0) audioChunks.push(e.data);
-    };
-
-    mediaRecorder.onstop = () => {
-      cleanupAudioUrl();
-
-      const blob = new Blob(audioChunks, { type: "audio/webm" });
-      currentAudioUrl = URL.createObjectURL(blob);
-
-      playerEl.src = currentAudioUrl;
-
-      mediaStream.getTracks().forEach(track => track.stop());
-
-      addLog("Grabación lista");
-    };
-
-    mediaRecorder.start();
-    addLog("Grabando...");
-  } catch (err) {
-    addLog("Error micrófono: " + err.message);
-  }
-}
-
-function stopRecording() {
-  if (mediaRecorder && mediaRecorder.state !== "inactive") {
-    mediaRecorder.stop();
-  }
-}
 
 // ================= CATEGORÍAS =================
 const categories = {
@@ -106,21 +47,27 @@ const categories = {
   ]
 };
 
+// ================= PRELOAD =================
+function preloadImages() {
+  Object.values(categories).flat().forEach(item => {
+    const img = new Image();
+    img.src = item.img; // 🔥 arreglado
+  });
+}
+
 // ================= GRID =================
 function createGrid(items) {
   grid.innerHTML = "";
-
-  const isPro = proMode;
 
   items.forEach(item => {
     const div = document.createElement("div");
     div.classList.add("card");
 
     const img = document.createElement("img");
-    img.src = "img/" + item.img; 
+    img.src = item.img; // 🔥 arreglado
     div.appendChild(img);
 
-    if (!isPro) {
+    if (!proMode) {
       const text = document.createElement("p");
       text.textContent = item.word.toUpperCase();
       div.appendChild(text);
@@ -146,9 +93,21 @@ function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
 }
 
-// ================= UTIL =================
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// ================= CUENTA ATRÁS =================
+async function countdown() {
+  message.style.display = "block";
+
+  for (let i = 3; i > 0; i--) {
+    message.textContent = i;
+    await sleep(600);
+  }
+
+  message.textContent = "";
+  message.style.display = "none";
 }
 
 // ================= JUEGO =================
@@ -156,14 +115,13 @@ async function playGame(startLevel) {
   playing = true;
   statusDisplay.textContent = "Jugando";
 
-  await startRecording();
-
   for (let lvl = startLevel; lvl <= 5; lvl++) {
     if (!playing) return;
 
-    levelDisplay.textContent = lvl+ "/5";
-    message.textContent = "Prepárate...";
-    await sleep(1000);
+    levelDisplay.textContent = lvl + "/5";
+
+    // 🔥 cuenta atrás en cada nivel
+    await countdown();
 
     let pair = pairSelect.value;
     let words = generateLevel(pair, lvl);
@@ -178,8 +136,6 @@ async function playGame(startLevel) {
       cards.forEach(c => c.classList.remove("active"));
       cards[i].classList.add("active");
 
-      message.textContent = "";
-
       await sleep(speedLevels[lvl - 1]);
     }
   }
@@ -191,16 +147,20 @@ async function playGame(startLevel) {
 startBtn.onclick = () => {
   if (playing) return;
 
-  cleanupAudioUrl();
-  playerEl.removeAttribute("src");
-
   playing = true;
 
+  // 🔥 bloquear TODO
+  startBtn.disabled = true;
+  stopBtn.disabled = false;
   pairSelect.disabled = true;
   levelSelect.disabled = true;
+  proToggle.disabled = true;
+  musicToggle.disabled = true;
+  recordAudioEl.disabled = true;
+
+  message.style.display = "none";
 
   statusDisplay.textContent = "Jugando";
-  message.textContent = "Prepárate...";
 
   crono.reset();
   crono.start();
@@ -208,12 +168,9 @@ startBtn.onclick = () => {
   if (musicOn) music.play();
 
   let startLevel = parseInt(levelSelect.value);
-  levelDisplay.textContent = startLevel+ "/5";
+  levelDisplay.textContent = startLevel + "/5";
 
   playGame(startLevel);
-
-  startBtn.classList.add("running");
-  message.style.display = "none";
 };
 
 // ================= STOP =================
@@ -222,16 +179,21 @@ stopBtn.onclick = () => {
 
   crono.stop();
   music.pause();
-  stopRecording();
 
   statusDisplay.textContent = "Detenido";
 
+  // 🔥 desbloquear TODO
+  startBtn.disabled = false;
   pairSelect.disabled = false;
   levelSelect.disabled = false;
+  proToggle.disabled = false;
+  musicToggle.disabled = false;
+  recordAudioEl.disabled = false;
 
-  startBtn.classList.remove("running");
   message.style.display = "block";
-message.textContent = "Pulsa Empezar";
+  message.textContent = "Pulsa Empezar";
+
+  grid.innerHTML = "";
 };
 
 // ================= FIN =================
@@ -240,17 +202,18 @@ function endGame() {
 
   crono.stop();
   music.pause();
-  stopRecording();
 
   statusDisplay.textContent = "Finalizado";
-  message.textContent = "¡Juego terminado!";
 
+  startBtn.disabled = false;
   pairSelect.disabled = false;
   levelSelect.disabled = false;
+  proToggle.disabled = false;
+  musicToggle.disabled = false;
+  recordAudioEl.disabled = false;
 
-  startBtn.classList.remove("running");
   message.style.display = "block";
-message.textContent = "¡Juego terminado!";
+  message.textContent = "¡Juego terminado!";
 }
 
 // ================= MÚSICA =================
@@ -267,23 +230,21 @@ musicToggle.onchange = () => {
 // ================= SELECT =================
 pairSelect.onchange = () => {
   if (playing) return;
-
-  const pair = pairSelect.value;
-  const level = parseInt(levelSelect.value);
-
-  const words = generateLevel(pair, level);
-  createGrid(words);
-
-  message.textContent = "EMPEZAR";
+  grid.innerHTML = "";
+  message.style.display = "block";
+  message.textContent = "Pulsa Empezar";
 };
 
 levelSelect.onchange = () => {
   if (playing) return;
   levelDisplay.textContent = levelSelect.value + "/5";
+  grid.innerHTML = "";
 };
 
 // ================= MODO PRO =================
 proToggle.onchange = () => {
+  if (playing) return;
+
   proMode = proToggle.checked;
 
   const pair = pairSelect.value;
@@ -295,8 +256,10 @@ proToggle.onchange = () => {
 
 // ================= INIT =================
 window.onload = () => {
+  preloadImages();
+
   const level = parseInt(levelSelect.value);
   levelDisplay.textContent = level + "/5";
 
-  grid.innerHTML = ""; 
+  grid.innerHTML = "";
 };
