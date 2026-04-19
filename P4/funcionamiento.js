@@ -163,7 +163,7 @@ async function playGame(startLevel) {
   for (let lvl = startLevel; lvl <= 5; lvl++) {
     if (!playing) return;
 
-    levelDisplay.textContent = lvl;
+    levelDisplay.textContent = lvl+ "/5";
     message.textContent = "Prepárate...";
     await sleep(1000);
 
@@ -210,7 +210,7 @@ startBtn.onclick = () => {
   if (musicOn) music.play();
 
   let startLevel = parseInt(levelSelect.value);
-  levelDisplay.textContent = startLevel;
+  levelDisplay.textContent = startLevel+ "/5";
 
   playGame(startLevel);
 
@@ -276,7 +276,7 @@ pairSelect.onchange = () => {
 
 levelSelect.onchange = () => {
   if (playing) return;
-  levelDisplay.textContent = levelSelect.value;
+  levelDisplay.textContent = levelSelect.value + "/5";
 };
 
 // ================= MODO PRO =================
