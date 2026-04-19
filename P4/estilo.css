@@ -95,6 +95,13 @@ body {
   margin: 5px 0;
 }
 
+.box label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
 /* ================= CONTROLES ================= */
 .controls select,
 .controls button,

@@ -13,7 +13,7 @@ const pairSelect = document.getElementById("pairSelect");
 const levelSelect = document.getElementById("levelSelect");
 
 // 🔥 MODO PRO (BOTÓN)
-const proBtn = document.getElementById("proBtn");
+const proToggle = document.getElementById("proToggle");
 let proMode = false;
 
 // 🎤 NUEVOS ELEMENTOS
@@ -280,10 +280,8 @@ levelSelect.onchange = () => {
 };
 
 // ================= MODO PRO =================
-proBtn.onclick = () => {
-  proMode = !proMode;
-
-  proBtn.classList.toggle("active", proMode);
+proToggle.onchange = () => {
+  proMode = proToggle.checked;
 
   const pair = pairSelect.value;
   const level = parseInt(levelSelect.value);
