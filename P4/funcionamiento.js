@@ -1,4 +1,5 @@
 const grid = document.getElementById("grid");
+const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
 const musicToggle = document.getElementById("musicToggle");
 const music = document.getElementById("music");
@@ -12,6 +13,7 @@ const pairSelect = document.getElementById("pairSelect");
 const levelSelect = document.getElementById("levelSelect");
 
 const proToggle = document.getElementById("proToggle");
+let proMode = false;
 
 const recordAudioEl = document.getElementById("recordAudio");
 const playerEl = document.getElementById("player");
@@ -43,14 +45,15 @@ const categories = {
   ]
 };
 
-// ================= MUSIC AUTOSTART =================
+// ================= 🔊 MÚSICA (SOLO AÑADIDO) =================
+
+// intenta reproducir al cargar (puede ser bloqueado por navegador)
 window.addEventListener("load", () => {
   music.volume = 0.5;
-
   music.play().catch(() => {});
 });
 
-// ================= MUSIC TOGGLE =================
+// toggle música
 musicToggle.onchange = () => {
   musicOn = musicToggle.checked;
 
@@ -61,21 +64,21 @@ musicToggle.onchange = () => {
   }
 };
 
-// ================= AUDIO RECORD =================
+// ================= 🎤 AUDIO GRABADO =================
 recordAudioEl.onchange = () => {
   if (recordAudioEl.checked) {
-    music.pause();
+    music.pause(); // pausa música mientras se graba
   }
 };
 
-// cuando termina audio grabado
+// cuando termina el audio grabado vuelve la música
 playerEl.onended = () => {
   if (musicOn) {
     music.play().catch(() => {});
   }
 };
 
-// ================= FIX =================
+// ================= GENERADOR =================
 function generateLevel(pair, level) {
   let [a, b] = categories[pair];
 
@@ -134,7 +137,7 @@ async function countdown() {
   message.style.display = "none";
 }
 
-// ================= GAME =================
+// ================= JUEGO =================
 async function playGame(startLevel) {
   playing = true;
   statusDisplay.textContent = "Jugando";
@@ -168,15 +171,52 @@ async function playGame(startLevel) {
   endGame();
 }
 
+// ================= START =================
+startBtn.onclick = () => {
+  if (playing) return;
+
+  playing = true;
+
+  startBtn.classList.add("pressed");
+
+  startBtn.disabled = true;
+  stopBtn.disabled = false;
+
+  pairSelect.disabled = true;
+  levelSelect.disabled = true;
+  proToggle.disabled = true;
+  musicToggle.disabled = true;
+  recordAudioEl.disabled = true;
+
+  message.style.display = "none";
+
+  statusDisplay.textContent = "Jugando";
+
+  crono.reset();
+  crono.start();
+
+  if (musicOn) {
+    music.play().catch(() => {});
+  }
+
+  let startLevel = parseInt(levelSelect.value);
+  levelDisplay.textContent = startLevel + "/5";
+
+  playGame(startLevel);
+};
+
 // ================= STOP =================
 stopBtn.onclick = () => {
   playing = false;
+
+  startBtn.classList.remove("pressed");
 
   crono.stop();
   music.pause();
 
   statusDisplay.textContent = "Detenido";
 
+  startBtn.disabled = false;
   pairSelect.disabled = false;
   levelSelect.disabled = false;
   proToggle.disabled = false;
@@ -193,11 +233,14 @@ stopBtn.onclick = () => {
 function endGame() {
   playing = false;
 
+  startBtn.classList.remove("pressed");
+
   crono.stop();
   music.pause();
 
   statusDisplay.textContent = "Finalizado";
 
+  startBtn.disabled = false;
   pairSelect.disabled = false;
   levelSelect.disabled = false;
   proToggle.disabled = false;
@@ -220,22 +263,3 @@ proToggle.onchange = () => {
   message.style.display = "block";
   message.textContent = "Pulsa Empezar";
 };
-
-// ================= AUTO START (SIN BOTÓN) =================
-window.addEventListener("load", () => {
-  playing = true;
-
-  pairSelect.disabled = true;
-  levelSelect.disabled = true;
-  proToggle.disabled = true;
-
-  statusDisplay.textContent = "Jugando";
-
-  crono.reset();
-  crono.start();
-
-  let startLevel = parseInt(levelSelect.value);
-  levelDisplay.textContent = startLevel + "/5";
-
-  playGame(startLevel);
-});
