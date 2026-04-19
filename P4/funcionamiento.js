@@ -241,3 +241,36 @@ proToggle.onchange = () => {
 levelSelect.onchange = () => {
   levelDisplay.textContent = levelSelect.value + "/5";
 };
+
+// ================= INSTRUCCIONES =================
+
+// ================= INSTRUCCIONES (BLOQUEO TOTAL LIMPIO) =================
+function setGameBlocked(state) {
+  startBtn.disabled = state;
+  stopBtn.disabled = state;
+
+  pairSelect.disabled = state;
+  levelSelect.disabled = state;
+  proToggle.disabled = state;
+  musicToggle.disabled = state;
+  recordAudioEl.disabled = state;
+}
+
+// abrir instrucciones al inicio
+window.addEventListener("load", () => {
+  const ins = document.getElementById("instructions");
+  if (ins) ins.style.display = "flex";
+
+  setGameBlocked(true); // 🔥 TODO bloqueado
+  statusDisplay.textContent = "Bloqueado";
+});
+
+// cerrar instrucciones
+function closeInstructions() {
+  const ins = document.getElementById("instructions");
+  if (ins) ins.style.display = "none";
+
+  setGameBlocked(false); // 🔥 desbloqueo total limpio
+
+  statusDisplay.textContent = "En espera";
+}
