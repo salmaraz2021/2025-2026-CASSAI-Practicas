@@ -287,3 +287,23 @@ window.addEventListener("load", () => {
 function closeInstructions() {
   document.getElementById("instructions").style.display = "none";
 }
+
+// mostrar instrucciones y bloquear juego
+window.addEventListener("load", () => {
+  const ins = document.getElementById("instructions");
+  ins.style.display = "flex";
+
+  // 🔥 bloquear todo
+  document.querySelectorAll("button, select, input").forEach(el => {
+    el.disabled = true;
+  });
+});
+
+// cerrar instrucciones y desbloquear
+function closeInstructions() {
+  document.getElementById("instructions").style.display = "none";
+
+  document.querySelectorAll("button, select, input").forEach(el => {
+    el.disabled = false;
+  });
+}

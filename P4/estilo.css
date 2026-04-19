@@ -237,42 +237,58 @@ audio {
 
 .instructions {
   position: fixed;
-  top: 50%;
-  right: 50%;
-
-  width: 380px;
-
-  background: linear-gradient(135deg, #b7e08a); /* mismo fondo */
-  border: 5px solid white; /* margen blanco */
-
-  border-radius: 20px;
-  padding: 15px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 
   display: none;
-  z-index: 999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
 }
 
 .instructions-box {
-  background: rgba(255,255,255,0.7); /* blanco translúcido */
-  border-radius: 15px;
+  width: 380px;
+
+  background: linear-gradient(135deg, #b7e08a);
+  border: 5px solid white;
+  border-radius: 20px;
   padding: 15px;
+
   position: relative;
 }
-
-.instructions-box h2 {
-  margin: 0 0 10px 0;
+.instructions-box::before {
+  content: "";
+  position: absolute;
+  inset: 15px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 15px;
+  z-index: 1;
 }
 
+/* contenido por encima */
+.instructions-box h2,
+.instructions-box p,
+.close-instructions {
+  position: relative;
+  z-index: 2;
+}
+
+/* texto */
 .instructions-box p {
   text-align: justify;
   font-size: 13px;
-  margin: 0;
 }
 
+/* botón X */
 .close-instructions {
   position: absolute;
   top: 8px;
-  right: 10px;
+  right: 12px;
   cursor: pointer;
   font-weight: bold;
 }
