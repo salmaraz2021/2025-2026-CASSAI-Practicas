@@ -31,18 +31,15 @@ musicToggle.onchange = () => {
   else music.play().catch(() => {});
 };
 
-// ================= 🎤 GRABACIÓN (ARREGLADO) =================
 recordAudioEl.onchange = () => {
-  if (recordAudioEl.checked) {
-    music.pause(); // pausa música durante grabación
-    playerEl.onended = () => {
-      if (musicOn && playing) music.play().catch(() => {});
-    };
-  }
+  if (recordAudioEl.checked) music.pause();
 };
 
-// reproducir audio manual → pausa música
 playerEl.onplay = () => music.pause();
+
+playerEl.onended = () => {
+  if (musicOn && playing) music.play().catch(() => {});
+};
 
 // ================= CATEGORÍAS =================
 const categories = {
@@ -67,8 +64,10 @@ const categories = {
 // ================= GENERADOR =================
 function generateLevel(pair, level) {
   let [a, b] = categories[pair];
+
   if (level === 1) return [a,a,a,a,b,b,b,b];
   if (level === 2) return [a,b,a,b,a,b,a,b];
+
   return shuffle([a,a,a,a,b,b,b,b]);
 }
 
@@ -91,7 +90,7 @@ function createGrid(items) {
     if (!proMode) {
       const text = document.createElement("p");
       text.textContent = item.word.toUpperCase();
-      text.style.color = "white"; // 🔥 LETRAS BLANCAS
+      text.style.color = "white";
       div.appendChild(text);
     }
 
@@ -189,8 +188,8 @@ stopBtn.onclick = () => {
   musicToggle.disabled = false;
   recordAudioEl.disabled = false;
 
-  // 🔥 RESET TOTAL
   grid.innerHTML = "";
+
   statusDisplay.textContent = "En espera";
   levelDisplay.textContent = levelSelect.value + "/5";
 
@@ -198,8 +197,6 @@ stopBtn.onclick = () => {
   message.textContent = "Pulsa para empezar";
 
   crono.reset();
-
-  // ❌ IMPORTANTE: NO parar música
 };
 
 // ================= FIN =================
@@ -226,7 +223,7 @@ function endGame() {
   grid.innerHTML = "";
 }
 
-// ================= PRO =================
+// ================= PRO MODE =================
 proToggle.onchange = () => {
   if (playing) return;
 
@@ -237,40 +234,14 @@ proToggle.onchange = () => {
   message.textContent = "Pulsa Empezar";
 };
 
-// ================= NIVEL DINÁMICO =================
-levelSelect.onchange = () => {
-  levelDisplay.textContent = levelSelect.value + "/5";
-};
-
-// ================= INSTRUCCIONES =================
-
-// ================= INSTRUCCIONES (BLOQUEO TOTAL LIMPIO) =================
-function setGameBlocked(state) {
-  startBtn.disabled = state;
-  stopBtn.disabled = state;
-
-  pairSelect.disabled = state;
-  levelSelect.disabled = state;
-  proToggle.disabled = state;
-  musicToggle.disabled = state;
-  recordAudioEl.disabled = state;
-}
-
-// abrir instrucciones al inicio
+// ================= INICIO INSTRUCCIONES =================
 window.addEventListener("load", () => {
   const ins = document.getElementById("instructions");
   if (ins) ins.style.display = "flex";
-
-  setGameBlocked(true); // 🔥 TODO bloqueado
-  statusDisplay.textContent = "Bloqueado";
 });
 
-// cerrar instrucciones
+// ================= CERRAR INSTRUCCIONES =================
 function closeInstructions() {
   const ins = document.getElementById("instructions");
   if (ins) ins.style.display = "none";
-
-  setGameBlocked(false); // 🔥 desbloqueo total limpio
-
-  statusDisplay.textContent = "En espera";
 }
