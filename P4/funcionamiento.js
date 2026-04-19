@@ -13,22 +13,22 @@ const pairSelect = document.getElementById("pairSelect");
 const levelSelect = document.getElementById("levelSelect");
 
 const proToggle = document.getElementById("proToggle");
-let proMode = false;
 
 const recordAudioEl = document.getElementById("recordAudio");
 const playerEl = document.getElementById("player");
 
 let playing = false;
+let proMode = false;
 
-// ================= MÚSICA =================
+// ================= MÚSICA (NO ROMPE JUEGO) =================
 let musicOn = false;
-musicToggle.checked = false;
 music.volume = 0.5;
+musicToggle.checked = false;
 
 musicToggle.onchange = () => {
   musicOn = musicToggle.checked;
-  if (!musicOn) music.pause();
-  else music.play().catch(() => {});
+  if (musicOn && playing) music.play().catch(() => {});
+  else music.pause();
 };
 
 recordAudioEl.onchange = () => {
@@ -67,12 +67,11 @@ function generateLevel(pair, level) {
 
   if (level === 1) return [a,a,a,a,b,b,b,b];
   if (level === 2) return [a,b,a,b,a,b,a,b];
-
   return shuffle([a,a,a,a,b,b,b,b]);
 }
 
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
+function shuffle(arr) {
+  return arr.sort(() => Math.random() - 0.5);
 }
 
 // ================= GRID =================
@@ -85,14 +84,12 @@ function createGrid(items) {
 
     const img = document.createElement("img");
     img.src = item.img;
-    div.appendChild(img);
 
-    if (!proMode) {
-      const text = document.createElement("p");
-      text.textContent = item.word.toUpperCase();
-      text.style.color = "white";
-      div.appendChild(text);
-    }
+    const text = document.createElement("p");
+    text.textContent = item.word.toUpperCase();
+
+    div.appendChild(img);
+    if (!proMode) div.appendChild(text);
 
     grid.appendChild(div);
   });
@@ -140,7 +137,7 @@ async function playGame(startLevel) {
       cards.forEach(c => c.classList.remove("active"));
       cards[i].classList.add("active");
 
-      await sleep([900, 750, 600, 450, 300][lvl - 1]);
+      await sleep([900,750,600,450,300][lvl-1]);
     }
   }
 
@@ -163,6 +160,7 @@ startBtn.onclick = () => {
   recordAudioEl.disabled = true;
 
   statusDisplay.textContent = "Jugando";
+  message.style.display = "none";
 
   crono.reset();
   crono.start();
@@ -175,9 +173,12 @@ startBtn.onclick = () => {
   playGame(startLevel);
 };
 
-// ================= STOP (RESET TOTAL) =================
+// ================= STOP (RESET TOTAL LIMPIO) =================
 stopBtn.onclick = () => {
   playing = false;
+
+  crono.stop();
+  music.pause();
 
   startBtn.disabled = false;
   stopBtn.disabled = true;
@@ -188,20 +189,20 @@ stopBtn.onclick = () => {
   musicToggle.disabled = false;
   recordAudioEl.disabled = false;
 
-  grid.innerHTML = "";
-
   statusDisplay.textContent = "En espera";
-  levelDisplay.textContent = levelSelect.value + "/5";
 
   message.style.display = "block";
-  message.textContent = "Pulsa para empezar";
+  message.textContent = "Pulsa 'Empezar'";
 
-  crono.reset();
+  grid.innerHTML = "";
 };
 
 // ================= FIN =================
 function endGame() {
   playing = false;
+
+  crono.stop();
+  music.pause();
 
   startBtn.disabled = false;
   stopBtn.disabled = true;
@@ -214,16 +215,13 @@ function endGame() {
 
   statusDisplay.textContent = "Finalizado";
 
-  crono.stop();
-  music.pause();
-
   message.style.display = "block";
   message.textContent = "¡Juego terminado!";
 
   grid.innerHTML = "";
 }
 
-// ================= PRO MODE =================
+// ================= PRO =================
 proToggle.onchange = () => {
   if (playing) return;
 
@@ -231,17 +229,18 @@ proToggle.onchange = () => {
 
   grid.innerHTML = "";
   message.style.display = "block";
-  message.textContent = "Pulsa Empezar";
+  message.textContent = "Pulsa 'Empezar'";
 };
 
 // ================= INICIO INSTRUCCIONES =================
 window.addEventListener("load", () => {
   const ins = document.getElementById("instructions");
   if (ins) ins.style.display = "flex";
+
+  let startLevel = parseInt(levelSelect.value);
+  levelDisplay.textContent = startLevel + "/5";
 });
 
-// ================= CERRAR INSTRUCCIONES =================
 function closeInstructions() {
-  const ins = document.getElementById("instructions");
-  if (ins) ins.style.display = "none";
+  document.getElementById("instructions").style.display = "none";
 }
