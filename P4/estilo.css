@@ -184,16 +184,22 @@ button {
 .card {
   background: linear-gradient(#7a4d2f, #b07a5b);
   border-radius: 20px;
-  padding: 10px;
-  text-align: center;
-  position: relative;
-  transition: 0.2s;
+
+  width: 220px;   
+  height: 220px; 
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
 }
 
 /* IMÁGENES MÁS PEQUEÑAS PARA QUE TODO QUEPA */
 .card img {
-  width: 70px;
-  height: 70px;
+  width: 160px;
+  height: 160px;
   object-fit: contain;
 }
 
