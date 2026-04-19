@@ -20,40 +20,31 @@ const playerEl = document.getElementById("player");
 
 let playing = false;
 
-// 🔥 FIX 1: música OFF real al inicio (checkbox también)
+// ================= 🎵 MÚSICA =================
 let musicOn = false;
 musicToggle.checked = false;
-
 music.volume = 0.5;
 
-// toggle música
 musicToggle.onchange = () => {
   musicOn = musicToggle.checked;
 
-  if (!musicOn) {
-    music.pause();
-  } else {
-    music.play().catch(() => {});
-  }
+  if (!musicOn) music.pause();
+  else music.play().catch(() => {});
 };
 
-// 🔥 FIX 2: grabar → parar música
+// grabar → parar música
 recordAudioEl.onchange = () => {
-  if (recordAudioEl.checked) {
-    music.pause();
-  }
+  if (recordAudioEl.checked) music.pause();
 };
 
-// 🔥 FIX 3: reproducir audio → parar música
+// reproducir audio → parar música
 playerEl.onplay = () => {
   music.pause();
 };
 
-// 🔥 FIX 4: cuando termina audio → vuelve música
+// terminar audio → vuelve música
 playerEl.onended = () => {
-  if (musicOn) {
-    music.play().catch(() => {});
-  }
+  if (musicOn) music.play().catch(() => {});
 };
 
 // ================= CATEGORÍAS =================
@@ -196,9 +187,7 @@ startBtn.onclick = () => {
   let startLevel = parseInt(levelSelect.value);
   levelDisplay.textContent = startLevel + "/5";
 
-  if (musicOn) {
-    music.play().catch(() => {});
-  }
+  if (musicOn) music.play().catch(() => {});
 
   playGame(startLevel);
 };
@@ -262,38 +251,17 @@ proToggle.onchange = () => {
   message.textContent = "Pulsa Empezar";
 };
 
-// 🔥 FIX 5: mostrar instrucciones al inicio
-window.onload = () => {
-  const ins = document.getElementById("instructions");
-  if (ins) ins.style.display = "flex";
-};
-
-// 🔥 FIX 6: cerrar instrucciones
-function closeInstructions() {
-  document.getElementById("instructions").style.display = "none";
-}
-
-// 🔥 mostrar nivel inicial correctamente
+// ================= 🔥 INICIO (TODO UNIFICADO) =================
 window.addEventListener("load", () => {
+  // nivel inicial correcto
   const startLevel = parseInt(levelSelect.value);
   levelDisplay.textContent = startLevel + "/5";
 
-  // mostrar pancarta (NO pantalla completa)
+  // mostrar instrucciones
   const ins = document.getElementById("instructions");
-  if (ins) ins.style.display = "block";
-});
+  if (ins) ins.style.display = "flex";
 
-// cerrar pancarta
-function closeInstructions() {
-  document.getElementById("instructions").style.display = "none";
-}
-
-// mostrar instrucciones y bloquear juego
-window.addEventListener("load", () => {
-  const ins = document.getElementById("instructions");
-  ins.style.display = "flex";
-
-  // 🔥 bloquear todo
+  // bloquear TODO
   document.querySelectorAll("button, select, input").forEach(el => {
     el.disabled = true;
   });
