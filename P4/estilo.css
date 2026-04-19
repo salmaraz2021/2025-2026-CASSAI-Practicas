@@ -267,3 +267,9 @@ audio {
   background: black;
   color: white;
 }
+.game-body {
+  flex: 1;
+  display: flex;        /* 🔥 horizontal */
+  flex-direction: row;  /* 🔥 sidebar izquierda, contenido derecha */
+  gap: 20px;
+}
