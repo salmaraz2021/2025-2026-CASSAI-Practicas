@@ -20,7 +20,7 @@ const playerEl = document.getElementById("player");
 
 let playing = false;
 
-// ================= 🎵 MÚSICA =================
+// ================= MÚSICA =================
 let musicOn = false;
 musicToggle.checked = false;
 music.volume = 0.5;
@@ -31,22 +31,18 @@ musicToggle.onchange = () => {
   else music.play().catch(() => {});
 };
 
+// ================= 🎤 GRABACIÓN (ARREGLADO) =================
 recordAudioEl.onchange = () => {
-  if (recordAudioEl.checked) music.pause();
+  if (recordAudioEl.checked) {
+    music.pause(); // pausa música durante grabación
+    playerEl.onended = () => {
+      if (musicOn && playing) music.play().catch(() => {});
+    };
+  }
 };
 
+// reproducir audio manual → pausa música
 playerEl.onplay = () => music.pause();
-
-playerEl.onended = () => {
-  if (musicOn) music.play().catch(() => {});
-};
-
-// ================= SEGURIDAD CRONO =================
-const cronoSafe = (window.crono) ? window.crono : {
-  reset: () => {},
-  start: () => {},
-  stop: () => {}
-};
 
 // ================= CATEGORÍAS =================
 const categories = {
@@ -84,8 +80,6 @@ function shuffle(array) {
 function createGrid(items) {
   grid.innerHTML = "";
 
-  if (!items) return;
-
   items.forEach(item => {
     const div = document.createElement("div");
     div.classList.add("card");
@@ -97,6 +91,7 @@ function createGrid(items) {
     if (!proMode) {
       const text = document.createElement("p");
       text.textContent = item.word.toUpperCase();
+      text.style.color = "white"; // 🔥 LETRAS BLANCAS
       div.appendChild(text);
     }
 
@@ -170,8 +165,8 @@ startBtn.onclick = () => {
 
   statusDisplay.textContent = "Jugando";
 
-  cronoSafe.reset();
-  cronoSafe.start();
+  crono.reset();
+  crono.start();
 
   let startLevel = parseInt(levelSelect.value);
   levelDisplay.textContent = startLevel + "/5";
@@ -181,7 +176,7 @@ startBtn.onclick = () => {
   playGame(startLevel);
 };
 
-// ================= STOP =================
+// ================= STOP (RESET TOTAL) =================
 stopBtn.onclick = () => {
   playing = false;
 
@@ -194,15 +189,17 @@ stopBtn.onclick = () => {
   musicToggle.disabled = false;
   recordAudioEl.disabled = false;
 
-  statusDisplay.textContent = "Detenido";
-
-  cronoSafe.stop();
-  music.pause();
+  // 🔥 RESET TOTAL
+  grid.innerHTML = "";
+  statusDisplay.textContent = "En espera";
+  levelDisplay.textContent = levelSelect.value + "/5";
 
   message.style.display = "block";
-  message.textContent = "Pulsa Empezar";
+  message.textContent = "Pulsa para empezar";
 
-  grid.innerHTML = "";
+  crono.reset();
+
+  // ❌ IMPORTANTE: NO parar música
 };
 
 // ================= FIN =================
@@ -220,7 +217,7 @@ function endGame() {
 
   statusDisplay.textContent = "Finalizado";
 
-  cronoSafe.stop();
+  crono.stop();
   music.pause();
 
   message.style.display = "block";
@@ -240,17 +237,7 @@ proToggle.onchange = () => {
   message.textContent = "Pulsa Empezar";
 };
 
-// ================= INICIO =================
-window.addEventListener("load", () => {
-  let startLevel = parseInt(levelSelect.value);
-  levelDisplay.textContent = startLevel + "/5";
-
-  const ins = document.getElementById("instructions");
-  if (ins) ins.style.display = "flex";
-});
-
-// cerrar instrucciones
-function closeInstructions() {
-  const ins = document.getElementById("instructions");
-  if (ins) ins.style.display = "none";
-}
+// ================= NIVEL DINÁMICO =================
+levelSelect.onchange = () => {
+  levelDisplay.textContent = levelSelect.value + "/5";
+};

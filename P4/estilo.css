@@ -63,7 +63,7 @@ body {
   flex-direction: column;
   gap: 10px;
 
-  background: rgba(255,255,255,0.5);
+  background: rgba(173, 216, 230,0.5);
   border-radius: 20px;
   padding: 10px;
 }
@@ -172,6 +172,7 @@ button {
 .card {
   background: darkblue;
   border-radius: 20px;
+  color: white;
 
   width: 120px;   
   height: 120px; 
