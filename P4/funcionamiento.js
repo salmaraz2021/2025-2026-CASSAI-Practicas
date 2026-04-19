@@ -251,27 +251,17 @@ proToggle.onchange = () => {
   message.textContent = "Pulsa Empezar";
 };
 
-// ================= 🔥 INICIO (TODO UNIFICADO) =================
 window.addEventListener("load", () => {
-  // nivel inicial correcto
+  // nivel inicial
   const startLevel = parseInt(levelSelect.value);
   levelDisplay.textContent = startLevel + "/5";
 
   // mostrar instrucciones
   const ins = document.getElementById("instructions");
   if (ins) ins.style.display = "flex";
-
-  // bloquear TODO
-  document.querySelectorAll("button, select, input").forEach(el => {
-    el.disabled = true;
-  });
 });
 
-// cerrar instrucciones y desbloquear
+// cerrar instrucciones
 function closeInstructions() {
   document.getElementById("instructions").style.display = "none";
-
-  document.querySelectorAll("button, select, input").forEach(el => {
-    el.disabled = false;
-  });
 }
