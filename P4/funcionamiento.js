@@ -1,8 +1,11 @@
 const grid = document.getElementById("grid");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
+const musicToggle = document.getElementById("musicToggle");
+const music = document.getElementById("music");
 
 const levelDisplay = document.getElementById("level");
+const timeDisplay = document.getElementById("time");
 const statusDisplay = document.getElementById("status");
 const message = document.getElementById("message");
 
@@ -10,45 +13,35 @@ const pairSelect = document.getElementById("pairSelect");
 const levelSelect = document.getElementById("levelSelect");
 
 const proToggle = document.getElementById("proToggle");
-
-const musicToggle = document.getElementById("musicToggle");
-const music = document.getElementById("music");
+let proMode = false;
 
 const recordAudioEl = document.getElementById("recordAudio");
 const playerEl = document.getElementById("player");
 
 let playing = false;
-let proMode = false;
 
-// ================= 🎵 MÚSICA =================
+// ================= MÚSICA =================
 let musicOn = false;
-music.volume = 0.5;
 musicToggle.checked = false;
+music.volume = 0.5;
 
-// activar/desactivar música manual
 musicToggle.onchange = () => {
   musicOn = musicToggle.checked;
-  if (musicOn && playing) music.play().catch(() => {});
+  if (musicOn) music.play().catch(() => {});
   else music.pause();
 };
 
 // grabar → pausa música
 recordAudioEl.onchange = () => {
-  if (recordAudioEl.checked) {
-    music.pause();
-  }
+  if (recordAudioEl.checked) music.pause();
 };
 
 // reproducir audio → pausa música
-playerEl.onplay = () => {
-  music.pause();
-};
+playerEl.onplay = () => music.pause();
 
-// fin audio → reanuda música
+// fin audio → reanuda música si estaba activa
 playerEl.onended = () => {
-  if (musicOn && playing) {
-    music.play().catch(() => {});
-  }
+  if (musicOn && playing) music.play().catch(() => {});
 };
 
 // ================= CATEGORÍAS =================
@@ -71,18 +64,21 @@ const categories = {
   ]
 };
 
-// ================= UTIL =================
-const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+// ================= GENERADOR =================
+function generateLevel(pair, level) {
+  let [a, b] = categories[pair];
+  if (level === 1) return [a,a,a,a,b,b,b,b];
+  if (level === 2) return [a,b,a,b,a,b,a,b];
+  return shuffle([a,a,a,a,b,b,b,b]);
+}
 
-function shuffle(arr) {
-  return arr.sort(() => Math.random() - 0.5);
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
 }
 
 // ================= GRID =================
 function createGrid(items) {
   grid.innerHTML = "";
-
-  if (!items) return;
 
   items.forEach(item => {
     const div = document.createElement("div");
@@ -90,39 +86,30 @@ function createGrid(items) {
 
     const img = document.createElement("img");
     img.src = item.img;
-
     div.appendChild(img);
 
     if (!proMode) {
-      const p = document.createElement("p");
-      p.textContent = item.word.toUpperCase();
-      div.appendChild(p);
+      const text = document.createElement("p");
+      text.textContent = item.word.toUpperCase();
+      text.style.color = "white";
+      div.appendChild(text);
     }
 
     grid.appendChild(div);
   });
 }
 
+// ================= UTIL =================
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
 // ================= COUNTDOWN =================
 async function countdown() {
   message.style.display = "block";
-
   for (let i = 3; i > 0; i--) {
     message.textContent = i;
     await sleep(600);
   }
-
   message.style.display = "none";
-}
-
-// ================= GENERADOR =================
-function generate(pair, level) {
-  const [a, b] = categories[pair];
-
-  if (level === 1) return [a,a,a,a,b,b,b,b];
-  if (level === 2) return [a,b,a,b,a,b,a,b];
-
-  return shuffle([a,a,a,a,b,b,b,b]);
 }
 
 // ================= JUEGO =================
@@ -136,10 +123,11 @@ async function playGame(startLevel) {
     levelDisplay.textContent = lvl + "/5";
 
     grid.innerHTML = "";
-
     await countdown();
 
-    const words = generate(pairSelect.value, lvl);
+    const pair = pairSelect.value;
+    const words = generateLevel(pair, lvl);
+
     createGrid(words);
 
     const cards = document.querySelectorAll(".card");
@@ -150,7 +138,7 @@ async function playGame(startLevel) {
       cards.forEach(c => c.classList.remove("active"));
       cards[i].classList.add("active");
 
-      await sleep(700);
+      await sleep([900, 750, 600, 450, 300][lvl - 1]);
     }
   }
 
@@ -168,21 +156,17 @@ startBtn.onclick = () => {
 
   pairSelect.disabled = true;
   levelSelect.disabled = true;
-  proToggle.disabled = true;
-  musicToggle.disabled = true;
-  recordAudioEl.disabled = true;
 
   statusDisplay.textContent = "Jugando";
 
   crono.reset();
   crono.start();
 
-  const startLevel = parseInt(levelSelect.value);
-  levelDisplay.textContent = startLevel + "/5";
+  levelDisplay.textContent = levelSelect.value + "/5";
 
   if (musicOn) music.play().catch(() => {});
 
-  playGame(startLevel);
+  playGame(parseInt(levelSelect.value));
 };
 
 // ================= STOP =================
@@ -193,19 +177,16 @@ stopBtn.onclick = () => {
   music.pause();
 
   startBtn.disabled = false;
-  stopBtn.disabled = true;
+  stopBtn.disabled = false;
 
   pairSelect.disabled = false;
   levelSelect.disabled = false;
-  proToggle.disabled = false;
-  musicToggle.disabled = false;
-  recordAudioEl.disabled = false;
+
+  statusDisplay.textContent = "Detenido";
 
   grid.innerHTML = "";
   message.style.display = "block";
-  message.textContent = "Pulsa para empezar";
-
-  statusDisplay.textContent = "En espera";
+  message.textContent = "Pulsa Empezar";
 };
 
 // ================= FIN =================
@@ -216,42 +197,23 @@ function endGame() {
   music.pause();
 
   startBtn.disabled = false;
-  stopBtn.disabled = true;
+  stopBtn.disabled = false;
 
   pairSelect.disabled = false;
   levelSelect.disabled = false;
-  proToggle.disabled = false;
-  musicToggle.disabled = false;
-  recordAudioEl.disabled = false;
-
-  grid.innerHTML = "";
-  message.style.display = "block";
-  message.textContent = "¡Juego terminado!";
 
   statusDisplay.textContent = "Finalizado";
-}
-
-// ================= PRO MODE =================
-proToggle.onchange = () => {
-  if (playing) return;
-
-  proMode = proToggle.checked;
 
   grid.innerHTML = "";
   message.style.display = "block";
-  message.textContent = "Pulsa Empezar";
-};
-
-// ================= INSTRUCCIONES =================
-function closeInstructions() {
-  const ins = document.getElementById("instructions");
-  if (ins) ins.style.display = "none";
+  message.textContent = "Juego terminado";
 }
 
+// ================= INSTRUCCIONES =================
 window.addEventListener("load", () => {
-  const ins = document.getElementById("instructions");
-  if (ins) ins.style.display = "flex";
-
-  const startLevel = parseInt(levelSelect.value);
-  levelDisplay.textContent = startLevel + "/5";
+  document.getElementById("instructions").style.display = "flex";
 });
+
+function closeInstructions() {
+  document.getElementById("instructions").style.display = "none";
+}
