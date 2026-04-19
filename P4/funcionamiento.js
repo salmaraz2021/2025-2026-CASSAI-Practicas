@@ -13,37 +13,38 @@ const pairSelect = document.getElementById("pairSelect");
 const levelSelect = document.getElementById("levelSelect");
 
 const proToggle = document.getElementById("proToggle");
-
 const recordAudioEl = document.getElementById("recordAudio");
 const playerEl = document.getElementById("player");
 
-let playing = false;
 let proMode = false;
+let playing = false;
 
-// ================= MÚSICA (AÑADIDO SIN ROMPER) =================
+// ================= MÚSICA =================
 let musicOn = false;
 music.volume = 0.5;
-
-// estado inicial OFF (como pediste)
 musicToggle.checked = false;
 
 musicToggle.onchange = () => {
   musicOn = musicToggle.checked;
-  if (musicOn && playing) music.play().catch(() => {});
+  if (musicOn) music.play().catch(() => {});
   else music.pause();
 };
 
-// grabar → pausa música
+// grabación pausa música
 recordAudioEl.onchange = () => {
   if (recordAudioEl.checked) music.pause();
 };
 
-// reproducir audio → pausa música
-playerEl.onplay = () => music.pause();
+// reproducir audio pausa música
+playerEl.onplay = () => {
+  music.pause();
+};
 
 // fin audio → vuelve música
 playerEl.onended = () => {
-  if (musicOn && playing) music.play().catch(() => {});
+  if (musicOn && playing) {
+    music.play().catch(() => {});
+  }
 };
 
 // ================= CATEGORÍAS =================
@@ -72,16 +73,19 @@ function generateLevel(pair, level) {
 
   if (level === 1) return [a,a,a,a,b,b,b,b];
   if (level === 2) return [a,b,a,b,a,b,a,b];
+
   return shuffle([a,a,a,a,b,b,b,b]);
 }
 
-function shuffle(arr) {
-  return arr.sort(() => Math.random() - 0.5);
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
 }
 
 // ================= GRID =================
 function createGrid(items) {
   grid.innerHTML = "";
+
+  if (!items) return;
 
   items.forEach(item => {
     const div = document.createElement("div");
@@ -103,9 +107,7 @@ function createGrid(items) {
 }
 
 // ================= UTIL =================
-function sleep(ms) {
-  return new Promise(r => setTimeout(r, ms));
-}
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 // ================= COUNTDOWN =================
 async function countdown() {
@@ -119,7 +121,7 @@ async function countdown() {
   message.style.display = "none";
 }
 
-// ================= JUEGO (BASE ORIGINAL) =================
+// ================= JUEGO =================
 async function playGame(startLevel) {
   playing = true;
   statusDisplay.textContent = "Jugando";
@@ -133,12 +135,14 @@ async function playGame(startLevel) {
 
     await countdown();
 
-    let pair = pairSelect.value;
-    let words = generateLevel(pair, lvl);
+    const pair = pairSelect.value;
+    const words = generateLevel(pair, lvl);
 
     createGrid(words);
 
-    let cards = document.querySelectorAll(".card");
+    const cards = document.querySelectorAll(".card");
+
+    const speeds = [900, 750, 600, 450, 300];
 
     for (let i = 0; i < cards.length; i++) {
       if (!playing) return;
@@ -146,7 +150,7 @@ async function playGame(startLevel) {
       cards.forEach(c => c.classList.remove("active"));
       cards[i].classList.add("active");
 
-      await sleep([900,750,600,450,300][lvl - 1]);
+      await sleep(speeds[lvl - 1]);
     }
   }
 
@@ -165,16 +169,15 @@ startBtn.onclick = () => {
   pairSelect.disabled = true;
   levelSelect.disabled = true;
   proToggle.disabled = true;
-  musicToggle.disabled = false;
-  recordAudioEl.disabled = false;
+  musicToggle.disabled = true;
+  recordAudioEl.disabled = true;
 
   statusDisplay.textContent = "Jugando";
-  message.style.display = "none";
 
   crono.reset();
   crono.start();
 
-  let startLevel = parseInt(levelSelect.value);
+  const startLevel = parseInt(levelSelect.value);
   levelDisplay.textContent = startLevel + "/5";
 
   if (musicOn) music.play().catch(() => {});
@@ -182,12 +185,14 @@ startBtn.onclick = () => {
   playGame(startLevel);
 };
 
-// ================= STOP (RESET LIMPIO) =================
+// ================= STOP =================
 stopBtn.onclick = () => {
   playing = false;
 
   crono.stop();
   music.pause();
+
+  statusDisplay.textContent = "En espera";
 
   startBtn.disabled = false;
   stopBtn.disabled = true;
@@ -198,12 +203,9 @@ stopBtn.onclick = () => {
   musicToggle.disabled = false;
   recordAudioEl.disabled = false;
 
-  statusDisplay.textContent = "En espera";
-
-  message.style.display = "block";
-  message.textContent = "Pulsa 'Empezar'";
-
   grid.innerHTML = "";
+  message.style.display = "block";
+  message.textContent = "Pulsa para empezar";
 };
 
 // ================= FIN =================
@@ -213,6 +215,8 @@ function endGame() {
   crono.stop();
   music.pause();
 
+  statusDisplay.textContent = "Finalizado";
+
   startBtn.disabled = false;
   stopBtn.disabled = true;
 
@@ -222,15 +226,12 @@ function endGame() {
   musicToggle.disabled = false;
   recordAudioEl.disabled = false;
 
-  statusDisplay.textContent = "Finalizado";
-
+  grid.innerHTML = "";
   message.style.display = "block";
   message.textContent = "¡Juego terminado!";
-
-  grid.innerHTML = "";
 }
 
-// ================= PRO MODE =================
+// ================= PRO =================
 proToggle.onchange = () => {
   if (playing) return;
 
@@ -238,11 +239,20 @@ proToggle.onchange = () => {
 
   grid.innerHTML = "";
   message.style.display = "block";
-  message.textContent = "Pulsa 'Empezar'";
+  message.textContent = "Pulsa Empezar";
 };
 
-// ================= NIVEL INICIAL =================
+// ================= INICIO =================
 window.addEventListener("load", () => {
-  let startLevel = parseInt(levelSelect.value);
+  const startLevel = parseInt(levelSelect.value);
   levelDisplay.textContent = startLevel + "/5";
+
+  const ins = document.getElementById("instructions");
+  if (ins) ins.style.display = "flex";
 });
+
+// cerrar instrucciones
+function closeInstructions() {
+  const ins = document.getElementById("instructions");
+  if (ins) ins.style.display = "none";
+}
