@@ -163,7 +163,7 @@ button {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   position: relative;
 }
@@ -172,7 +172,7 @@ button {
   flex: 1;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
+  gap: 10px;
 
   justify-items: center;
   align-items: center;
@@ -206,7 +206,7 @@ button {
 /* ================= MENSAJE ================= */
 #message {
   position: absolute;
-  top: 50%;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
 
