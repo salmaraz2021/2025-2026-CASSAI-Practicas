@@ -20,9 +20,11 @@ const playerEl = document.getElementById("player");
 let playing = false;
 let proMode = false;
 
-// ================= MÚSICA (NO ROMPE JUEGO) =================
+// ================= MÚSICA (AÑADIDO SIN ROMPER) =================
 let musicOn = false;
 music.volume = 0.5;
+
+// estado inicial OFF (como pediste)
 musicToggle.checked = false;
 
 musicToggle.onchange = () => {
@@ -31,12 +33,15 @@ musicToggle.onchange = () => {
   else music.pause();
 };
 
+// grabar → pausa música
 recordAudioEl.onchange = () => {
   if (recordAudioEl.checked) music.pause();
 };
 
+// reproducir audio → pausa música
 playerEl.onplay = () => music.pause();
 
+// fin audio → vuelve música
 playerEl.onended = () => {
   if (musicOn && playing) music.play().catch(() => {});
 };
@@ -85,11 +90,13 @@ function createGrid(items) {
     const img = document.createElement("img");
     img.src = item.img;
 
-    const text = document.createElement("p");
-    text.textContent = item.word.toUpperCase();
-
     div.appendChild(img);
-    if (!proMode) div.appendChild(text);
+
+    if (!proMode) {
+      const text = document.createElement("p");
+      text.textContent = item.word.toUpperCase();
+      div.appendChild(text);
+    }
 
     grid.appendChild(div);
   });
@@ -112,7 +119,7 @@ async function countdown() {
   message.style.display = "none";
 }
 
-// ================= JUEGO =================
+// ================= JUEGO (BASE ORIGINAL) =================
 async function playGame(startLevel) {
   playing = true;
   statusDisplay.textContent = "Jugando";
@@ -121,6 +128,8 @@ async function playGame(startLevel) {
     if (!playing) return;
 
     levelDisplay.textContent = lvl + "/5";
+
+    grid.innerHTML = "";
 
     await countdown();
 
@@ -137,7 +146,7 @@ async function playGame(startLevel) {
       cards.forEach(c => c.classList.remove("active"));
       cards[i].classList.add("active");
 
-      await sleep([900,750,600,450,300][lvl-1]);
+      await sleep([900,750,600,450,300][lvl - 1]);
     }
   }
 
@@ -156,8 +165,8 @@ startBtn.onclick = () => {
   pairSelect.disabled = true;
   levelSelect.disabled = true;
   proToggle.disabled = true;
-  musicToggle.disabled = true;
-  recordAudioEl.disabled = true;
+  musicToggle.disabled = false;
+  recordAudioEl.disabled = false;
 
   statusDisplay.textContent = "Jugando";
   message.style.display = "none";
@@ -173,7 +182,7 @@ startBtn.onclick = () => {
   playGame(startLevel);
 };
 
-// ================= STOP (RESET TOTAL LIMPIO) =================
+// ================= STOP (RESET LIMPIO) =================
 stopBtn.onclick = () => {
   playing = false;
 
@@ -221,7 +230,7 @@ function endGame() {
   grid.innerHTML = "";
 }
 
-// ================= PRO =================
+// ================= PRO MODE =================
 proToggle.onchange = () => {
   if (playing) return;
 
@@ -232,15 +241,8 @@ proToggle.onchange = () => {
   message.textContent = "Pulsa 'Empezar'";
 };
 
-// ================= INICIO INSTRUCCIONES =================
+// ================= NIVEL INICIAL =================
 window.addEventListener("load", () => {
-  const ins = document.getElementById("instructions");
-  if (ins) ins.style.display = "flex";
-
   let startLevel = parseInt(levelSelect.value);
   levelDisplay.textContent = startLevel + "/5";
 });
-
-function closeInstructions() {
-  document.getElementById("instructions").style.display = "none";
-}
