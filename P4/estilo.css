@@ -264,6 +264,7 @@ audio {
   background: rgba(255,255,255,0.7);
   border-radius: 15px;
   z-index: 1;
+  pointer-events: none;
 }
 
 /* contenido encima */
