@@ -23,6 +23,12 @@ let playing = false;
 // ✅ AÑADIDO (único cambio)
 const crono = new Crono(timeDisplay);
 
+let mediaRecorder = null;
+let mediaStream = null;
+let audioChunks = [];
+let currentAudioUrl = null;
+
+
 // ================= MÚSICA =================
 let musicOn = false;
 musicToggle.checked = false;
@@ -128,6 +134,7 @@ async function playGame(startLevel) {
 
     levelDisplay.textContent = lvl + "/5";
 
+    grid.innerHTML = "";
     await countdown();
 
     let pair = pairSelect.value;
@@ -151,7 +158,7 @@ async function playGame(startLevel) {
 }
 
 // ================= START =================
-startBtn.onclick = () => {
+startBtn.onclick = async () => {
   if (playing) return;
 
   playing = true;
@@ -166,6 +173,8 @@ startBtn.onclick = () => {
   recordAudioEl.disabled = true;
 
   statusDisplay.textContent = "Jugando";
+
+  await startRecording();
 
   crono.reset();
   crono.start();
@@ -200,6 +209,7 @@ stopBtn.onclick = () => {
   message.textContent = "Pulsa para empezar";
 
   crono.reset();
+  stopRecording();
 };
 
 // ================= FIN =================
@@ -224,6 +234,9 @@ function endGame() {
   message.textContent = "¡Juego terminado!";
 
   grid.innerHTML = "";
+
+  stopRecording();
+
 }
 
 // ================= PRO MODE =================
@@ -247,4 +260,45 @@ window.addEventListener("load", () => {
 function closeInstructions() {
   const ins = document.getElementById("instructions");
   if (ins) ins.style.display = "none";
+}
+
+async function startRecording() {
+  if (!recordAudioEl.checked) return;
+
+  try {
+    mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+    audioChunks = [];
+    mediaRecorder = new MediaRecorder(mediaStream);
+
+    mediaRecorder.ondataavailable = (e) => {
+      if (e.data.size > 0) {
+        audioChunks.push(e.data);
+      }
+    };
+
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(audioChunks, {
+        type: mediaRecorder.mimeType || "audio/webm"
+      });
+
+      const url = URL.createObjectURL(blob);
+      playerEl.src = url;
+
+      // liberar micro
+      mediaStream.getTracks().forEach(t => t.stop());
+      mediaStream = null;
+    };
+
+    mediaRecorder.start();
+
+  } catch (err) {
+    console.error("Error micro:", err);
+  }
+}
+
+function stopRecording() {
+  if (mediaRecorder && mediaRecorder.state !== "inactive") {
+    mediaRecorder.stop();
+  }
 }
