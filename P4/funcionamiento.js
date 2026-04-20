@@ -34,14 +34,22 @@ music.volume = 0.5;
 
 musicToggle.onchange = () => {
   musicOn = musicToggle.checked;
-  if (!musicOn) music.pause();
-  else music.play().catch(() => {});
+
+  if (!musicOn) {
+    music.pause();
+  } else {
+    music.play().catch(() => {});
+  }
 };
 
-playerEl.onplay = () => music.pause();
+playerEl.onplay = () => {
+  music.pause();
+};
 
 playerEl.onended = () => {
-  if (musicOn && playing) music.play().catch(() => {});
+  if (musicOn) {
+    music.play().catch(() => {});
+  }
 };
 
 // ================= CATEGORÍAS =================
