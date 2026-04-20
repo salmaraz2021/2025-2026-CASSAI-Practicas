@@ -317,3 +317,13 @@ function stopRecording() {
     mediaRecorder.stop();
   }
 }
+document.addEventListener("DOMContentLoaded", () => {
+  const closeBtn = document.querySelector(".close-instructions");
+  const ins = document.getElementById("instructions");
+
+  if (closeBtn && ins) {
+    closeBtn.addEventListener("click", () => {
+      ins.style.display = "none";
+    });
+  }
+});
