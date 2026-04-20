@@ -20,14 +20,12 @@ const playerEl = document.getElementById("player");
 
 let playing = false;
 
-// ✅ AÑADIDO (único cambio)
 const crono = new Crono(timeDisplay);
 
 let mediaRecorder = null;
 let mediaStream = null;
 let audioChunks = [];
 let currentAudioUrl = null;
-
 
 // ================= MÚSICA =================
 let musicOn = false;
@@ -155,7 +153,6 @@ async function playGame(startLevel) {
 
 // ================= START =================
 startBtn.onclick = async () => {
-  
   if (playing) return;
 
   playing = true;
@@ -173,6 +170,11 @@ startBtn.onclick = async () => {
   recordAudioEl.disabled = true;
 
   statusDisplay.textContent = "Jugando";
+
+  // 🔴 CAMBIO AQUÍ
+  if (musicOn) {
+    music.pause();
+  }
 
   await startRecording();
 
@@ -222,7 +224,6 @@ function endGame() {
   startBtn.classList.remove("pressed");
   stopBtn.classList.remove("pressed");
 
-
   startBtn.disabled = false;
   stopBtn.disabled = true;
 
@@ -243,7 +244,6 @@ function endGame() {
   grid.innerHTML = "";
 
   stopRecording();
-
 }
 
 // ================= PRO MODE =================
@@ -292,7 +292,6 @@ async function startRecording() {
       const url = URL.createObjectURL(blob);
       playerEl.src = url;
 
-      // liberar micro
       mediaStream.getTracks().forEach(t => t.stop());
       mediaStream = null;
 
@@ -300,11 +299,6 @@ async function startRecording() {
         music.play().catch(() => {});
       }
     };
-
-
-    if (musicOn) {
-  music.pause();
-}
 
     mediaRecorder.start();
 
