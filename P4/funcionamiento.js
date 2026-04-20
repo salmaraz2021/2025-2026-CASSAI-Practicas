@@ -302,9 +302,9 @@ async function startRecording() {
     };
 
 
-    if (musicOn && playing) {
-      music.pause();
-    }
+    if (musicOn) {
+  music.pause();
+}
 
     mediaRecorder.start();
 
