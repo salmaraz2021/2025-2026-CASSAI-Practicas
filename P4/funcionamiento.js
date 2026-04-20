@@ -1,3 +1,6 @@
+/* jshint esversion: 8 */
+/* global Crono */
+
 const grid = document.getElementById("grid");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
@@ -25,7 +28,6 @@ const crono = new Crono(timeDisplay);
 let mediaRecorder = null;
 let mediaStream = null;
 let audioChunks = [];
-let currentAudioUrl = null;
 
 // ================= MÚSICA =================
 let musicOn = false;
@@ -266,10 +268,6 @@ window.addEventListener("load", () => {
 });
 
 // ================= CERRAR INSTRUCCIONES =================
-function closeInstructions() {
-  const ins = document.getElementById("instructions");
-  if (ins) ins.style.display = "none";
-}
 
 async function startRecording() {
 
