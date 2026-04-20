@@ -213,7 +213,7 @@ stopBtn.onclick = () => {
   levelDisplay.textContent = levelSelect.value + "/5";
 
   message.style.display = "block";
-  message.textContent = "Pulsa "Empezar"";
+  message.textContent = "Pulsa Empezar";
 
   crono.stop();
   stopRecording();
@@ -256,7 +256,7 @@ proToggle.onchange = () => {
 
   grid.innerHTML = "";
   message.style.display = "block";
-  message.textContent = "Pulsa "Empezar"";
+  message.textContent = "Pulsa Empezar";
 };
 
 // ================= INICIO INSTRUCCIONES =================
