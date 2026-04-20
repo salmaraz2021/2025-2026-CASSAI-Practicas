@@ -40,10 +40,6 @@ musicToggle.onchange = () => {
   else music.play().catch(() => {});
 };
 
-recordAudioEl.onchange = () => {
-  if (recordAudioEl.checked) music.pause();
-};
-
 playerEl.onplay = () => music.pause();
 
 playerEl.onended = () => {
@@ -159,9 +155,13 @@ async function playGame(startLevel) {
 
 // ================= START =================
 startBtn.onclick = async () => {
+  
   if (playing) return;
 
   playing = true;
+
+  startBtn.classList.add("pressed");
+  stopBtn.classList.remove("pressed");
 
   startBtn.disabled = true;
   stopBtn.disabled = false;
@@ -191,6 +191,9 @@ startBtn.onclick = async () => {
 stopBtn.onclick = () => {
   playing = false;
 
+  stopBtn.classList.add("pressed");
+  startBtn.classList.remove("pressed");
+
   startBtn.disabled = false;
   stopBtn.disabled = true;
 
@@ -206,15 +209,19 @@ stopBtn.onclick = () => {
   levelDisplay.textContent = levelSelect.value + "/5";
 
   message.style.display = "block";
-  message.textContent = "Pulsa para empezar";
+  message.textContent = "Pulsa Empezar";
 
-  crono.reset();
+  crono.stop();
   stopRecording();
 };
 
 // ================= FIN =================
 function endGame() {
   playing = false;
+
+  startBtn.classList.remove("pressed");
+  stopBtn.classList.remove("pressed");
+
 
   startBtn.disabled = false;
   stopBtn.disabled = true;
@@ -289,6 +296,16 @@ async function startRecording() {
       mediaStream.getTracks().forEach(t => t.stop());
       mediaStream = null;
     };
+
+    if (musicOn && playing) {
+        music.play().catch(() => {});
+      }
+    };
+
+
+if (musicOn && playing) {
+  music.pause();
+}
 
     mediaRecorder.start();
 
