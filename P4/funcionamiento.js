@@ -295,9 +295,8 @@ async function startRecording() {
       // liberar micro
       mediaStream.getTracks().forEach(t => t.stop());
       mediaStream = null;
-    };
 
-    if (musicOn && playing) {
+      if (musicOn && playing) {
         music.play().catch(() => {});
       }
     };
