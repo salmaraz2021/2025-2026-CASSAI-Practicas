@@ -20,6 +20,9 @@ const playerEl = document.getElementById("player");
 
 let playing = false;
 
+// ✅ AÑADIDO (único cambio)
+const crono = new Crono(timeDisplay);
+
 // ================= MÚSICA =================
 let musicOn = false;
 musicToggle.checked = false;
