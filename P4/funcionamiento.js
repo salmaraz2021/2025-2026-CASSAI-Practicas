@@ -294,7 +294,7 @@ async function startRecording() {
       mediaStream.getTracks().forEach(t => t.stop());
       mediaStream = null;
 
-      if (musicOn && playing) {
+      if (musicOn) {
         music.play().catch(() => {});
       }
     };
