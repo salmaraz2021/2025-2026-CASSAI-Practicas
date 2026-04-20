@@ -171,11 +171,6 @@ startBtn.onclick = async () => {
 
   statusDisplay.textContent = "Jugando";
 
-  // 🔴 CAMBIO AQUÍ
-  if (musicOn) {
-    music.pause();
-  }
-
   await startRecording();
 
   crono.reset();
@@ -184,7 +179,6 @@ startBtn.onclick = async () => {
   let startLevel = parseInt(levelSelect.value);
   levelDisplay.textContent = startLevel + "/5";
 
-  if (musicOn) music.play().catch(() => {});
 
   playGame(startLevel);
 };
@@ -270,6 +264,11 @@ function closeInstructions() {
 }
 
 async function startRecording() {
+
+  if (recordAudioEl.checked && musicOn) {
+  music.pause();
+}
+
   if (!recordAudioEl.checked) return;
 
   try {
