@@ -18,6 +18,7 @@ function startGame(selectedMode) {
   mode = selectedMode;
 
   document.getElementById("menuOverlay").style.display = "none";
+  document.getElementById("gameUI").classList.remove("hidden");
 
   resetPositions();
   draw();
