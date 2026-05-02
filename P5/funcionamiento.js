@@ -17,7 +17,7 @@ let keys = {};
 function startGame(selectedMode) {
   mode = selectedMode;
 
-  document.getElementById("menu").classList.add("hidden");
+  document.getElementById("menuOverlay").style.display = "none";
   document.getElementById("gameUI").classList.remove("hidden");
 
   resetPositions();
