@@ -18,9 +18,10 @@ function startGame(selectedMode) {
   mode = selectedMode;
 
   document.getElementById("menuOverlay").style.display = "none";
-  document.getElementById("gameUI").classList.remove("hidden");
 
   resetPositions();
+  draw();
+
   countdown(startLoop);
 }
 
@@ -189,31 +190,66 @@ function kickBall() {
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // 🟩 CAMPO
+  // 🟩 CAMPO (MEJORADO)
   ctx.fillStyle = "#2e8b57";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   ctx.strokeStyle = "white";
   ctx.lineWidth = 2;
 
-  // línea central
+  // Bordes del campo
+  ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+  // Línea central
   ctx.beginPath();
   ctx.moveTo(canvas.width / 2, 0);
   ctx.lineTo(canvas.width / 2, canvas.height);
   ctx.stroke();
 
-  // círculo central
+  // Círculo central
   ctx.beginPath();
   ctx.arc(canvas.width / 2, canvas.height / 2, 50, 0, Math.PI * 2);
   ctx.stroke();
 
-  // punto central
+  // Punto central
   ctx.beginPath();
   ctx.arc(canvas.width / 2, canvas.height / 2, 3, 0, Math.PI * 2);
   ctx.fillStyle = "white";
   ctx.fill();
 
-  // 🥅 PORTERÍAS
+  // 🥅 ÁREA IZQUIERDA
+  ctx.strokeRect(0, canvas.height / 2 - 60, 80, 120);
+
+  // área pequeña
+  ctx.strokeRect(0, canvas.height / 2 - 30, 40, 60);
+
+  // punto penalti
+  ctx.beginPath();
+  ctx.arc(60, canvas.height / 2, 3, 0, Math.PI * 2);
+  ctx.fill();
+
+  // arco área
+  ctx.beginPath();
+  ctx.arc(80, canvas.height / 2, 40, Math.PI * 0.3, Math.PI * 1.7);
+  ctx.stroke();
+
+  // 🥅 ÁREA DERECHA
+  ctx.strokeRect(canvas.width - 80, canvas.height / 2 - 60, 80, 120);
+
+  // área pequeña
+  ctx.strokeRect(canvas.width - 40, canvas.height / 2 - 30, 40, 60);
+
+  // punto penalti
+  ctx.beginPath();
+  ctx.arc(canvas.width - 60, canvas.height / 2, 3, 0, Math.PI * 2);
+  ctx.fill();
+
+  // arco área
+  ctx.beginPath();
+  ctx.arc(canvas.width - 80, canvas.height / 2, 40, Math.PI * 1.3, Math.PI * 0.7);
+  ctx.stroke();
+
+  // 🥅 PORTERÍAS (NO TOCADO)
   ctx.fillStyle = "#ddd";
   ctx.fillRect(0, canvas.height / 2 - 50, 10, 100);
   ctx.fillRect(canvas.width - 10, canvas.height / 2 - 50, 10, 100);
