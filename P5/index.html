@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Bot League</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="menu">
+  <h1>Bot League</h1>
+  <button onclick="startGame('3goals')">A 3 goles</button>
+  <button onclick="startGame('golden')">Gol de oro</button>
+</div>
+
+<div id="gameUI" class="hidden">
+  <div id="score">0 - 0</div>
+  <canvas id="gameCanvas"></canvas>
+  <div id="message"></div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>

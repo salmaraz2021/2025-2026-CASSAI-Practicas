@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #111;
+  color: white;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+#gameCanvas {
+  background: green;
+  border: 4px solid white;
+  display: block;
+  margin: 20px auto;
+}
+
+#score {
+  font-size: 24px;
+}
+
+#message {
+  font-size: 28px;
+  margin-top: 10px;
+}
